@@ -14,8 +14,10 @@ linkbase="$root/home"
         echo ~/"$file" "<==" "$linkbase/$file"
         $DRY ln -nfs "$linkbase/$file" ~/"$file"
     elif test -f ~/"$file"; then
+        echo
         diff -U1 ~/"$file" "$linkbase/$file"
         echo rm ~/"$file" "# to get this file out of the way"
+        echo
     else
         echo ~/"$file" "<++" "$linkbase/$file"
         $DRY ln -s "$linkbase/$file" ~/"$file"
