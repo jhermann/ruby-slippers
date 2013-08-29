@@ -8,10 +8,14 @@ linkbase="$root/home"
 
 ( cd "$linkbase" && find . -type f ) | while read file; do
     file="${file:2}"
+    case "$file" in
+        *~ | *.swp | *.tmp) echo "*** Ignoring $file" ; continue ;;
+    esac
+
     dstdir=$(dirname ~/"$file")
     test -d "$dstdir" || $DRY mkdir -p "$dstdir"
     if test -h ~/"$file"; then
-        echo ~/"$file" "<==" "$linkbase/$file"
+        test $(readlink ~/"$file") = "$linkbase/$file" || echo ~/"$file" "<==" "$linkbase/$file"
         $DRY ln -nfs "$linkbase/$file" ~/"$file"
     elif test -f ~/"$file"; then
         echo
