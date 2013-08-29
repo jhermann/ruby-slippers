@@ -1,8 +1,15 @@
 [core]
-	autocrlf = input
-	excludesfile = ~/.gitignore_global
+    autocrlf = input
+    excludesfile = ~/.gitignore_global
 [user]
-	name = nobody
-	email = nobody@example.com
+    name = nobody
+    email = nobody@example.com
 [color]
-	ui = true
+    diff = auto
+    status = auto
+    branch = auto
+[alias]
+    st = status
+    ci = commit
+    df = diff
+    dc = diff --cached
