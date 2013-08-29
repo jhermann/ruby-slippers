@@ -1,0 +1,13 @@
+#! /bin/bash
+TMUX="tmux -2"
+test $# -eq 0 || { echo "TmuX Attach - call with no parameters to auto-attach 1st session"; exit 1; }
+
+if test -z "$(tmux ls)"; then
+    if test -f ~/.ssh/id_rsa; then
+        test -z "$SSH_AGENT_PID" && eval $(ssh-agent) && ssh-add || :
+    fi
+    $TMUX
+else
+    $TMUX attach -t $(tmux ls | head -n1 | cut -d: -f1)
+fi
+
