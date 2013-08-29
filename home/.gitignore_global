@@ -1,0 +1,20 @@
+# Build artifacts
+*.o
+*.so
+*.py[oc]
+*.egg-info
+
+# Packages
+*.gz
+*.jar
+*.rar
+*.tar
+*.tgz
+*.zip
+
+# Misc
+*.log
+*.sql
+*.sqlite
+*.swp
+*~

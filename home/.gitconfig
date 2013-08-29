@@ -1,0 +1,8 @@
+[core]
+	autocrlf = input
+	excludesfile = ~/.gitignore_global
+[user]
+	name = nobody
+	email = nobody@example.com
+[color]
+	ui = true
