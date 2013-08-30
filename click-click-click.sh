@@ -30,8 +30,8 @@ linkbase="$root/home"
     elif test -f ~/"$file"; then
         # conflict
         echo
-        diff -U1 ~/"$file" "$linkbase/$file"
-        echo rm ~/"$file" "# to get this file out of the way"
+        diff -b -U1 ~/"$file" "$linkbase/$file" || \
+            echo rm ~/"$file" "# to get this file out of the way"
         echo
     else
         # missing

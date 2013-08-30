@@ -1,0 +1,53 @@
+# developer tools and libraries
+#   apache2-threaded-dev
+#   gant
+#   groovy
+#   groovy-doc
+#   pkgname_pythonX_X_dev
+
+ant
+ant-doc
+ant-optional
+apt-doc
+bsh
+build-essential
+cmake
+devscripts
+dh-make
+dpkg-dev
+dput
+dupload
+fakeroot
+git-buildpackage
+libbz2-dev
+libcurl4-openssl-dev
+libexpat1-dev
+libgdbm-dev
+libmysqlclient-dev
+libncurses5-dev
+libncursesw5-dev
+libpng12-dev
+libssl-dev
+libtar-dev
+libxml2-dev
+libxml2-utils
+libxslt1-dev
+libzip-dev
+lintian
+mysql-client
+npm
+python-apt
+python-crypto
+python-dev
+python-distutils-extra
+python-gdbm
+python-lxml
+python-subversion
+quilt
+ruby
+ruby-dev
+rubygems
+svn-buildpackage
+tcl-dev
+tix-dev
+tk-dev
