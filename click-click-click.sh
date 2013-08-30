@@ -4,7 +4,7 @@
 #
 
 DRY=
-test "$1" = "-n" && DRY=:
+test "$1" = "-n" && DRY="echo WOULD call:"
 
 set -e
 
