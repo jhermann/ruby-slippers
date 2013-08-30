@@ -1,0 +1,34 @@
+#! /bin/bash
+# Remove dangling symlinks in the given directories
+
+set -e
+max_depth=1
+age_days=3
+
+if test -z "$1"; then
+    echo "usage: $0 <directory>..."
+    echo "Remove dangling symlinks in the given directories older than $age_days days"
+    exit 1
+fi
+
+loop=true
+while $loop; do
+    case "$1" in
+    -a | --age)
+        age_days="${2:?You MUST provide an age value (in days)!}"
+        shift; shift
+        ;;
+    *) loop=false ;;
+    esac
+done
+
+find "$@" -maxdepth $max_depth -type l -mtime +$age_days | sort | \
+while read link; do
+    #test -e "$link" && echo -n good || echo -n "bad "; echo "$link"
+    #readlink "$link"
+    #echo $?
+    if test ! -e "$link"; then
+        echo "Removing \"$link\"..."
+        rm "$link"
+    fi
+done
