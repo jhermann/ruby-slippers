@@ -1,4 +1,4 @@
-# ruby-slippers  ![Logo](https://raw.github.com/jhermann/ruby-slippers/master/doc/_static/ruby-slippers-logo.png)
+# ![Logo](https://raw.github.com/jhermann/ruby-slippers/master/doc/_static/ruby-slippers-logo.png) ruby-slippers
 
 There's no place like home…
 
