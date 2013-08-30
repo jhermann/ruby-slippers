@@ -1,0 +1,16 @@
+#! /bin/bash
+#
+# List EGGs installed for the given distutils spec.
+#
+#   $ py-egg-paths bpython
+#   bpython 0.11 (~/workspaces/pydev/lib/python2.7/site-packages)
+#   Pygments 1.6 (~/workspaces/pydev/lib/python2.7/site-packages)
+#
+if test -z "$1"; then
+    echo "usage:" $(basename "$0") "«distutils-spec»"
+    echo "List EGGs installed for the given distutils spec."
+    exit 1
+fi
+python -c "import pkg_resources; print '\\n'.join(repr(i) for i in pkg_resources.require('$1'))" \
+    | sed -re "s:$HOME/:~/:g"
+
