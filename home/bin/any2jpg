@@ -1,0 +1,24 @@
+#! /bin/bash
+if test -z "$1"; then
+    echo >&2 "usage:" $(basename "$0") "«files»"
+    echo >&2 "Convert image files to 90% JPG and trash the originals"
+    exit 1
+fi
+
+# dry run - set to "echo" to test things out
+N=
+
+jpg=( )
+set -e
+du -sch "$@" | tail -n1
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+for i in "$@"; do
+    $N convert -quality 90 "$i" "${i%.*}.jpg"
+    $N identify "${i%.*}.jpg"
+    jpg[${#jpg[*]}]="${i%.*}.jpg"
+    $N du -h "$i" "${i%.*}.jpg"
+    $N trash-put "$i"
+    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+done
+$N du -sch "${jpg[@]}" | tail -n1
+
