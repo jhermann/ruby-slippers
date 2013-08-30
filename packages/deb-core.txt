@@ -1,0 +1,14 @@
+# essentials you want on every host
+coreutils
+curl
+debian-keyring
+htop
+links
+locales
+lsb-release
+lsof
+ntp
+tmux
+vim
+vnstat
+wget
