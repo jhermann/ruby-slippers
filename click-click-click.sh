@@ -1,6 +1,6 @@
 #! /bin/bash
 #
-# Link version-controlled home skeleton into user account-
+# Link version-controlled home skeleton into user account.
 #
 
 DRY=
