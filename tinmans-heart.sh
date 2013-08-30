@@ -13,13 +13,13 @@ install_pkglist() {
     pkglist="$1"
 
     cat $pkglist | while read pkg; do
-        test "§{pkg:0:1}" != "#" || continue
+        test -n "$pkg" -a "${pkg:0:1}" != "#" || { echo "$pkg"; continue; }
 
-        if dpkg -l "$pkg" | grep "^ii +$pkg " ; then
-            echo "$pkg: already installed"
+        if ( dpkg -l "$pkg" | egrep "^ii +$pkg " ) >/dev/null ; then
+            echo "*** $pkg: already installed"
         else
-            echo "$pkg: installing..."
-            sudo apt-get install "$pkg"
+            echo "+++ $pkg: installing..."
+            sudo apt-get -q install "$pkg" </dev/tty
         fi
     done
 }
