@@ -7,6 +7,9 @@ set -e
 tmpbase="/tmp/"$(basename "$0")"-$USER-$$"
 action="$1"; shift || :
 
+# TODO: give caller control over this
+continue_after_apt_errors=true
+
 
 install_pkglist() {
     local pkglist pkg
@@ -19,7 +22,7 @@ install_pkglist() {
             echo "*** $pkg: already installed"
         else
             echo "+++ $pkg: installing..."
-            sudo apt-get -q install "$pkg" </dev/tty
+            sudo apt-get -q install "$pkg" </dev/tty || $continue_after_apt_errors
         fi
     done
 }
