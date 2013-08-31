@@ -19,6 +19,7 @@ pyvenv() {
 
 
 pip_install() {
+    echo "*** pip install" "$@"
     "$venvdir/bin/pip" install -M "$@"
 }
 
@@ -26,7 +27,7 @@ pip_install() {
 main() {
     tools=""
     pyvenv
-    pip_install "yolk"
+    pip_install "yolk" || :
     pip_install "pylint>=1.0"; tools="$tools pyreverse epylint pylint pylint-gui symilar"
     pip_install "httpie"; tools="$tools http"
 
