@@ -16,6 +16,7 @@ if test ! -f "$venvdir/.complete"; then
     mkdir -p "$virtualenv"
     rm -rf "$virtualenv"
     if test ! -f "$venvdir/.virtualenv-$venv.tar.gz"; then
+        echo "*** Downloading virtualenv-$venv.tar.gz"
         if pip install --log "$venvdir/.virtualenv.log" -M -d "$venvdir" virtualenv==$venv; then
             echo "*** Downloaded virtualenv-$venv.tar.gz using pip"
         else
