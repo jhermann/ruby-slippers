@@ -20,7 +20,7 @@ pyvenv() {
 
 pip_install() {
     echo "*** pip install" "$@"
-    "$venvdir/bin/pip" install -M "$@"
+    "$venvdir/bin/pip" install "$@"
 }
 
 
