@@ -4,14 +4,20 @@
 #
 
 DRY=
-test "$1" = "-n" && DRY="echo WOULD call:"
+test "$1" = "-n" && { DRY="echo WOULD call:"; shift; }
+
+LN="ln -s"; LN_F="ln -nfs"
+test "$1" = "-c" && { LN="cp -n"; LN_F="cp --backup numbered"; shift; }
+
+names=""
+test -n "$1" && { names="-iname *$1*"; shift; }
 
 set -e
 
 root=$(cd $(dirname "$0") && pwd)
 linkbase="$root/home"
 
-( cd "$linkbase" && find . -type f ) | while read file; do
+( cd "$linkbase" && find . -type f $names ) | while read file; do
     # omit "./"
     file="${file:2}"
 
@@ -26,7 +32,7 @@ linkbase="$root/home"
     if test -h ~/"$file"; then
         # symlinked
         test $(readlink ~/"$file") = "$linkbase/$file" || echo ~/"$file" "=->" "$linkbase/$file"
-        $DRY ln -nfs "$linkbase/$file" ~/"$file"
+        $DRY $LN_F "$linkbase/$file" ~/"$file"
     elif test -f ~/"$file"; then
         # conflict
         echo
@@ -36,6 +42,6 @@ linkbase="$root/home"
     else
         # missing
         echo ~/"$file" "+->" "$linkbase/$file"
-        $DRY ln -s "$linkbase/$file" ~/"$file"
+        $DRY $LN "$linkbase/$file" ~/"$file"
     fi
 done
