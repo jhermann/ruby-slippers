@@ -1,0 +1,37 @@
+#! /bin/bash
+#
+# Make a Python virtualenv with a know version of "virtualenv", so
+# we don't have to worry about unsupported options, and age-old versions
+#
+# If the first argument is an executable, use that as the Python interpreter.
+#
+set -e
+#set -x
+venv=1.9.1
+venvdir="$HOME/.pyvenv"
+virtualenv="$venvdir/.virtualenv"
+
+# Download virtualenv tool if missing
+if test ! -f "$venvdir/.complete"; then
+    mkdir -p "$virtualenv"
+    rm -rf "$virtualenv"
+    if test ! -f "$venvdir/.virtualenv-$venv.tar.gz"; then
+        if pip install --log "$venvdir/.virtualenv.log" -M -d "$venvdir" virtualenv==$venv; then
+            echo "*** Downloaded virtualenv-$venv.tar.gz using pip"
+        else
+            ( cd "$venvdir" && curl -sOkS https://pypi.python.org/packages/source/v/virtualenv/virtualenv-$venv.tar.gz )
+        fi
+        mv "$venvdir/virtualenv-$venv.tar.gz" "$venvdir/.virtualenv-$venv.tar.gz"
+    fi
+    ( cd "$venvdir" && tar xfz .virtualenv-$venv.tar.gz && mv virtualenv-$venv .virtualenv )
+    touch "$venvdir/.complete"
+fi
+
+python=python
+if test -f "$1" -a -x "$1"; then
+    python="$1"
+    shift
+fi
+
+$python "$virtualenv/virtualenv.py" "$@"
+
