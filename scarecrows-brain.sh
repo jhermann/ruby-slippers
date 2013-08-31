@@ -26,11 +26,13 @@ pip_install() {
 main() {
     tools=""
     pyvenv
-    pip_install yolk
-    pip_install httpie; tools="$tools http"
+    pip_install "yolk"
+    pip_install "pylint>=1.0"; tools="$tools pyreverse epylint pylint pylint-gui symilar"
+    pip_install "httpie"; tools="$tools http"
 
     mkdir -p ~/bin
     for tool in $tools; do
+        echo "Symlinking ~/bin/$tool"
         ln -nfs "../.pyvenv/ruby-slippers/bin/$tool" "$HOME/bin/$tool"
     done
 }
