@@ -1,0 +1,3 @@
+#! /bin/bash
+# Helper for svn --diff-cmd
+diff -u -b "$@"
