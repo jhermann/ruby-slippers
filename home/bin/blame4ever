@@ -1,0 +1,23 @@
+#!/bin/bash
+if test -z "$1"; then
+    echo "Usage:" $(basename "$0") "«file» «grep-pattern»"
+    cat <<.
+
+    Search in ALL revision diffs of a file for a given pattern and show
+    any hits; unlike "blame", this also shows changes that were since removed
+    from HEAD, and finds the ORIGINAL author of a certain change, not just
+    the last committer of a certain line.
+.
+    exit 1
+fi
+
+file="$1"
+REVISIONS=$(svn log $file -q --stop-on-copy | grep "^r" | cut -d"r" -f2 | cut -d" " -f1)
+for rev in $REVISIONS; do
+    prevRev=$(($rev-1))
+    difftext=`svn diff --old=$file@$prevRev --new=$file@$rev | tr -s " " | grep -v " -\ \- " | grep -e "$2"`
+    if [ -n "$difftext" ]; then
+        echo "$rev: $difftext"
+    fi
+done
+
