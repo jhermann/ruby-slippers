@@ -1,3 +1,4 @@
 #! /bin/bash
 git config user.name  jhermann
 git config user.email jh@web.de
+grep -A2 '\[user\]' .git/config
