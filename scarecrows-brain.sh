@@ -29,6 +29,7 @@ main() {
     pyvenv
     pip_install "yolk" || :
     pip_install "pylint>=1.0"; tools="$tools pyreverse epylint pylint pylint-gui symilar"
+    pip_install "flake8"; tools="$tools pyflakes pep8 flake8"
     pip_install "httpie"; tools="$tools http"
 
     mkdir -p ~/bin
