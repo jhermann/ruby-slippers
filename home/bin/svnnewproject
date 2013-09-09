@@ -1,0 +1,21 @@
+#! /bin/bash
+#
+# Create a new SVN project with a standard subdirectory structure
+#
+PROJECT=${1:--h}
+
+case $PROJECT in
+    -h | --help)
+        echo "Usage: $0 <URL>"
+        echo "Create a new SVN project at <URL> with a standard subdirectory structure."
+    ;;
+
+    *)
+        dirlist=$PROJECT
+        for subdir in trunk releases tags branches; do
+            dirlist="$dirlist $PROJECT/$subdir"
+        done
+        echo "Creating $dirlist"
+        svn mkdir $dirlist
+    ;;
+esac
