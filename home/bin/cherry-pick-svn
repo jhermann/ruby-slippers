@@ -1,0 +1,46 @@
+#! /bin/bash
+#
+# Cherry-pick a given revision (changeset) from trunk into a maintenance branch
+#
+DRY=""
+test "$1" != "-n" || { shift; DRY="echo"; }
+
+# Get changeset revision, remove trailing '.' from a 'Committed revision RRRRR.' message
+changeset="$1"
+changeset="${changeset%.}"
+
+if test -z "$changeset"; then
+    echo "Usage: $(basename $0) «changeset»"
+    cat <<.
+    
+    Cherry-pick the given changeset from the *trunk* that belongs to
+    the current workdir (assuming we're in a .../branches/... one).
+.
+    exit 1
+fi
+
+fail() {
+    test "$1" != "-n" || { shift; echo >&2; } # -n = extra newline
+    echo >&2 "FATAL:" "$@"
+    exit 1
+}
+
+set -e
+set +x
+
+test -d .svn || fail "Not an SVN workdir!"
+
+self_base=$(svn info . | grep ^URL: | cut -f2- -d' ')
+trunk_base=$(sed -re 's:/(branches|releases|tags)/.+:/trunk/:' <<<$self_base)
+if svn stat | grep "^M" >/dev/null; then
+    echo "WARNING: You have local changes!"
+    read -p "Continue? [y/N] " -t 15 -n 1 || fail -n "Timeout, aborted"
+    test "$REPLY" == "y" || fail -n "Aborted"
+fi
+
+$DRY svn merge -c "$changeset" "$trunk_base"
+echo "~~~ Merged changeset $changeset"
+echo "    from '$trunk_base'"
+svn log -r "$changeset" "$trunk_base"
+svn status
+
