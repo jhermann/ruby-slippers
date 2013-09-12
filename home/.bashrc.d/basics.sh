@@ -18,3 +18,10 @@ imgur() {
     done
 }
 
+isodate() {
+    date +'%Y-%m-%d'
+}
+
+isotime() {
+    date +'%Y-%m-%dT%H:%M:%S%:z'
+}
