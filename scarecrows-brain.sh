@@ -31,6 +31,7 @@ main() {
     pip_install "pylint>=1.0"; tools="$tools pyreverse epylint pylint pylint-gui symilar"
     pip_install "flake8"; tools="$tools pyflakes pep8 flake8"
     pip_install "httpie"; tools="$tools http"
+    pip_install "markdown2"; tools="$tools markdown2"
 
     mkdir -p ~/bin
     for tool in $tools; do
