@@ -1,0 +1,12 @@
+#! /bin/bash
+#
+# Remove editor backup files in current dir, recursively.
+#
+set -e
+num=$(find . -name '*~' | wc -l)
+echo "Purging $num backup files..."
+
+if test $num -gt 0; then
+    find . -name '*~' -print0 | xargs -0 rm
+fi
+
