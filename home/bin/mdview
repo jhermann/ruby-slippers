@@ -1,0 +1,113 @@
+#! /bin/bash
+#
+# Quick preview of a markdown file.
+#
+# Tries to find a fitting markdown tool, and displays common default files if present.
+#
+set -e
+#set -x
+filters="markdown2 markdown_py markdown markdown-calibre"
+defaultdocs="README.md ReadMe.md index.md"
+
+
+intro() {
+    cat <<.
+<html>
+    <head>
+        <title>$1</title>
+        <style type="text/css">
+            body {
+                color: #111111;
+                background: #eeeeee;
+                font-size: 12pt;
+                font-family: Helvetica, Arial, sans-serif;
+                line-height: 1.5;
+                -webkit-font-smoothing: antialiased;
+            }
+            h1 {
+                text-size: 170%;
+            }
+            h2 {
+                text-size: 150%;
+            }
+            h3 {
+                text-size: 135%;
+            }
+            h4 {
+                text-size: 120%;
+            }
+            h5 {
+                text-size: 110%;
+            }
+            code, pre {
+                width: 100%;
+                color: #222;
+                background-color: #fff;
+
+                font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+                font-size: 105%;
+            }
+            pre {
+                margin-left: 2em;
+                padding: .3em;
+                border-radius: .3em;
+                -moz-border-radius: .3em;
+                -webkit-border-radius: .3em;
+            }
+        </style>
+    </head>
+    <body>
+.
+}
+
+outro() {
+    echo "</body></html>"
+}
+
+fail() {
+    echo >&2 "FATAL:" "$@"
+    exit 1
+}
+
+usage() {
+    echo "usage:" $(basename "$1") "[-h|--help] [<file.md>]"
+    echo
+    echo "Displays the given file or else one of '$defaultdocs' in your browser"
+    exit 1
+}
+
+
+for filter in $filters; do
+    which $filter >/dev/null && break
+done
+which $filter >/dev/null || fail "No markdown filter installed!"
+
+for defaultdoc in $defaultdocs; do
+    test -f "$defaultdoc" && break
+done
+test -f "$defaultdoc" || defaultdoc=""
+
+
+case "$1" in
+    -h | --help)
+        usage "$0"
+        ;;
+    "")
+        test -n "$defaultdoc" || usage "$0"
+        mdfile="$defaultdoc"
+        ;;
+    *)
+        mdfile="$1"
+        ;;
+esac
+
+# Get cleaned up first line (no images / links)
+title=$(head -n1 "$mdfile" | sed -r -e 's/^#+ ?//' -e 's/!?(\[|\().+?(\]|\)) ?//g')
+
+htmlfile="/tmp/.mdview_$USER_"$(cd $(dirname "$mdfile") && pwd | tr / _)_$(basename "$mdfile")
+htmlfile="${htmlfile%.md}.html"
+intro >"$htmlfile" "$title" \
+    && $filter <"$mdfile" >>"$htmlfile" \
+    && outro >>"$htmlfile" \
+    && xdg-open "$htmlfile"
+
