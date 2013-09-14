@@ -14,7 +14,7 @@ for dir in "$@"; do
     ##echo "$dir..."
     chkfile=$(basename "$dir")
     chkfile=${chkfile%% {*\}}
-    chkfile=${chkfile%% [FLAC]}
+    chkfile=${chkfile%% \[*]}
     cfv -p "$dir" -rr -C -f "$chkfile.sfv"
 done
 
