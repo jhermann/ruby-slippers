@@ -1,0 +1,20 @@
+#! /bin/bash
+#
+# Create SFV checksum files for a given set of directories
+#
+if test -z "$1"; then
+    echo "Usage: $(basename $0) <dir>..."
+    echo "Creates a .sfv file in each directory listed."
+    exit 1
+fi
+
+#set -x
+
+for dir in "$@"; do
+    ##echo "$dir..."
+    chkfile=$(basename "$dir")
+    chkfile=${chkfile%% {*\}}
+    chkfile=${chkfile%% [FLAC]}
+    cfv -p "$dir" -rr -C -f "$chkfile.sfv"
+done
+
