@@ -32,6 +32,7 @@ main() {
     pip_install "flake8"; tools="$tools pyflakes pep8 flake8"
     pip_install "httpie"; tools="$tools http"
     pip_install "markdown2"; tools="$tools markdown2"
+    pip_install "isort"; tools="$tools isort"
 
     mkdir -p ~/bin
     for tool in $tools; do
