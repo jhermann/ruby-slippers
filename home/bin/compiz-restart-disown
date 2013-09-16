@@ -1,0 +1,6 @@
+#! /bin/bash
+#
+# Reload compiz and detach the background process
+#
+compiz --replace &
+disown
