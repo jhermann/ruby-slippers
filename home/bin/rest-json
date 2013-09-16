@@ -3,5 +3,5 @@
 # HTTPie wrapper for the common REST + JSON use-case
 #
 test $# -gt 0 || { http; exit 1; }
-http get --pretty --json "$@" | less -R
+http --verbose --pretty all --json GET "$@" | less -R
 
