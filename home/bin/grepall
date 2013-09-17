@@ -1,0 +1,15 @@
+#! /bin/bash
+#
+# Grep stuff recursively, but without .svn and other cruft
+#
+set -e
+if test -z "$1"; then
+  echo "usage: $0 <grep-args>... <dir>"
+  exit 1
+fi
+
+args=( "$@" )
+find "${args[@]:(($# - 1))}" -type f | \
+    egrep -v '/(.git|.svn|build|dist|package|release|target)/' | grep -v \\.pyc\$ | grep -v '~$' | \
+    tr \\n \\0 | xargs --null egrep -nH "${args[@]:0:(($# - 1))}"
+
