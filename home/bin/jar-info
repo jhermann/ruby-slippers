@@ -1,0 +1,20 @@
+#! /bin/bash
+#
+# Dump a JAR's manifest, and class counts per Java package.
+#
+if test -z "$1"; then
+    echo >&2 "Usage: $(basename $0) <jar-file>..."
+    exit 1
+fi
+
+for jar in "$@"; do
+    echo
+    ls -l "$jar"
+    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    unzip -p "$jar" META-INF/MANIFEST.MF
+
+    echo
+    echo "Class counts per package:"
+    unzip -l "$jar" | tr " " \\n | grep '\.class$' | sed -re 's~[^/]+$~~' | sort | uniq -c
+done
+
