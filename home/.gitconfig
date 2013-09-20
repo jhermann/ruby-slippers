@@ -12,5 +12,6 @@
     st = status
     co = checkout
     ci = commit
+    up = pull --ff-only
     df = diff
     dc = diff --cached
