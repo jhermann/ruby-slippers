@@ -11,9 +11,19 @@ for jar in "$@"; do
     echo
     ls -l "$jar"
     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-    unzip -p "$jar" META-INF/MANIFEST.MF
+    unzip -p "$jar" META-INF/MANIFEST.MF | tr -d \\r
+
+    pom_properties=$(unzip -l "$jar" \
+        | grep ' META-INF/maven/.*/pom.properties$' \
+        | sed -r -e 's+^.* (META-INF/maven/.*/pom.properties)$+\1+')
+    if test -n "$pom_properties"; then
+        echo
+        echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        unzip -p "$jar" "$pom_properties"
+    fi
 
     echo
+    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
     echo "Class counts per package:"
     unzip -l "$jar" | tr " " \\n | grep '\.class$' | sed -re 's~[^/]+$~~' | sort | uniq -c
 done
