@@ -1,4 +1,7 @@
 #! /bin/bash
+#
+# Install "gedit" plugins to $HOME
+#
 set -e
 PLUGIN_DIR="$HOME/.local/share/gedit/plugins"
 
@@ -12,7 +15,7 @@ get_github_commit() {
 
     test -f "${workdir}/${sha1}.zip" || \
         wget "https://github.com/${user}/${repo}/archive/${sha1}.zip" -O "${workdir}/${sha1}.zip"
-    unzip -j "${workdir}/${sha1}.zip" "${repo}-${sha1}/${pluginsrc}/*" -d "$target"
+    unzip -j -u "${workdir}/${sha1}.zip" "${repo}-${sha1}/${pluginsrc}/*" -d "$target"
 }
 
 compile_schema() {
@@ -22,7 +25,7 @@ compile_schema() {
     schema_dir="/usr/share/glib-2.0/schemas"
     test -f "$schema_dir/$schema" || { \
         echo "Compiling schema $schema..."; \
-        sudo bash -c "cp $PLUGIN_DIR/$schema $schema_dir; glib-compile-schemas $schema_dir"; }
+        sudo bash -c "umask 0022; cat $PLUGIN_DIR/$schema >$schema_dir/$schema; glib-compile-schemas $schema_dir"; }
 }
 
 workdir=$(dirname "$0")/".cache"
