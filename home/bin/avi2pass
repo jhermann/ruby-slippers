@@ -1,0 +1,37 @@
+#! /bin/sh
+#
+# 2-pass compress a video file to AVI
+#
+if test -z "$1"; then
+    echo "Usage: $0 [--silent] «video-file»"
+    echo
+    echo "2-pass compress a video file to AVI"
+    exit 2
+fi
+
+set -e
+#set -x
+
+encoder_pass() {
+    test "$2" != "${2%.*}.avi" # don't copy to self
+    echo
+    echo "~~~ PASS $1 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    mencoder $SOUND -ovc lavc \
+        -lavcopts vcodec=mpeg4:mbd=2:trell:v4mv:dia=4:predia=4:preme=2:last_pred=3:vqcomp=0.7:cbp:vmax_b_frames=2:vb_strategy=1:precmp=2:cmp=2:subcmp=2:vpass=$1:qns=2:vbitrate=900 \
+        -ffourcc DIVX "$2" -o "${2%.*}.avi"
+}
+
+export SOUND="-oac copy"
+
+while test -n "$1"; do
+    case "$1" in
+        --silent) export SOUND="-nosound"; shift; ;;
+        *) break; ;;
+    esac
+done
+
+input=$(realpath "$1")
+cd /tmp
+encoder_pass 1 "$input"
+encoder_pass 2 "$input"
+
