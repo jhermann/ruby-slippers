@@ -15,3 +15,5 @@
     up = pull --ff-only
     df = diff
     dc = diff --cached
+[push]
+    default = simple
