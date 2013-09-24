@@ -1,0 +1,36 @@
+#! /usr/bin/python
+""" Portable (Python) version of "realpath".
+"""
+import os
+import sys
+import errno
+import argparse
+
+
+def main():
+    """Main loop."""
+    parser = argparse.ArgumentParser(description="Return the canonicalised absolute pathname.")
+    parser.add_argument("-v", "--version", action="version", version="1.0")
+    parser.add_argument("-s", "--strip", action="store_true",
+        help="Make path absolute, but do not resolve symbolic links")
+    parser.add_argument("-z", "--zero", action="store_true",
+        help="Separate output filenames with the null character instead of newline")
+    parser.add_argument("files", metavar='PATH', nargs='+',
+        help="paths to be normalized")
+    args = parser.parse_args()
+
+    mapper = os.path.abspath if args.strip else os.path.realpath
+
+    try:
+        for filename in args.files:
+            if not os.path.exists(filename):
+                raise OSError(errno. ENOENT, "No such file or directory", filename)
+            sys.stdout.write(mapper(filename))
+            sys.stdout.write('\0' if args.zero else '\n')
+        sys.stdout.flush()
+    except OSError, exc:
+        parser.error(str(exc))
+
+
+if __name__ == "__main__":
+    main()
