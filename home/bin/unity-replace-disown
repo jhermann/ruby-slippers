@@ -1,0 +1,7 @@
+#! /bin/bash
+#
+# Reload unity 3D and detach the background process
+#
+test -n "$DISPLAY" || export DISPLAY=:0.0
+unity --replace &
+disown
