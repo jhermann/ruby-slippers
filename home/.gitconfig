@@ -1,19 +1,20 @@
 [core]
-    autocrlf = input
-    excludesfile = ~/.gitignore_global
+        autocrlf = input
+        excludesfile = ~/.gitignore_global
 [user]
-    name = nobody
-    email = nobody@example.com
+        name = nobody
+        email = nobody@example.com
 [color]
-    diff = auto
-    status = auto
-    branch = auto
+        diff = auto
+        status = auto
+        branch = auto
 [alias]
-    st = status
-    co = checkout
-    ci = commit
-    up = pull --ff-only
-    df = diff
-    dc = diff --cached
+        st = status
+        co = checkout
+        ci = commit
+        up = pull --ff-only
+        df = diff
+        dc = diff --cached
+        grok = log --all --pretty='format:%d %Cgreen%h%Creset %an - %s' --graph
 [push]
-    default = simple
+        default = simple
