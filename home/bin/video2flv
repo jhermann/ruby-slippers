@@ -1,0 +1,39 @@
+#! /bin/bash
+#
+# Convert video file to FLV format.
+#
+# Needs "mencoder" and "mediainfo" installed.
+#
+set -e
+#set -x
+
+if test -z "$1"; then
+    echo >&2 "Usage: $0 [«width»] «video-file»"
+    exit 1
+fi
+
+width=""
+if test -z "$(tr -d 0-9 <<<$1)"; then
+    width=$1
+    shift
+fi
+
+source="$1"
+w_h=$(mediainfo "$source" | egrep -i "width|height" | tr -cd 0-9\\n)
+
+if test -z "$width"; then
+    width=$(cut -f1 -d" " <<<$w_h)
+    height=$(cut -f2 -d" " <<<$w_h)
+else
+    height=$(python -c "import sys; print int(.5 + $width / float(sys.argv[1]) * float(sys.argv[2]))" $w_h)
+fi
+
+out=$(sed -re "s/(\\.[a-z0-9]{1,5}\$)//" <<<$source).flv
+mencoder -forceidx -of lavf -srate 22050 -vf scale=$width:$height \
+    -nosound \
+    -ovc lavc -lavcopts vcodec=flv:vbitrate=250:mbd=2:mv0:trell:v4mv:cbp:last_pred=3 \
+    -o "$out" "$source"
+##    -oac mp3lame -lameopts abr:br=128 \
+
+echo
+echo "FLV video: $out $(du -h "$out" | awk '{print $1}') ${width}x$height"
