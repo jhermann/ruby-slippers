@@ -1,0 +1,30 @@
+#! /bin/bash
+#
+# "gedit" wrapper
+#
+
+# Clean environment for built-in interpreter
+deactivate 2>/dev/null || :
+export PYTHONPATH=
+
+# Put system binaries upfront
+export PATH=/usr/bin:$PATH
+
+# Look out for grep results (containing a ':') and load file at the matching line
+args=()
+files=()
+for arg in "$@"; do
+    case "$arg" in
+        -*) args+=("$arg"); ;;
+        # *:[0-9]*) files+=("$arg"); ;;
+        *) files+=("$arg"); ;;
+    esac
+done
+
+# Open files
+for filename in "${files[@]}"; do
+    line=""
+    test "${filename%%:*}" = "$filename" || line=+$(cut -f2 -d: <<<"$filename")
+    filename="${filename%%:*}"
+    gedit --background "${args[@]}" "$filename" $line #>>/tmp/gedit-$USER.log 2>&1
+done
