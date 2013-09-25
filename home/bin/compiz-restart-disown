@@ -2,5 +2,6 @@
 #
 # Reload compiz and detach the background process
 #
+test -n "$DISPLAY" || export DISPLAY=:0.0
 compiz --replace &
 disown
