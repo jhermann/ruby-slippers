@@ -29,3 +29,9 @@ Most notably you'll get code quality (`pylint`, `flake8`) and productivity tools
 (`bpython`, and the incredibly useful `http` from [httpie](http://httpie.org/)).
 The Python tools are installed into a dedicated Python *virtualenv* (`~/.pyvenv/ruby-slippers`),
 and then symlinked into `~/bin`.
+
+
+## References
+
+* [GitHub ❤ ~/](http://dotfiles.github.io/)
+* [Keep your dotfiles fresh](https://github.com/freshshell/fresh)
