@@ -35,10 +35,8 @@ linkbase="$root/home"
         $DRY $LN_F "$linkbase/$file" ~/"$file"
     elif test -f ~/"$file"; then
         # conflict
-        echo
         diff -b -U1 ~/"$file" "$linkbase/$file" || \
-            echo rm ~/"$file" "# to get this file out of the way"
-        echo
+            { echo; echo rm ~/"$file" "# to get this file out of the way"; echo; }
     else
         # missing
         echo ~/"$file" "+->" "$linkbase/$file"
