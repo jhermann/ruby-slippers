@@ -36,3 +36,6 @@ fi
 
 $python "$virtualenv/virtualenv.py" "$@"
 
+for deps in requirements.txt requires.txt *-requirements.txt requirements-*.txt; do
+    test -r "$deps" && pip install -r "$deps"
+done
