@@ -29,7 +29,7 @@ if test ! -f "$venvdir/.complete"; then
 fi
 
 python=python
-orig_python=$(cat $(dirname $(dirname $(which python)))/lib/python*/orig-prefix.txt 2>/dev/null)
+orig_python=$(cat $(dirname $(dirname $(which python)))/lib/python*/orig-prefix.txt 2>/dev/null || :)
 test -z "$orig_python" || python="$orig_python/bin/python"
 if test -f "$1" -a -x "$1"; then
     python="$1"
@@ -39,16 +39,21 @@ fi
 echo "Using $python"
 $python "$virtualenv/virtualenv.py" "$@"
 
-for deps in requirements.txt requires.txt *-requirements.txt requirements-*.txt; do
-    test -r "$deps" && pip install -r "$deps"
-done
-
+venvdir="."
 for arg in "$@"; do
-    if test -d "$arg/bin" -a -r "$arg/bin/activate" -a "$(which python 2>/dev/null)" != $(cd "$arg/bin" && pwd)"/python" ; then
-        echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        echo "Please call the follwing command to activate this virtualenv..."
-        echo "." $(cd "$arg/bin" && pwd)"/activate"
-        echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    if test -d "$arg/bin" -a -r "$arg/bin/activate"; then
+        venvdir=$(cd "$arg" && pwd)
         break
     fi
 done
+
+for deps in requirements.txt requires.txt *-requirements.txt requirements-*.txt; do
+    test -r "$deps" && "$venvdir/bin/pip" install -r "$deps"
+done
+
+if test "$(which python 2>/dev/null)" != "$venvdir/bin/python" ; then
+    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    echo "Please call the follwing command to activate this virtualenv..."
+    echo "." $(cd "$arg/bin" && pwd)"/activate"
+    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+fi
