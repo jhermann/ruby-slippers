@@ -1,0 +1,8 @@
+#! /bin/bash
+#
+# Toggle a running XBMC between windowed and fullscreen via CLI or Unity launcher menu.
+#
+# See ".local/share/applications/xbmc.desktop" for using it.
+#
+NAME='XBMC Media Center'
+wmctrl -r "$NAME" -b toggle,fullscreen

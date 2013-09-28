@@ -1,0 +1,74 @@
+#! /bin/bash
+#
+# Launch XBMC via CLI or Unity launcher menu.
+#
+# See ".local/share/applications/xbmc.desktop" for using it.
+#
+# Needs "wmctrl", "amixer", and "gconftool" installed.
+#
+
+# Set desktop number (when set, will switch to right-most viewport on this desktop before launch)
+desktop=
+hidepanel=false
+
+#
+# HERE BE DRAGONS!
+#
+
+# Get some basic values
+pid=$(ps auxw | grep $0 | grep -v grep | tr -s ' ' | head -n1 | cut -f2 -d' ')
+stamp="$(date '+%Y-%m-%d %H:%M:%S,%N')"
+now="$(date '+%s')"
+#echo "$$ $pid" >>/tmp/xbmc-launcher.log
+
+# Switch to specific desktop?
+if test -n "$desktop"; then
+    dt_info=$(wmctrl -d | grep ^$desktop)
+    dg_width="$(sed -re 's/^.* DG: *([0-9]+)x.*$/\1/' <<<$dt_info)"
+    wa_width="$(sed -re 's/^.* WA:[0-9 ,]+ ([0-9]+)x.*$/\1/' <<<$dt_info)"
+    vp_rightmost=$(( $dg_width - $wa_width ))
+
+    if $hidepanel; then
+        gconftool --type Boolean --set /apps/panel/toplevels/top_panel_screen0/auto_hide true
+    fi
+    wmctrl -o $vp_rightmost,0
+
+    # no conky flicker, so kill it before launch (this was a previous problem under Hardy)
+    #killall conky
+    #killall nm-applet
+fi
+
+make_fullscreen() {
+    NAME='XBMC Media Center'
+
+    # Wait for window to come up
+    while [ -z "`wmctrl -l | grep \"$NAME\"`" ]; do
+        sleep .25
+    done
+
+    # Put at X position 0 (left-most on nVidia twinview) and make fullscreen
+    wmctrl -r "$NAME" -e '0,0,-1,-1,-1'
+    wmctrl -r "$NAME" -b toggle,fullscreen
+}
+
+if test $pid != $$; then
+    # When LIRC acts up and starts this twice in an instant
+    echo "$stamp Ignoring dupe start (pid=$$; winner=$pid)" >>/tmp/xbmc-launcher.log
+elif test -z "$(pidof /usr/lib/xbmc/xbmc.bin)"; then
+    echo "$stamp Starting XBMC" >>/tmp/xbmc-launcher.log
+
+    # Full volume control range in XBMC
+    amixer sset Master,0 100%
+
+    #$(dirname "$0")/xbmc-splash &
+    /usr/bin/xbmc --lircdev /var/run/lirc/lircd "$@" &
+    disown
+    sleep .75
+    make_fullscreen
+else
+    echo "$stamp XBMC already running" >>/tmp/xbmc-launcher.log
+
+    # Toggle window mode when already running, especially useful when bound to a LIRC button
+    $(dirname "$0")/xbmc-toggle-fs
+fi
+sleep 0.05

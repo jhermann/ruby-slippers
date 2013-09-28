@@ -1,0 +1,31 @@
+[Desktop Entry]
+Comment=Manage and view your media
+Name=XBMC Media Center
+Exec=xbmc
+Actions=Action2;Action0;Action1;Action3
+Terminal=false
+GenericName=Media Center
+Version=1.0
+Type=Application
+Categories=AudioVideo;Video;Player;TV;
+Icon=xbmc
+
+[Desktop Action Action2]
+Name=Toggle FS / Window
+Name[en_US]=Toggle FS / Window
+Exec=/opt/junctions/xbmc-user/bin/xbmc-toggle-fs
+
+[Desktop Action Action0]
+Name=Start XBMC Fullscreen
+Name[en_US]=Start XBMC Fullscreen
+Exec=/opt/junctions/xbmc-user/bin/xbmc-launch
+
+[Desktop Action Action1]
+Name=Start XBMC Windowed
+Name[en_US]=Start XBMC Windowed
+Exec=xbmc
+
+[Desktop Action Action3]
+Name=Kill XBMC
+Name[en_US]=Kill XBMC
+Exec=/opt/junctions/xbmc-user/bin/xbmc-kill

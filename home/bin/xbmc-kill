@@ -1,0 +1,7 @@
+#! /bin/bash
+#
+# Kill a stuck XBMC via CLI or Unity launcher menu.
+#
+# See ".local/share/applications/xbmc.desktop" for using it.
+#
+kill -9 $(pidof /usr/lib/xbmc/xbmc.bin)
