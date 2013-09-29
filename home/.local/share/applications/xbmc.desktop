@@ -1,7 +1,7 @@
 [Desktop Entry]
 Comment=Manage and view your media
 Name=XBMC Media Center
-Exec=xbmc
+Exec=/opt/junctions/xbmc-user/bin/xbmc-launch
 Actions=Action2;Action0;Action1;Action3
 Terminal=false
 GenericName=Media Center
