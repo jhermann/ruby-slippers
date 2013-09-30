@@ -33,14 +33,15 @@ main() {
     pip_install "httpie"; tools="$tools http"
     pip_install "markdown2"; tools="$tools markdown2"
     pip_install "isort"; tools="$tools isort"
+    pip_install "pypi-show-urls"; tools="$tools pypi-show-urls"
 
     mkdir -p ~/bin
     for tool in $tools; do
         echo "Symlinking ~/bin/$tool"
         ln -nfs "../.pyvenv/ruby-slippers/bin/$tool" "$HOME/bin/$tool"
     done
+    ls -lrt "$HOME/.pyvenv/ruby-slippers/bin/" | tail -n10
 }
 
 
 main
-
