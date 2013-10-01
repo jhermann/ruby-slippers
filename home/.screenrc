@@ -1,0 +1,5 @@
+term screen-256color
+defscrollback 1024
+startup_message off
+hardstatus on
+hardstatus alwayslastline '%{= M} %H%{= G} %= %{= w}%-w%{+b r}%n*%t%{-b r}%{w}%+w %= %{c}%Y-%m-%d %{G}%c '
