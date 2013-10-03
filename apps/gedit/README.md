@@ -1,6 +1,6 @@
 # ![Logo](https://raw.github.com/jhermann/ruby-slippers/master/doc/_static/ruby-slippers-logo.png) “gedit” Plugin Installation
 
-Simply call `./plugin-install.sh` and all the plugins will downloaded and installed into your home.
+Simply call `./plugin-install.sh` and all the plugins will be downloaded and installed into your home.
 In case you don't want one of the plugins, comment out the associated code.
 
 Supported plugins:
