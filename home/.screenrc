@@ -3,3 +3,8 @@ defscrollback 1024
 startup_message off
 hardstatus on
 hardstatus alwayslastline '%{= M} %H%{= G} %= %{= w}%-w%{+b r}%n*%t%{-b r}%{w}%+w %= %{c}%Y-%m-%d %{G}%c '
+
+#vbell off
+#bind c screen 1
+#bind 0 select 10
+#select 1
