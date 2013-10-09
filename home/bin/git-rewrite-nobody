@@ -1,0 +1,35 @@
+#! /bin/bash
+#
+# Rewrite "nobody" commits, as an example to rewrite author info in history.
+#
+# Usually, you should call this with "HEAD" as the only argument.
+#
+# Find affected commits:
+#   git log --author=nobody@example.com --all
+#
+user_name=$(git config "user.name")
+user_email=$(git config "user.email")
+
+commands=$(cat <<.
+an="\$GIT_AUTHOR_NAME"
+am="\$GIT_AUTHOR_EMAIL"
+cn="\$GIT_COMMITTER_NAME"
+cm="\$GIT_COMMITTER_EMAIL"
+:
+if [ "\$GIT_COMMITTER_EMAIL" = "nobody@example.com" ]; then
+    cn="$user_name"
+    cm="$user_email"
+fi
+if [ "\$GIT_AUTHOR_EMAIL" = "nobody@example.com" ]; then
+    an="$user_name"
+    am="$user_email"
+fi
+:
+export GIT_AUTHOR_NAME="\$an"
+export GIT_AUTHOR_EMAIL="\$am"
+export GIT_COMMITTER_NAME="\$cn"
+export GIT_COMMITTER_EMAIL="\$cm"
+.
+)
+
+git filter-branch --env-filter "$commands" "$@"
