@@ -8,3 +8,5 @@ if test "$(type -t __git_ps1)" = "function" ; then
     PS1="${PS1%%\\\$ }$branch_on_demand\$ "
     unset branch_on_demand
 fi
+
+export GITHUB_USER=jhermann
