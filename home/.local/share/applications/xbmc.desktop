@@ -1,31 +1,32 @@
 [Desktop Entry]
-Comment=Manage and view your media
-Name=XBMC Media Center
-Exec=/opt/junctions/xbmc-user/bin/xbmc-launch
-Actions=Action2;Action0;Action1;Action3
-Terminal=false
-GenericName=Media Center
 Version=1.0
+Name=XBMC Media Center
+GenericName=Media Center
+Comment=Manage and view your media
+Exec=xbmc
+Icon=xbmc
+Terminal=false
 Type=Application
 Categories=AudioVideo;Video;Player;TV;
-Icon=xbmc
 
-[Desktop Action Action2]
+Actions=Fullscreen;Windowed;Toggle;Kill;
+
+[Desktop Action Toggle]
 Name=Toggle FS / Window
 Name[en_US]=Toggle FS / Window
 Exec=/opt/junctions/xbmc-user/bin/xbmc-toggle-fs
 
-[Desktop Action Action0]
+[Desktop Action Fullscreen]
 Name=Start XBMC Fullscreen
 Name[en_US]=Start XBMC Fullscreen
 Exec=/opt/junctions/xbmc-user/bin/xbmc-launch
 
-[Desktop Action Action1]
+[Desktop Action Windowed]
 Name=Start XBMC Windowed
 Name[en_US]=Start XBMC Windowed
 Exec=xbmc
 
-[Desktop Action Action3]
+[Desktop Action Kill]
 Name=Kill XBMC
 Name[en_US]=Kill XBMC
 Exec=/opt/junctions/xbmc-user/bin/xbmc-kill
