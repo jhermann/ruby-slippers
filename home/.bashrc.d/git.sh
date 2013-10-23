@@ -3,7 +3,7 @@
 # Based on https://ttboj.wordpress.com/2013/10/10/show-current-git-branch-in-ps1-when-branch-is-not-master/
 if test "$(type -t __git_ps1)" = "function" ; then
     test -z "$PS1_NO_GIT" && export PS1_NO_GIT="$PS1" || export PS1="$PS1_NO_GIT"
-    branch_on_demand='echo -e " (\e[32m"$(__git_ps1 "%s")"\e[0m)"'
+    branch_on_demand='echo -e " \e[32m"$(__git_ps1 "%s")"\e[0m"'
     branch_on_demand='$([ "$(__git_ps1 %s)" != "" -a "$(__git_ps1 %s)" != "master" ] && '"$branch_on_demand"' || :)'
     PS1="${PS1%%\\\$ }$branch_on_demand\$ "
     unset branch_on_demand
