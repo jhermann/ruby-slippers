@@ -5,10 +5,11 @@ test $# -eq 0 || { echo "TmuX Attach - call with no parameters to auto-attach 1s
 
 if test -z "$(tmux ls)"; then
     if test -f ~/.ssh/id_rsa; then
-        test -z "$SSH_AGENT_PID" && eval $(ssh-agent) && ssh-add || :
+        if test -z "$SSH_AUTH_SOCK" -o ! -S "$SSH_AUTH_SOCK"; then
+            test -z "$SSH_AGENT_PID" && eval $(ssh-agent) && ssh-add || :
+        fi
     fi
     $TMUX
 else
     $TMUX attach -t $(tmux ls | head -n1 | cut -d: -f1)
 fi
-
