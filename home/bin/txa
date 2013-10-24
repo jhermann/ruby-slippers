@@ -14,7 +14,7 @@ fixate_auth_sock() {
 fixate_auth_sock
 
 # Existing tmux sessions?
-if test -z "$(tmux ls)"; then
+if test -z "$(tmux ls 2>/dev/null)"; then
     if test -f ~/.ssh/id_rsa; then
         if test -z "$SSH_AUTH_SOCK" -o ! -S "$SSH_AUTH_SOCK"; then
             test -z "$SSH_AGENT_PID" && eval $(ssh-agent) && ssh-add || :
