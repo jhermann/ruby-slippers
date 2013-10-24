@@ -1,8 +1,15 @@
 #! /bin/bash
-# tmux auto-attach script with ssh-agent support
+# tmux auto-attach script with ssh-agent (forwarding) support
 TMUX="tmux -2 -u"
 test $# -eq 0 || { echo "TmuX Attach - call with no parameters to auto-attach 1st session"; exit 1; }
 
+# Create robust auth sock path that points to the current connection's socket
+if test -n "$SSH_AUTH_SOCK" -a -S "$SSH_AUTH_SOCK"; then
+    ln -nfs "$SSH_AUTH_SOCK" "$HOME/.ssh/ssh_auth_sock"
+    export SSH_AUTH_SOCK="$HOME/.ssh/ssh_auth_sock"
+fi
+
+# Existing tmux sessions?
 if test -z "$(tmux ls)"; then
     if test -f ~/.ssh/id_rsa; then
         if test -z "$SSH_AUTH_SOCK" -o ! -S "$SSH_AUTH_SOCK"; then
@@ -11,5 +18,6 @@ if test -z "$(tmux ls)"; then
     fi
     $TMUX
 else
+    # Attach to first session
     $TMUX attach -t $(tmux ls | head -n1 | cut -d: -f1)
 fi
