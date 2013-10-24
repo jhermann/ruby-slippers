@@ -4,16 +4,21 @@ TMUX="tmux -2 -u"
 test $# -eq 0 || { echo "TmuX Attach - call with no parameters to auto-attach 1st session"; exit 1; }
 
 # Create robust auth sock path that points to the current connection's socket
-if test -n "$SSH_AUTH_SOCK" -a -S "$SSH_AUTH_SOCK"; then
-    ln -nfs "$SSH_AUTH_SOCK" "$HOME/.ssh/ssh_auth_sock"
-    export SSH_AUTH_SOCK="$HOME/.ssh/ssh_auth_sock"
-fi
+fixate_auth_sock() {
+    if test -n "$SSH_AUTH_SOCK" -a -S "$SSH_AUTH_SOCK" -a ! -L "$SSH_AUTH_SOCK"; then
+        ln -nfs "$SSH_AUTH_SOCK" "$HOME/.ssh/ssh_auth_sock"
+        export SSH_AUTH_SOCK="$HOME/.ssh/ssh_auth_sock"
+    fi
+}
+
+fixate_auth_sock
 
 # Existing tmux sessions?
 if test -z "$(tmux ls)"; then
     if test -f ~/.ssh/id_rsa; then
         if test -z "$SSH_AUTH_SOCK" -o ! -S "$SSH_AUTH_SOCK"; then
             test -z "$SSH_AGENT_PID" && eval $(ssh-agent) && ssh-add || :
+            fixate_auth_sock
         fi
     fi
     $TMUX
