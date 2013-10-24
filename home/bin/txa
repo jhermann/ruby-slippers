@@ -13,7 +13,7 @@ fixate_auth_sock() {
 
 fixate_auth_sock
 
-# Existing tmux sessions?
+# Need to create a tmux session?
 if test -z "$(tmux ls 2>/dev/null)"; then
     if test -f ~/.ssh/id_rsa; then
         if test -z "$SSH_AUTH_SOCK" -o ! -S "$SSH_AUTH_SOCK"; then
