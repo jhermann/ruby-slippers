@@ -17,14 +17,15 @@ def run():
     fields = "cL"
     fields_fmt = "{2:15.15s} {1}"
 
-    rawdata = subprocess.check_output("lsof -F {0}n".format(fields), shell=True)
+    lsof_cmd = "lsof -F {0}n +D /usr/lib/jvm || echo '*** Ignored lsof error!\\n' >&2".format(fields)
+    rawdata = subprocess.check_output(lsof_cmd, shell=True)
     data = defaultdict(set)
     memo = {}
 
     for field in rawdata.splitlines():
         kind, value = field[0], field[1:]
         memo[kind] = value
-        if kind == 'n' and value.startswith("/usr/lib/jvm/") and "/jre/" in value:
+        if kind == 'n' and "/jre/" in value:
             jvm = value.split('/')[4]
             entry = [memo[i] for i in 'p'+fields]
             entry[0] = int(entry[0])
