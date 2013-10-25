@@ -17,7 +17,7 @@ set -e
 root=$(cd $(dirname "$0") && pwd)
 linkbase="$root/home"
 
-( cd "$linkbase" && find . -type f $names ) | while read file; do
+( cd "$linkbase" && find . -type f $names ) | sort | while read file; do
     # omit "./"
     file="${file:2}"
 
@@ -27,19 +27,25 @@ linkbase="$root/home"
     esac
 
     # try to link file
-    dstdir=$(dirname ~/"$file")
+    target="${file}"
+    if test "${target:0:4}" = "bin/"; then
+        target="${target%.py}"
+        target="${target%.sh}"
+    fi
+
+    dstdir=$(dirname ~/"$target")
     test -d "$dstdir" || $DRY mkdir -p "$dstdir"
-    if test -h ~/"$file"; then
+    if test -h ~/"$target"; then
         # symlinked
-        test $(readlink ~/"$file") = "$linkbase/$file" || echo ~/"$file" "=->" "$linkbase/$file"
-        $DRY $LN_F "$linkbase/$file" ~/"$file"
-    elif test -f ~/"$file"; then
+        test $(readlink ~/"$target") = "$linkbase/$file" || echo ~/"$target" "=->" "$linkbase/$file"
+        $DRY $LN_F "$linkbase/$file" ~/"$target"
+    elif test -f ~/"$target"; then
         # conflict
-        diff -b -U1 ~/"$file" "$linkbase/$file" || \
-            { echo; echo rm ~/"$file" "# to get this file out of the way"; echo; }
+        diff -b -U1 ~/"$target" "$linkbase/$file" || \
+            { echo; echo rm ~/"$target" "# to get this file out of the way"; echo; }
     else
         # missing
-        echo ~/"$file" "+->" "$linkbase/$file"
-        $DRY $LN "$linkbase/$file" ~/"$file"
+        echo ~/"$target" "+->" "$linkbase/$file"
+        $DRY $LN "$linkbase/$file" ~/"$target"
     fi
 done
