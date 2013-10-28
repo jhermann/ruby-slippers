@@ -3,9 +3,9 @@
 # install platform-independant tools into $HOME
 #
 set -e
-scriptdir=$(cd $(dirname "$0") && pwd)
+scriptdir="$(cd "$(dirname "$0")" && pwd)"
 venvdir="$HOME/.pyvenv/ruby-slippers"
-tmpbase="/tmp/"$(basename "$0")"-$USER-$$"
+tmpbase="/tmp/$(basename "$0")-$USER-$$"
 action="$1"; shift || :
 
 
@@ -13,7 +13,7 @@ pyvenv() {
     if test ! -d "$venvdir"; then
         hostpython="/usr/bin/python2"
         test -x "$hostpython" || hostpython="/usr/bin/python"
-        $scriptdir/home/bin/mkvenv "$hostpython" --setuptools --no-site-packages "$venvdir"
+        "$scriptdir"/home/bin/mkvenv "$hostpython" --setuptools --no-site-packages "$venvdir"
     fi
 }
 

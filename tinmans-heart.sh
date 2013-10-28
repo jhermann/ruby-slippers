@@ -4,7 +4,7 @@
 # (currently, only supported on debian-like systems)
 #
 set -e
-tmpbase="/tmp/"$(basename "$0")"-$USER-$$"
+tmpbase="/tmp/$(basename "$0")-$USER-$$"
 action="$1"; shift || :
 
 # TODO: give caller control over this
@@ -15,7 +15,7 @@ install_pkglist() {
     local pkglist pkg
     pkglist="$1"
 
-    cat $pkglist | while read pkg; do
+    cat "$pkglist" | while read pkg; do
         test -n "$pkg" -a "${pkg:0:1}" != "#" || { echo "$pkg"; continue; }
 
         if ( dpkg -l "$pkg" | egrep "^ii +$pkg " ) >/dev/null ; then
@@ -48,4 +48,3 @@ case "$action" in
         exit 1
         ;;
 esac
-
