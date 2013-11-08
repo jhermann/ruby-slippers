@@ -33,5 +33,9 @@ for filename in "${files[@]}"; do
     line=""
     test "${filename%%:*}" = "$filename" || line=+$(cut -f2 -d: <<<"$filename")
     filename="${filename%%:*}"
+    if [[ "$filename" == [ab]/* ]]; then
+        # treat "git diff" pasted filenames special
+        test -d "${filename:0:1}" || filename="${filename:2}"
+    fi
     gedit --background "${args[@]}" "$filename" $line #>>/tmp/gedit-$USER.log 2>&1
 done
