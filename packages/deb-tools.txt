@@ -6,6 +6,7 @@ bash-completion
 bzip2
 cfv
 colordiff
+dos2unix
 gawk
 git
 gnupg
