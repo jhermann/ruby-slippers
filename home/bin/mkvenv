@@ -5,29 +5,46 @@
 #
 # If the first argument is an executable, use that as the Python interpreter.
 #
+# If the last argument is like "~name", then create the virtualenv in "~/.pyvenv/<name>".
+#
+# If used as a bootstrap script in a project, the virtualenv is placed
+# in "./.pyvenv/<name>", with "<name>" being the basename of the project
+# workdir, and any requirement files are passed on to pip in that virtualenv.
+#
 set -e
 #set -x
-venv=1.9.1
-venvdir="$HOME/.pyvenv"
-virtualenv="$venvdir/.virtualenv"
+basedir=$(cd $(dirname $(readlink -f "$0" || echo "$0")) && pwd)
+venv_version=1.9.1 # virtualenv version to use
+venv_basedir="$HOME/.pyvenv" # venv default base directory
+virtualenv="$venv_basedir/.virtualenv"
+pypi_url="${PYPI_URL:-https://pypi.python.org}"
 
-# Download virtualenv tool if missing
-if test ! -f "$venvdir/.complete"; then
-    mkdir -p "$virtualenv"
-    rm -rf "$virtualenv"
-    if test ! -f "$venvdir/.virtualenv-$venv.tar.gz"; then
-        echo "*** Downloading virtualenv-$venv.tar.gz"
-        if pip install --log "$venvdir/.virtualenv.log" -d "$venvdir" virtualenv==$venv; then
-            echo "*** Downloaded virtualenv-$venv.tar.gz using pip"
-        else
-            ( cd "$venvdir" && curl -sOkS https://pypi.python.org/packages/source/v/virtualenv/virtualenv-$venv.tar.gz )
-        fi
-        mv "$venvdir/virtualenv-$venv.tar.gz" "$venvdir/.virtualenv-$venv.tar.gz"
-    fi
-    ( cd "$venvdir" && tar xfz .virtualenv-$venv.tar.gz && mv virtualenv-$venv .virtualenv )
-    touch "$venvdir/.complete"
+# If started as bootstrap script in a project, create local virtualenv
+in_project=false
+if test -f "$basedir/setup.py" -o -f "$basedir/setup.cfg"; then
+    venvdir="$basedir/.pyvenv/$(basename "$basedir")"
+    cd "$basedir"
+    in_project=true
 fi
 
+# Download virtualenv tool if missing
+if test ! -f "$venv_basedir/.complete"; then
+    mkdir -p "$virtualenv"
+    rm -rf "$virtualenv"
+    if test ! -f "$venv_basedir/.virtualenv-$venv_version.tar.gz"; then
+        echo "*** Downloading virtualenv-$venv_version.tar.gz"
+        if pip install --log "$venv_basedir/.virtualenv.log" -d "$venv_basedir" virtualenv==$venv_version; then
+            echo "*** Downloaded virtualenv-$venv_version.tar.gz using pip"
+        else
+            ( cd "$venv_basedir" && curl -sOkS "$pypi_url/packages/source/v/virtualenv/virtualenv-$venv_version.tar.gz" )
+        fi
+        mv "$venv_basedir/virtualenv-$venv_version.tar.gz" "$venv_basedir/.virtualenv-$venv_version.tar.gz"
+    fi
+    ( cd "$venv_basedir" && tar xfz .virtualenv-$venv_version.tar.gz && mv virtualenv-$venv_version .virtualenv )
+    echo "$venv_version" >"$venv_basedir/.complete"
+fi
+
+# Find proper Python executable; if first arg is executable, use that as the interpreter
 python=python
 orig_python=$(cat $(dirname $(dirname $(which python)))/lib/python*/orig-prefix.txt 2>/dev/null || :)
 test -z "$orig_python" || python="$orig_python/bin/python"
@@ -36,24 +53,45 @@ if test -f "$1" -a -x "$1"; then
     shift
 fi
 
-echo "Using $python"
-$python "$virtualenv/virtualenv.py" "$@"
-
-venvdir="."
-for arg in "$@"; do
-    if test -d "$arg/bin" -a -r "$arg/bin/activate"; then
-        venvdir=$(cd "$arg" && pwd)
-        break
+# If last argument is like "~name", then create the virtualenv in "~/.pyvenv/<name>"
+argv=( "$@" )
+if test $# -gt 0; then
+    if test "${argv[-1]:0:1}" = "~" -a "${argv[-1]//\//}" = "${argv[-1]}" -a -n "${argv[-1]:1}" ; then
+        venvdir="$venv_basedir/${argv[-1]:1}"
+        argv=( "${argv[@]:0:$((${#argv[@]}-1))}" )
     fi
-done
+fi
+##echo "${argv[-1]}" / "${argv[@]}" / $venvdir
 
-for deps in requirements.txt requires.txt *-requirements.txt requirements-*.txt; do
-    test -r "$deps" && "$venvdir/bin/pip" install -r "$deps"
-done
+# Create the virtualenv
+echo "Using interpreter '$python'"
+$python "$virtualenv/virtualenv.py" "${argv[@]}" $venvdir
 
+# Try to find the created virtualenv form arguments, if not pre-determined
+if test -z "$venvdir" ; then
+    venvdir="."
+    for arg in "${argv[@]}"; do
+        if test -d "$arg/bin" -a -r "$arg/bin/activate"; then
+            venvdir=$(cd "$arg" && pwd)
+            break
+        fi
+    done
+fi
+
+# Auto-install any requirements
+if $in_project; then
+    "$venvdir/bin/python" "$basedir/setup.py" develop -U -i "$pypi_url/simple/"
+    for deps in requirements.txt requires.txt *-requirements.txt requirements-*.txt; do
+        deps="$PWD/$deps"
+        test -r "$deps" && ( cd "$venvdir" && "./bin/pip" install -r "$deps" \
+            -i "$pypi_url/simple/" --build "pip-build" --download-cache "pip-cache" )
+    done
+fi
+
+# Report activation instructions
 if test "$(which python 2>/dev/null)" != "$venvdir/bin/python" ; then
     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
     echo "Please call the follwing command to activate this virtualenv..."
-    echo "." $(cd "$arg/bin" && pwd)"/activate"
+    echo "." $(cd "$venvdir/bin" && pwd)"/activate"
     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 fi
