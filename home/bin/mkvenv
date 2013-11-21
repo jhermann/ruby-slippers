@@ -67,7 +67,7 @@ fi
 echo "Using interpreter '$python'"
 $python "$virtualenv/virtualenv.py" "${argv[@]}" $venvdir
 
-# Try to find the created virtualenv form arguments, if not pre-determined
+# Try to find the created virtualenv from arguments, if not pre-determined
 if test -z "$venvdir" ; then
     venvdir="."
     for arg in "${argv[@]}"; do
