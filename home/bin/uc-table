@@ -1,6 +1,5 @@
 #! /bin/bash
 # Show list of useful Unicode glyphs for cut+paste
-kansas=$(cd $(dirname $(readlink "$0" || echo "$0"))/../.. && pwd)
+kansas=$(cd $(dirname $(readlink -f "$0" || echo "$0"))/../.. && pwd)
 
 cat "$kansas/data/text/"unicode-*.txt | less
-
