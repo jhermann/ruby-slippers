@@ -3,6 +3,7 @@
 apt-file
 autossh
 bash-completion
+bpython
 bzip2
 cfv
 colordiff
