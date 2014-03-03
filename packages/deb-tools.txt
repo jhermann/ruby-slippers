@@ -26,6 +26,7 @@ subversion
 subversion-tools
 sysvinit-utils
 sysv-rc-conf
+tig
 tmux
 unzip
 wdiff
