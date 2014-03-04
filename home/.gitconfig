@@ -15,6 +15,6 @@
         up = pull --ff-only
         df = diff
         dc = diff --cached
-        grok = log --all --pretty='format:%d %Cgreen%h%Creset %an - %s' --graph
+        grok = log --all --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue) <%an>%Creset' --abbrev-commit
 [push]
         default = simple
