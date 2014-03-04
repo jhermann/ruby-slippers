@@ -12,6 +12,7 @@ gawk
 git
 gnupg
 gnupg-doc
+gsmartcontrol
 iputils-tracepath
 meld
 mercurial
@@ -20,6 +21,7 @@ python-setuptools
 python-virtualenv
 realpath
 reportbug
+smartmontools
 ssh-askpass
 sshfs
 subversion
