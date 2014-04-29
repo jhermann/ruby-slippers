@@ -5,6 +5,7 @@ gnuplot-doc
 graphviz
 gsfonts-x11
 imagemagick
+libmagickcore5-extra
 inkscape
 octave
 python-gnuplot
