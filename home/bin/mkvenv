@@ -80,12 +80,12 @@ fi
 
 # Auto-install any requirements
 if $in_project; then
-    "$venvdir/bin/python" "$basedir/setup.py" develop -U -i "$pypi_url/simple/"
     for deps in requirements.txt requires.txt *-requirements.txt requirements-*.txt; do
         deps="$PWD/$deps"
         test -r "$deps" && ( cd "$venvdir" && "./bin/pip" install -r "$deps" \
             -i "$pypi_url/simple/" --build "pip-build" --download-cache "pip-cache" )
     done
+    "$venvdir/bin/python" "$basedir/setup.py" develop -U -i "$pypi_url/simple/"
 fi
 
 # Report activation instructions
