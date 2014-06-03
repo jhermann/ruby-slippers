@@ -7,7 +7,7 @@ Exec=xbmc
 Icon=xbmc
 Terminal=false
 Type=Application
-Categories=AudioVideo;Video;Player;TV;
+Categories=Player;TV;
 
 Actions=Fullscreen;Windowed;Toggle;Kill;
 
