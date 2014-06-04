@@ -14,6 +14,7 @@ intro() {
     cat <<.
 <html>
     <head>
+        <meta charset="utf-8">
         <title>$1</title>
         <style type="text/css">
             body {
@@ -110,4 +111,3 @@ intro >"$htmlfile" "$title" \
     && $filter <"$mdfile" >>"$htmlfile" \
     && outro >>"$htmlfile" \
     && xdg-open "$htmlfile"
-
