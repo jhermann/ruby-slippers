@@ -36,6 +36,7 @@ main() {
     pip_install "pypi-show-urls"; tools="$tools pypi-show-urls"
     pip_install "docutils >= 0.11"; tools="$tools rst2xml.py rst2s5.py rst2odt.py rst2man.py rst2latex.py rst2html.py"
     pip_install "Sphinx == 1.1.3"; tools="$tools sphinx-quickstart sphinx-build sphinx-autogen sphinx-apidoc"
+    pip_install "https://github.com/jhermann/nodeenv/archive/master.zip#egg=nodeenv"; tools="$tools nodeenv"
 
     mkdir -p ~/bin
     for tool in $tools; do
