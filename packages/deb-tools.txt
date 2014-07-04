@@ -1,6 +1,7 @@
 # tools that you'll normally miss if absent
 
 apt-file
+apt-show-versions
 autossh
 bash-completion
 bpython
