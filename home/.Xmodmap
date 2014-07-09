@@ -1,0 +1,18 @@
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! REFERENCES
+!   xmodmap manual page
+!   http://wiki.linuxquestions.org/wiki/List_of_Keysyms_Recognised_by_Xmodmap
+!
+! DEBUGGING
+!   xev # show pressed keys (keycodes) and other events
+!   xmodmap -n .Xmodmap # check syntax and show what would be done
+!
+! SHORT USAGE
+!   keycode <num> = <keysym> <Shift> <Mode_switch> <Shift+Mode_switch>
+!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+! Use CAPS LOCK as COMPOSE
+clear Lock
+keycode 66 = Multi_key Caps_Lock Multi_key Multi_key Multi_key Multi_key
+
