@@ -10,3 +10,15 @@ if test "$(type -t __git_ps1)" = "function" ; then
 fi
 
 export GITHUB_USER=jhermann
+
+github_clone_fork() {
+    local upstream="${1:?You need to provide an upstream repo name (user/name) as the 1st arg}"
+    local user="${upstream%/*}"
+    local repo="${upstream#*/}"
+
+    git clone "git@github.com-jh:jhermann/$repo.git"
+    cd "$repo"
+    git remote add upstream "https://github.com/$upstream.git"
+    git-config-jhermann
+    git remote update # test repos
+}
