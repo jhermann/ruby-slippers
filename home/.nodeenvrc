@@ -1,0 +1,4 @@
+[nodeenv]
+node = system
+npm=1.4.14
+with_npm = True
