@@ -1,0 +1,35 @@
+#! /bin/bash
+#
+# Create a new branch from current upstream/master, so you can
+# push a branch to origin that has a clean commit history.
+#
+set -e
+#set -x
+
+grok_fmt='%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue) <%an>%Creset'
+
+fail() {
+    echo >&2 "FATAL:" "$@"
+    exit 1
+}
+
+if ! git remote | egrep '^upstream$' >/dev/null; then
+    fail "You MUST set an upstream remote!"
+fi
+
+branchname="${1:?You MUST provide a branch name as the 1st argument!}"
+
+git remote update
+git checkout -b "$branchname" "upstream/master"
+
+# Print the next steps, for convenience
+git log -9 --color --graph --pretty=format:"$grok_fmt" --abbrev-commit | cat; echo
+echo
+echo "---------------------------------------------------------------------------"
+echo "If you want to add to your pull request branch from recent history, use"
+echo "the following commands:"
+echo "    git cherry-pick «HASH»"
+echo "    git push origin $branchname"
+echo
+
+#git branch
