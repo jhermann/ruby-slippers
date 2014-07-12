@@ -14,7 +14,7 @@ fail() {
 }
 
 if ! git remote | egrep '^upstream$' >/dev/null; then
-    fail "You MUST set an upstream remote!"
+    fail "You MUST set an upstream remote! Use…    git remote add upstream"
 fi
 
 branchname="${1:?You MUST provide a branch name as the 1st argument!}"
