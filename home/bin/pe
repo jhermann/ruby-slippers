@@ -47,3 +47,12 @@ for filename in "${files[@]}"; do
 
     gedit $opt "${args[@]}" "$filename" $line #>>/tmp/gedit-$USER.log 2>&1
 done
+
+# Bring window to front
+if which wmctrl >/dev/null; then
+    title_re="^[^ ]+ +[^ ]+ +[^ ]+ +$(basename $filename).*/$(basename $(dirname $filename)). - gedit\$"
+    for i in seq 10; do
+        wid=$(wmctrl -l | egrep "$title_re" | tail -n1 | cut -f1 -d' ')
+        test -n "$wid" && wmctrl -i -a "$wid" && break || sleep .1
+    done
+fi
