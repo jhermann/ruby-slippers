@@ -37,5 +37,13 @@ for filename in "${files[@]}"; do
         # treat "git diff" pasted filenames special
         test -d "${filename:0:1}" || filename="${filename:2}"
     fi
-    gedit --background "${args[@]}" "$filename" $line #>>/tmp/gedit-$USER.log 2>&1
+
+    case $(lsb_release -cs) in
+        trusty)
+            opt="" ;;
+        precise | lucid | *)
+            opt="--background" ;;
+    esac
+
+    gedit $opt "${args[@]}" "$filename" $line #>>/tmp/gedit-$USER.log 2>&1
 done
