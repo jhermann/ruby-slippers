@@ -40,12 +40,13 @@ for filename in "${files[@]}"; do
 
     case $(lsb_release -cs) in
         trusty)
-            opt="" ;;
+            gedit "${args[@]}" "$filename" $line >>/tmp/gedit-$USER.log 2>&1 &
+            disown
+            ;;
         precise | lucid | *)
-            opt="--background" ;;
+            gedit --background "${args[@]}" "$filename" $line
+            ;;
     esac
-
-    gedit $opt "${args[@]}" "$filename" $line #>>/tmp/gedit-$USER.log 2>&1
 done
 
 # Bring window to front
