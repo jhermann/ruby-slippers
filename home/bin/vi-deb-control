@@ -1,0 +1,40 @@
+#! /bin/bash
+#
+# Edit the control file of an existing DEB package, and write a modified one
+#
+# Inspired by http://ubuntuforums.org/showthread.php?t=636724
+#
+
+if [[ -z "$1" ]]; then
+  echo "usage: $0 «debfile»"
+  exit 1
+fi
+
+fail() {
+    echo "ERROR:" "$@"
+    exit 1
+}
+
+
+DEBFILE="$1"
+OUTPUT=$(basename "$DEBFILE" .deb)".modfied.deb"
+TMPDIR=$(mktemp -d /tmp/deb.XXXXXXXXXX) || exit 1
+trap "rm -r $TMPDIR" INT TERM EXIT
+
+test ! -e "$OUTPUT" || fail "$OUTPUT exists."
+
+dpkg-deb -x "$DEBFILE" "$TMPDIR"
+dpkg-deb --control "$DEBFILE" "$TMPDIR"/DEBIAN
+
+CONTROL="$TMPDIR/DEBIAN/control"
+test -e "$CONTROL" || fail "DEBIAN/control not found."
+
+MOD=`stat -c "%y" "$CONTROL"`
+vi "$CONTROL"
+
+if [[ "$MOD" == `stat -c "%y" "$CONTROL"` ]]; then
+    echo "Not modfied."
+else
+    echo "Building new deb..."
+    dpkg -b "$TMPDIR" "$OUTPUT"
+fi
