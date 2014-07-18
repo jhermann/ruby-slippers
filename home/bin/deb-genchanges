@@ -15,24 +15,27 @@ fail() {
     exit 1
 }
 
+set -e
 
 # take args
 DEBFILE="$1"; shift
 OUTPUT=$(basename "$DEBFILE" .deb)".changes"
 test ! -e "$OUTPUT" || fail "$OUTPUT exists."
 
-# create auto-destructing workdir
+# create workdir
 TMPDIR=$(mktemp -d /tmp/deb.XXXXXXXXXX) || exit 1
-trap "rm -r $TMPDIR" INT TERM EXIT
+trap "echo >&2 ABORTED: Data kept in $TMPDIR for debugging" INT TERM EXIT
 
 # extract information from package
 dpkg-deb --control "$DEBFILE" "$TMPDIR"
 pkgname=$(grep '^Package: ' <"$TMPDIR/control" | cut -f2- -d' ')
+version=$(grep '^Version: ' <"$TMPDIR/control" | cut -f2- -d' ')
 section=$(grep '^Section: ' <"$TMPDIR/control" | cut -f2- -d' ')
 priority=$(grep '^Priority: ' <"$TMPDIR/control" | cut -f2- -d' ')
 echo >"$TMPDIR/files" $(basename "$DEBFILE") "$section" "$priority"
 dpkg-deb --fsys-tarfile "$DEBFILE" | \
-    tar -x --to-stdout "./usr/share/doc/$pkgname/changelog.Debian.gz" | gzip -dc >"$TMPDIR/changelog"
+    tar -x --to-stdout "./usr/share/doc/$pkgname/changelog.Debian.gz" | gzip -dc >"$TMPDIR/changelog" \
+    || { rm "$TMPDIR/changelog"; dch --create --package "$pkgname" -v "$version" -c "$TMPDIR/changelog"; }
 
 # create full source-format control file
 cat >"$TMPDIR/src-control" <<~~~
@@ -43,7 +46,7 @@ Standards-Version: 3.9.5
 ~~~
 grep '^Maintainer: ' <"$TMPDIR/control" >>"$TMPDIR/src-control"
 echo >>"$TMPDIR/src-control"
-egrep -v "^(Version|Maintainer|Installed-Size): " "$TMPDIR/control" >>"$TMPDIR/src-control"
+egrep -v "^(Version|Maintainer|Installed-Size|License|Vendor): " "$TMPDIR/control" >>"$TMPDIR/src-control"
 
 # take all the info and dump it
 dpkg-genchanges -B \
@@ -51,3 +54,5 @@ dpkg-genchanges -B \
     -u$(dirname "$DEBFILE") "$@" >"$OUTPUT"
 echo "$(basename $0): Created $OUTPUT"
 ##ls -lR "$TMPDIR"
+trap - INT TERM EXIT
+rm -rf "$TMPDIR"
