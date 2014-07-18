@@ -1,0 +1,53 @@
+#! /bin/bash
+#
+# Generate a "changes" file from an existing binary package,
+# so it can be uplaoded somewhere using "dput".
+#
+
+# check args
+if [[ -z "$1" ]]; then
+  echo "usage: $0 «debfile» [«genchanges options»...]"
+  exit 1
+fi
+
+fail() {
+    echo "ERROR:" "$@"
+    exit 1
+}
+
+
+# take args
+DEBFILE="$1"; shift
+OUTPUT=$(basename "$DEBFILE" .deb)".changes"
+test ! -e "$OUTPUT" || fail "$OUTPUT exists."
+
+# create auto-destructing workdir
+TMPDIR=$(mktemp -d /tmp/deb.XXXXXXXXXX) || exit 1
+trap "rm -r $TMPDIR" INT TERM EXIT
+
+# extract information from package
+dpkg-deb --control "$DEBFILE" "$TMPDIR"
+pkgname=$(grep '^Package: ' <"$TMPDIR/control" | cut -f2- -d' ')
+section=$(grep '^Section: ' <"$TMPDIR/control" | cut -f2- -d' ')
+priority=$(grep '^Priority: ' <"$TMPDIR/control" | cut -f2- -d' ')
+echo >"$TMPDIR/files" $(basename "$DEBFILE") "$section" "$priority"
+dpkg-deb --fsys-tarfile "$DEBFILE" | \
+    tar -x --to-stdout "./usr/share/doc/$pkgname/changelog.Debian.gz" | gzip -dc >"$TMPDIR/changelog"
+
+# create full source-format control file
+cat >"$TMPDIR/src-control" <<~~~
+Source: $pkgname
+Section: $section
+Priority: $priority
+Standards-Version: 3.9.5
+~~~
+grep '^Maintainer: ' <"$TMPDIR/control" >>"$TMPDIR/src-control"
+echo >>"$TMPDIR/src-control"
+egrep -v "^(Version|Maintainer|Installed-Size): " "$TMPDIR/control" >>"$TMPDIR/src-control"
+
+# take all the info and dump it
+dpkg-genchanges -B \
+    -c"$TMPDIR/src-control" -l"$TMPDIR/changelog" -f"$TMPDIR/files" \
+    -u$(dirname "$DEBFILE") "$@" >"$OUTPUT"
+echo "$(basename $0): Created $OUTPUT"
+##ls -lR "$TMPDIR"
