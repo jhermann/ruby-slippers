@@ -36,3 +36,4 @@ and then symlinked into `~/bin`.
 * [GitHub ❤ ~/](http://dotfiles.github.io/)
 * [Keep your dotfiles fresh](https://github.com/freshshell/fresh)
 * [Yet Another Dotfile Repo](https://github.com/skwp/dotfiles)
+* [homeshick](https://github.com/andsens/homeshick)
