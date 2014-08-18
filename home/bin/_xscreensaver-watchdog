@@ -1,0 +1,10 @@
+#! /bin/bash
+export DISPLAY=${DISPLAY:-:0.0}
+
+if ! pidof /usr/bin/xscreensaver >/dev/null; then
+    /usr/bin/xscreensaver -nosplash &
+    echo -n "Restarted xscreensaver [PID=$!]... "
+    disown
+    sleep 1
+    xscreensaver-command -lock
+fi
