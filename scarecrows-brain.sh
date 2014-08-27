@@ -52,6 +52,12 @@ main() {
     done
     ls -lrt "$venvdir/bin" | tail -n10
 
+    # Install pastee
+    if test ! -x ~/bin/pastee; then
+        curl -skSL "https://pastee.org/pastee.py" >~/bin/pastee
+        chmod a+x ~/bin/pastee
+    fi
+
     # Install git-remote-hg
     if test ! -x ~/bin/git-remote-hg; then
         { echo "#! $venvdir/bin/python"; curl -skSL "$git_remote_hg_url"; } > ~/bin/git-remote-hg
