@@ -1,0 +1,4 @@
+#! /bin/bash
+#usejava7
+java -jar ~/lib/yed-current/yed.jar "$@" >/dev/null 2>&1 &
+disown

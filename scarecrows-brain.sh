@@ -58,11 +58,21 @@ main() {
         chmod a+x ~/bin/pastee
     fi
 
+    # Install yEd
+    if test ! -d ~/lib/yed-current -a -n "$(ls -1 /tmp/yEd-*.zip 2>/dev/null)"; then
+        mkdir -p ~/lib; cd ~/lib
+        unzip -xu "$(ls -1rt /tmp/yEd-*.zip | tail -n1)"
+        ln -nfs $(ls -1rtd yed-[0-9]* | tail -n1) yed-current
+    fi
+
     # Install git-remote-hg
     if test ! -x ~/bin/git-remote-hg; then
         { echo "#! $venvdir/bin/python"; curl -skSL "$git_remote_hg_url"; } > ~/bin/git-remote-hg
         chmod +x ~/bin/git-remote-hg
     fi
+
+    test -d ~/lib/yed-current || echo "WARN: for yEd, you need to download it to /tmp," \
+        "from http://www.yworks.com/en/products_download.php"
 }
 
 
