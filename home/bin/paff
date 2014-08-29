@@ -1,0 +1,5 @@
+#! /bin/bash
+#
+# Paste something to "pastee", and then load the paste into FireFox
+#
+url=$(pastee "$@") && firefox "$url"
