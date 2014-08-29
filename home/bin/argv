@@ -1,0 +1,7 @@
+#! /bin/bash
+#
+# Debugging tool to print argument arrays within bash scripts
+#
+for i in $(seq 0 $#); do
+    printf "%3d ‹%s›\n" $i "${!i}"
+done
