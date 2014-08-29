@@ -1,0 +1,11 @@
+#! /usr/bin/env python
+"""
+    Pretty-print an XML document using Python's minidom.
+"""
+import sys
+import xml.dom.minidom
+
+doc = xml.dom.minidom.parse(sys.argv[1])
+pretty = doc.toprettyxml(indent='    ').splitlines()
+pretty = [i for i in pretty if i.strip()]
+print('\n'.join(pretty))
