@@ -42,6 +42,7 @@ main() {
     pip_install "Sphinx == 1.1.3"; tools="$tools sphinx-quickstart sphinx-build sphinx-autogen sphinx-apidoc"
     pip_install "https://github.com/jhermann/nodeenv/archive/master.zip#egg=nodeenv"; tools="$tools nodeenv"
     pip_install "mercurial"; tools="$tools hg"
+    pip_install "devpi-client"; tools="$tools devpi"
 
     # Link selected tools into ~/bin
     mkdir -p ~/bin
