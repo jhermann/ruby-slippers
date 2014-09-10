@@ -44,6 +44,7 @@ main() {
     pip_install "mercurial"; tools="$tools hg"
     pip_install "devpi-client"; tools="$tools devpi"
     pip_install "pipsi"; tools="$tools pipsi"
+    pip_install "pip-tools"; tools="$tools pip-review pip-dump"
 
     # Link selected tools into ~/bin
     mkdir -p ~/bin
