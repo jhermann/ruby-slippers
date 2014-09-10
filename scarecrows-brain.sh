@@ -43,6 +43,7 @@ main() {
     pip_install "https://github.com/jhermann/nodeenv/archive/master.zip#egg=nodeenv"; tools="$tools nodeenv"
     pip_install "mercurial"; tools="$tools hg"
     pip_install "devpi-client"; tools="$tools devpi"
+    pip_install "pipsi"; tools="$tools pipsi"
 
     # Link selected tools into ~/bin
     mkdir -p ~/bin
