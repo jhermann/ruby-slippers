@@ -1,0 +1,17 @@
+# user-local bash completion
+
+_load_resource_dir() {
+    local dir="${1:?You must pass a resource directory}"
+    local i
+
+    if [[ -d $dir && -r $dir && -x $dir ]]; then
+        for i in $(LC_ALL=C command ls "$dir"); do
+            i=${dir%/}/$i
+            [[ ${i##*/} != @(*~|*.bak|*.swp|\#*\#|*.dpkg*|*.rpm@(orig|new|save)|Makefile*) \
+                && -f $i && -r $i ]] && . "$i"
+        done
+    fi
+}
+
+_load_resource_dir ~/.bash_completion.d
+_load_resource_dir ~/.pyvenv/ruby-slippers/bash_completion.d
