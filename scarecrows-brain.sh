@@ -45,6 +45,7 @@ main() {
     pip_install "devpi-client"; tools="$tools devpi"
     pip_install "pipsi"; tools="$tools pipsi"
     pip_install "pip-tools"; tools="$tools pip-review pip-dump"
+    pip_install "pythonpy"; tools="$tools py"
 
     # Link selected tools into ~/bin
     mkdir -p ~/bin
@@ -54,6 +55,11 @@ main() {
         ln -nfs "../.pyvenv/ruby-slippers/bin/$tool" "$HOME/bin/$target"
     done
     ls -lrt "$venvdir/bin" | tail -n10
+
+    # Add venv's 'bash_completion.d', if existing
+    if ! grep '^_load_resource_dir '"${venvdir/$HOME/~}"'/bash_completion.d$' ~/.bash_completion >/dev/null; then
+        echo >>~/.bash_completion "_load_resource_dir ${venvdir/$HOME/~}/bash_completion.d"
+    fi
 
     # Install pastee
     if test ! -x ~/bin/pastee; then
