@@ -2,6 +2,7 @@
 # Python related stuff
 #
 
+alias click-click-click='source ~/.pyvenv/ruby-slippers/bin/activate'
 alias pyzen="python -c 'import this'"
 
 # Activate "pipsi" installs
