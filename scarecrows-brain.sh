@@ -57,8 +57,8 @@ main() {
     ls -lrt "$venvdir/bin" | tail -n10
 
     # Add venv's 'bash_completion.d', if existing
-    if ! grep '^_load_resource_dir '"${venvdir/$HOME/~}"'/bash_completion.d$' ~/.bash_completion >/dev/null; then
-        echo >>~/.bash_completion "_load_resource_dir ${venvdir/$HOME/~}/bash_completion.d"
+    if ! grep '^_load_resource_dir '$(sed -re "s#$HOME#~#" <<<"$venvdir")'/bash_completion.d$' ~/.bash_completion >/dev/null; then
+        echo >>~/.bash_completion "_load_resource_dir "$(sed -re "s#$HOME#~#" <<<"$venvdir")"/bash_completion.d"
     fi
 
     # Install pastee
