@@ -47,6 +47,7 @@ main() {
     pip_install "pip-tools"; tools="$tools pip-review pip-dump"
     pip_install "pythonpy"; tools="$tools py"
     pip_install "wheel"; tools="$tools wheel"
+    pip_install "bumpversion"; tools="$tools bumpversion"
 
     # Link selected tools into ~/bin
     mkdir -p ~/bin
