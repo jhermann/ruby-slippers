@@ -46,6 +46,7 @@ main() {
     pip_install "pipsi"; tools="$tools pipsi"
     pip_install "pip-tools"; tools="$tools pip-review pip-dump"
     pip_install "pythonpy"; tools="$tools py"
+    pip_install "wheel"; tools="$tools wheel"
 
     # Link selected tools into ~/bin
     mkdir -p ~/bin
