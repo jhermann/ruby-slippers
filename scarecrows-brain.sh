@@ -55,6 +55,11 @@ main() {
     tool_install "bumpversion"
     tool_install "check-manifest"
 
+    # Nikola
+    command which nikola || pipsi install "nikola"
+    ~/.local/venvs/nikola/bin/python -c "import certifi" 2>/dev/null \
+        || ~/.local/venvs/nikola/bin/pip install "nikola[extras]"
+
     # Link selected tools into ~/bin
     mkdir -p ~/bin
     for tool in $tools; do
