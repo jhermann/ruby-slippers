@@ -7,6 +7,7 @@ alias la="ls -la"
 alias md=mkdir
 alias ..="cd .."
 alias ...="cd ../.."
+alias xo=xdg-open
 
 alias rebashrc=". ~/.bashrc"
 
