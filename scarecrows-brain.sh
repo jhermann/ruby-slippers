@@ -54,6 +54,7 @@ main() {
     tool_install "wheel"
     tool_install "bumpversion"
     tool_install "check-manifest"
+    tool_install "howdoi"
 
     # Nikola
     command which nikola || pipsi install "nikola"
