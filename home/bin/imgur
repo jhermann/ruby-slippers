@@ -82,11 +82,12 @@ url=$(echo $response | sed -r 's/.*<original_image>(.*)<\/original_image>.*/\1/'
 deleteurl=$(echo $response | sed -r 's/.*<delete_page>(.*)<\/delete_page>.*/\1/')
 echo $url
 echo "Delete page: $deleteurl" >&2
+printf "'%s' '%s'\n" "$deleteurl" "$*" >> /tmp/imgur-saved-urls.txt
 
 # put the URL on the clipboard if we have xsel or xclip
 if [ $DISPLAY ]; then
-	{ which xsel >/dev/null 2>/dev/null && echo -n $url | xsel; } \
-		|| { which xclip >/dev/null 2>/dev/null && echo -n $url | xclip; } \
+	{ which xsel >/dev/null 2>/dev/null && echo -n $url | xsel -i; } \
+		|| { which xclip >/dev/null 2>/dev/null && echo -n $url | xclip -i; } \
 		|| echo "Haven't copied to the clipboard: no xsel or xclip" >&2
 else
 	echo "Haven't copied to the clipboard: no \$DISPLAY" >&2
