@@ -94,6 +94,12 @@ main() {
         chmod +x ~/bin/git-remote-hg
     fi
 
+    # autorevision
+    if test ! -x ~/bin/autorevision; then
+        wget "https://raw.githubusercontent.com/Autorevision/autorevision/master/autorevision.sh" -O ~/bin/autorevision
+        chmod a+x ~/bin/autorevision
+    fi
+
     test -d ~/lib/yed-current || echo "WARN: for yEd, you need to download it to /tmp," \
         "from http://www.yworks.com/en/products_download.php"
 }
