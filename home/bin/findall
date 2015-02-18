@@ -14,5 +14,4 @@ if test "${1:0:1}" = "^"; then
     shift
 fi
 
-find "$@" | egrep -v '(/.(git|svn)(/|$)|~$)' | $filter
-
+find "$@" | egrep -v '(/.(git|svn)(/|$)|~$|\.py[co]$)' | $filter
