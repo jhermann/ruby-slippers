@@ -9,6 +9,17 @@ export PYTHONPATH=
 
 # Put system binaries upfront
 export PATH=/usr/bin:$PATH
+test $# -gt 0 || case $(lsb_release -cs) in
+    trusty)
+        gedit >>/tmp/gedit-$USER.log 2>&1 &
+        disown
+        exit 0
+        ;;
+    precise | lucid | *)
+        gedit --background
+        exit 0
+        ;;
+esac
 
 # Look out for grep results (containing a ':') and load file at the matching line
 args=()
