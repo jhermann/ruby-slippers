@@ -91,7 +91,7 @@ fi
 # Report activation instructions
 if test "$(which python 2>/dev/null)" != "$venvdir/bin/python" ; then
     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-    echo "Please call the follwing command to activate this virtualenv..."
+    echo "Please call the following command to activate this virtualenv..."
     echo "." $(cd "$venvdir/bin" && pwd)"/activate"
     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 fi
