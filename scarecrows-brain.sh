@@ -36,7 +36,7 @@ main() {
 
     # Install tools into venv
     tools=""
-    pip_install "yolk" || :
+    pip_install "yolk3k" || :
     pip_install "pylint>=1.0"; tools="$tools pyreverse epylint pylint pylint-gui symilar"
     pip_install "flake8"; tools="$tools pyflakes pep8 flake8"
     pip_install "httpie"; tools="$tools http"
@@ -55,7 +55,8 @@ main() {
     tool_install "bumpversion"
     tool_install "check-manifest"
     tool_install "howdoi"
-    tool_install "joe"
+    # tool_install "joe"
+    pip_install "ansible"; tools="$tools ansible ansible-doc ansible-galaxy ansible-playbook ansible-pull ansible-vault"
 
     # Nikola
     command which nikola || pipsi install "nikola"
