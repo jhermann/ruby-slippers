@@ -30,6 +30,16 @@ tool_install() {
 }
 
 
+script_install() {
+    local script="$1"
+    local url="$2"
+    if test ! -x ~/bin/"$script"; then
+        wget "$url" -O ~/bin/"$script"
+        chmod a+x ~/bin/"$script"
+    fi
+}
+
+
 main() {
     # Make venv
     pyvenv
@@ -97,11 +107,13 @@ main() {
     fi
 
     # autorevision
-    if test ! -x ~/bin/autorevision; then
-        wget "https://raw.githubusercontent.com/Autorevision/autorevision/master/autorevision.sh" -O ~/bin/autorevision
-        chmod a+x ~/bin/autorevision
-    fi
+    script_install autorevision "https://raw.githubusercontent.com/Autorevision/autorevision/master/autorevision.sh"
 
+    # mkcast
+    script_install mkcast "https://raw.githubusercontent.com/KeyboardFire/mkcast/master/mkcast"
+    script_install newcast "https://raw.githubusercontent.com/KeyboardFire/mkcast/master/newcast"
+
+    # Manual intervention needed?
     test -d ~/lib/yed-current || echo "WARN: for yEd, you need to download it to /tmp," \
         "from http://www.yworks.com/en/products_download.php"
 }
