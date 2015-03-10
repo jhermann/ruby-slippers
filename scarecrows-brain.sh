@@ -41,6 +41,8 @@ script_install() {
 
 
 main() {
+    mkdir -p ~/.local ~/bin
+
     # Make venv
     pyvenv
 
@@ -112,6 +114,10 @@ main() {
     # mkcast
     script_install mkcast "https://raw.githubusercontent.com/KeyboardFire/mkcast/master/mkcast"
     script_install newcast "https://raw.githubusercontent.com/KeyboardFire/mkcast/master/newcast"
+
+    # autoenv
+    test -d ~/.local/autoenv || git clone "https://github.com/kennethreitz/autoenv.git" ~/.local/autoenv
+    ln -s ~/.local/autoenv/activate.sh ~/.bashrc.d/autoenv.sh
 
     # Manual intervention needed?
     test -d ~/lib/yed-current || echo "WARN: for yEd, you need to download it to /tmp," \
