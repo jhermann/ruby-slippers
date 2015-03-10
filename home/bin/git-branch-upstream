@@ -18,9 +18,10 @@ if ! git remote | egrep '^upstream$' >/dev/null; then
 fi
 
 branchname="${1:?You MUST provide a branch name as the 1st argument!}"
+upstream_branch="${2:-master}"
 
 git remote update
-git checkout -b "$branchname" "upstream/master"
+git checkout -b "$branchname" "upstream/$upstream_branch"
 
 # Print the next steps, for convenience
 git log -9 --color --graph --pretty=format:"$grok_fmt" --abbrev-commit | cat; echo
