@@ -25,3 +25,7 @@ isodate() {
 isotime() {
     date +'%Y-%m-%dT%H:%M:%S%:z'
 }
+
+hgrep() {
+    history | egrep "$@"
+}
