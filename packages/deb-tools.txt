@@ -17,6 +17,7 @@ gsmartcontrol
 iputils-tracepath
 meld
 mercurial
+ncdu
 python-pkg-resources
 python-setuptools
 python-virtualenv
