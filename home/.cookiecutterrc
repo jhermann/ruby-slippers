@@ -3,4 +3,5 @@ default_context:
     email: "jh@web.de"
     github_username: "jhermann"
     year: "2015"
+    license: "Apache 2.0"
 cookiecutters_dir: "~/.local/cookiecutters/"
