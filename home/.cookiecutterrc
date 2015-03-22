@@ -5,3 +5,6 @@ default_context:
     year: "2015"
     license: "Apache 2.0"
 cookiecutters_dir: "~/.local/cookiecutters/"
+abbreviations:
+    gh: https://github.com/{0}.git
+    bb: https://bitbucket.org/{0}
