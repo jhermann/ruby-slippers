@@ -68,6 +68,7 @@ main() {
     tool_install "check-manifest"
     tool_install "howdoi"
     tool_install "clf"
+    tool_install "pypirc"
     # tool_install "joe"
     pip_install "ansible"; tools="$tools ansible ansible-doc ansible-galaxy ansible-playbook ansible-pull ansible-vault"
 
