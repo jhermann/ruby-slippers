@@ -4,11 +4,14 @@
 
 umask 0027
 export EDITOR=vi
-grep ~/bin: <<<"$PATH" >/dev/null || export PATH=~/bin:"$PATH"
+grep :~/bin: <<<":$PATH:" >/dev/null || export PATH=~/bin:"$PATH"
 
 export AUTOSSH_MAXSTART=666
 export AUTOSSH_PORT=61443
 
+case "$TERM" in
+    xterm*) TERM=xterm-256color ;;
+esac
 
 # Helpers
 imgur() {
