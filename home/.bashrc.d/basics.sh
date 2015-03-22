@@ -10,7 +10,7 @@ export AUTOSSH_MAXSTART=666
 export AUTOSSH_PORT=61443
 
 case "$TERM" in
-    xterm*) TERM=xterm-256color ;;
+    xterm*) export TERM=xterm-256color ;;
 esac
 
 # Helpers
