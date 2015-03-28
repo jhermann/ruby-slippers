@@ -5,10 +5,19 @@
 #
 set -e
 tmpbase="/tmp/$(basename "$0")-$USER-$$"
-action="$1"; shift || :
 
-# TODO: give caller control over this
+apt_install_yes=
 continue_after_apt_errors=true
+while test "${1:0:1}" = "-"; do
+    case "$1" in
+        -y | --yes) apt_install_yes="-y" ;;
+        -E | --abort-on-errors) continue_after_apt_errors=false ;;
+        *) echo "WARNING: Ignored unknown option '$1'" ;;
+    esac
+    shift
+done
+
+action="$1"; shift || :
 
 
 install_pkglist() {
@@ -22,7 +31,7 @@ install_pkglist() {
             echo "*** $pkg: already installed"
         else
             echo "+++ $pkg: installing..."
-            sudo apt-get -q install "$pkg" </dev/tty || $continue_after_apt_errors
+            sudo apt-get -q install $apt_install_yes "$pkg" </dev/tty || $continue_after_apt_errors
         fi
     done
 }
@@ -44,7 +53,7 @@ case "$action" in
         rm "$tmpbase-sort.txt" 2>/dev/null || :
         ;;
     *)
-        echo "usage:" $(basename "$0") "all|sort"
+        echo "usage:" $(basename "$0") "[-y|--yes]" "[-E|--abort-on-errors]" "all|sort"
         exit 1
         ;;
 esac
