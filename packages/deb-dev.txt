@@ -44,6 +44,8 @@ python-dev
 python-distutils-extra
 python-gdbm
 python-lxml
+python-mock
+python-sphinx
 python-subversion
 quilt
 ruby
