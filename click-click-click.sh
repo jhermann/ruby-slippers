@@ -49,3 +49,11 @@ linkbase="$root/home"
         $DRY $LN "$linkbase/$file" ~/"$target"
     fi
 done
+
+for stale in .bashrc.d/pip.sh; do
+    stale="$HOME/$stale"
+    if test -h "$stale" -a \! -e "$stale"; then
+        echo "Removing stale symlink '$stale'..."
+        rm "$stale"
+    fi
+done
