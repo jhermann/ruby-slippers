@@ -1,0 +1,14 @@
+# Invoke configuration
+#
+# For details, see
+#
+#   http://invoke.readthedocs.org/en/latest/concepts/configuration.html
+#   http://www.yaml.org/spec/1.2/spec.html#Basic
+#
+
+run:
+    echo: true
+    pty: false
+    warn: false
+tasks:
+    dedupe: true
