@@ -1,0 +1,31 @@
+#! /usr/bin/env python
+"""
+    Pretty-print a JSON file or stream.
+"""
+from __future__ import absolute_import, unicode_literals, print_function
+
+import sys
+assert sys.version_info[:2] >= (2, 7), "Wrong Python version " + ' '.join(sys.version.split())
+
+import io
+import json
+
+
+def run(args):
+    """Pretty-print JSON."""
+    if args:
+        assert len(args) == 1, "Only one filename allowed"
+        if args[0] == '-':
+            args = []
+
+    if args:
+        with io.open(args[0]) as handle:
+            data = json.load(handle)
+    else:
+        data = json.load(sys.stdin)
+
+    print(json.dumps(data, indent=4, sort_keys=True))
+
+
+if __name__ == '__main__':
+    sys.exit(run(sys.argv[1:]))
