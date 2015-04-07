@@ -14,3 +14,10 @@ alias spydoc="command pydoc"
 if test -d ~/.local/bin && grep -v ":$HOME/.local/bin:" <<<":$PATH:" >/dev/null; then
     export PATH="$HOME/.local/bin:$PATH"
 fi
+
+# devpi
+local_devpi() {
+    devpi use http://localhost:3141/
+    devpi login local
+    devpi use local/dev
+}
