@@ -1,0 +1,15 @@
+#! /bin/bash
+#
+# Reduce size of screencast videos to a pretty much lo-fi bitrate,
+# for smaller download sizes / streaming bandwidth.
+#
+
+[[ -r $1 ]] || { echo "Usage: $0 <videofile-to-be-resized> [<videofile2> ...]"; exit 1; }
+
+for INPUT_FILE in "$@"; do
+    OUTPUT_MP4_FILE=$(echo "$INPUT_FILE" | sed 's/\.[^.]*$/_resized.mp4/g')
+    #See https://trac.ffmpeg.org/wiki/x264EncodingGuide
+    avconv -y -i "$INPUT_FILE" -threads auto -c:v libx264 -preset medium -b:v 988k -pass 1 -an -f mp4 /dev/null && \
+    avconv    -i "$INPUT_FILE" -threads auto -c:v libx264 -preset medium -b:v 988k -pass 2 -c:a libmp3lame -b:a 192k "$OUTPUT_MP4_FILE"
+    rm -f av2pass* &>/dev/null
+done
