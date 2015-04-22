@@ -8,7 +8,7 @@
 
 run:
     echo: true
-    pty: false
+    pty: true
     warn: false
 tasks:
     dedupe: true
