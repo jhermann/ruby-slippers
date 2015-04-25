@@ -70,6 +70,7 @@ main() {
     tool_install "clf"
     tool_install "pypirc"
     tool_install "twine"
+    tool_install "restview"
     # tool_install "joe"
     pip_install "ansible"; tools="$tools ansible ansible-doc ansible-galaxy ansible-playbook ansible-pull ansible-vault"
 
