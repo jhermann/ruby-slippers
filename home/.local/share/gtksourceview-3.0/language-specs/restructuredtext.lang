@@ -3,15 +3,18 @@
 <!--
     Source: https://mail.gnome.org/archives/gedit-list/2011-May/msg00012.html
     See also: http://ubuntuforums.org/showthread.php?t=1868181
+
+    Global directory for language files:
+        /usr/share/gtksourceview-3.0/language-specs/
 -->
-<language _name="reStructuredText" version="1.0" _section="Markup" mimetypes="text/restructured">
+<language _name="reStructuredText" version="1.0" _section="Markup" mimetypes="text/restructured" globs="*.rst">
 
     <pattern-item _name="Emphasis" style="Preprocessor">
-        <regex>(\*[^*\n]*\*)</regex>
+        <regex>(\*[^ *\n][^*\n]*\*)</regex>
     </pattern-item>
 
     <pattern-item _name="Strong Emphasis" style="Data Type">
-        <regex>(\*\*[^*\n]*\*\*)</regex>
+        <regex>(\*\*[^ *\n][^*\n]*\*\*)</regex>
     </pattern-item>
 
     <pattern-item _name="Link" style="String">
@@ -27,7 +30,7 @@
     </pattern-item>
 
     <pattern-item _name="Line" style="Data Type">
-        <regex>^[ \t]*[-=]+[ \t]*$</regex>
+        <regex>^[ \t]*[#*-=^"]+[ \t]*$</regex>
     </pattern-item>
 
     <pattern-item _name="Automatic link" style="String" end-at-line-end = "TRUE">
@@ -35,7 +38,7 @@
     </pattern-item>
 
     <block-comment _name = "Code block" style= "Comment">
-        <start-regex>::\n\n    </start-regex>
+        <start-regex>::\n\n[ ][ ][ ][ ]</start-regex>
         <end-regex>\n\n</end-regex>
     </block-comment>
 
