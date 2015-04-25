@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
+<!--
+    Source: https://mail.gnome.org/archives/gedit-list/2011-May/msg00012.html
+    See also: http://ubuntuforums.org/showthread.php?t=1868181
+-->
 <language _name="reStructuredText" version="1.0" _section="Markup" mimetypes="text/restructured">
 
     <pattern-item _name="Emphasis" style="Preprocessor">
