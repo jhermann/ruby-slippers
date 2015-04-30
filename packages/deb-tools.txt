@@ -18,6 +18,7 @@ iputils-tracepath
 meld
 mercurial
 ncdu
+pandoc
 python-pkg-resources
 python-setuptools
 python-virtualenv
