@@ -17,6 +17,10 @@
         <regex>(\*\*[^ *\n][^*\n]*\*\*)</regex>
     </pattern-item>
 
+    <pattern-item _name="Reference" style="String">
+        <regex>:[^:]+:`[^`]+`</regex>
+    </pattern-item>
+
     <pattern-item _name="Link" style="String">
         <regex>`[^`]*`_</regex>
     </pattern-item>
