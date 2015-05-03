@@ -2,4 +2,4 @@
 # Show list of useful Unicode glyphs for cut+paste
 kansas=$(cd $(dirname $(readlink -f "$0" || echo "$0"))/../.. && pwd)
 
-cat "$kansas/data/text/"unicode-*.txt | less
+for i in "$kansas/data/text/"unicode-*.txt; do cat "$i"; echo; done | m
