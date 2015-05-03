@@ -89,6 +89,7 @@ if $in_project; then
 fi
 
 # Report activation instructions
+echo >"$venvdir/.env" "test ! -f bin/activate || . bin/activate"
 if test "$(which python 2>/dev/null)" != "$venvdir/bin/python" ; then
     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
     echo "Please call the following command to activate this virtualenv..."
