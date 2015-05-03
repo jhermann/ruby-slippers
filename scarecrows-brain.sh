@@ -125,6 +125,12 @@ main() {
     test -f ~/.bashrc.d/autoenv.sh || \
         ln -s ~/.local/autoenv/activate.sh ~/.bashrc.d/autoenv.sh
 
+    # less.vim "m"
+    if test ! -x ~/bin/m; then
+        curl -skS https://raw.githubusercontent.com/jhermann/less.vim/master/m >~/bin/m
+        chmod a+x ~/bin/m
+    fi
+
     # Manual intervention needed?
     test -d ~/lib/yed-current || echo "WARN: for yEd, you need to download it to /tmp," \
         "from http://www.yworks.com/en/products_download.php"
