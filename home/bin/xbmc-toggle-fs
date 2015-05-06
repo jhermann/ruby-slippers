@@ -1,8 +1,8 @@
 #! /bin/bash
 #
-# Toggle a running XBMC between windowed and fullscreen via CLI or Unity launcher menu.
+# Toggle a running Kodi between windowed and fullscreen via CLI or Unity launcher menu.
 #
-# See ".local/share/applications/xbmc.desktop" for using it.
+# See ".local/share/applications/kodi.desktop" for using it.
 #
-NAME='XBMC Media Center'
+NAME='Kodi Media Center'
 wmctrl -r "$NAME" -b toggle,fullscreen

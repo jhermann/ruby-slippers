@@ -1,0 +1,32 @@
+[Desktop Entry]
+Version=1.0
+Name=Kodi Media Center
+GenericName=Media Center
+Comment=Manage and view your media
+Exec=kodi
+Icon=kodi
+Terminal=false
+Type=Application
+Categories=Player;TV;
+
+Actions=Fullscreen;Windowed;Toggle;Kill;
+
+[Desktop Action Toggle]
+Name=Toggle FS / Window
+Name[en_US]=Toggle FS / Window
+Exec=/opt/junctions/kodi-user/bin/kodi-toggle-fs
+
+[Desktop Action Fullscreen]
+Name=Start Kodi Fullscreen
+Name[en_US]=Start Kodi Fullscreen
+Exec=/opt/junctions/kodi-user/bin/kodi-launch
+
+[Desktop Action Windowed]
+Name=Start Kodi Windowed
+Name[en_US]=Start Kodi Windowed
+Exec=kodi
+
+[Desktop Action Kill]
+Name=Kill Kodi
+Name[en_US]=Kill Kodi
+Exec=/opt/junctions/kodi-user/bin/kodi-kill

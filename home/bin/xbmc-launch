@@ -1,8 +1,8 @@
 #! /bin/bash
 #
-# Launch XBMC via CLI or Unity launcher menu.
+# Launch Kodi via CLI or Unity launcher menu.
 #
-# See ".local/share/applications/xbmc.desktop" for using it.
+# See ".local/share/applications/kodi.desktop" for using it.
 #
 # Needs "wmctrl", "amixer", and "gconftool" installed.
 #
@@ -19,7 +19,7 @@ hidepanel=false
 pid=$(ps auxw | grep $0 | grep -v grep | tr -s ' ' | head -n1 | cut -f2 -d' ')
 stamp="$(date '+%Y-%m-%d %H:%M:%S,%N')"
 now="$(date '+%s')"
-#echo "$$ $pid" >>/tmp/xbmc-launcher.log
+#echo "$$ $pid" >>/tmp/kodi-launcher.log
 
 # Switch to specific desktop?
 if test -n "$desktop"; then
@@ -39,7 +39,7 @@ if test -n "$desktop"; then
 fi
 
 make_fullscreen() {
-    NAME='XBMC Media Center'
+    NAME='Kodi Media Center'
 
     # Wait for window to come up
     while [ -z "`wmctrl -l | grep \"$NAME\"`" ]; do
@@ -53,22 +53,22 @@ make_fullscreen() {
 
 if test $pid != $$; then
     # When LIRC acts up and starts this twice in an instant
-    echo "$stamp Ignoring dupe start (pid=$$; winner=$pid)" >>/tmp/xbmc-launcher.log
-elif test -z "$(pidof /usr/lib/xbmc/xbmc.bin)"; then
-    echo "$stamp Starting XBMC" >>/tmp/xbmc-launcher.log
+    echo "$stamp Ignoring dupe start (pid=$$; winner=$pid)" >>/tmp/kodi-launcher.log
+elif test -z "$(pidof /usr/lib/kodi/kodi.bin)"; then
+    echo "$stamp Starting Kodi" >>/tmp/kodi-launcher.log
 
-    # Full volume control range in XBMC
+    # Full volume control range in Kodi
     amixer sset Master,0 100%
 
-    #$(dirname "$0")/xbmc-splash &
-    /usr/bin/xbmc --lircdev /var/run/lirc/lircd "$@" &
+    #$(dirname "$0")/kodi-splash &
+    /usr/bin/kodi --lircdev /var/run/lirc/lircd "$@" &
     disown
     sleep .75
     make_fullscreen
 else
-    echo "$stamp XBMC already running" >>/tmp/xbmc-launcher.log
+    echo "$stamp Kodi already running" >>/tmp/kodi-launcher.log
 
     # Toggle window mode when already running, especially useful when bound to a LIRC button
-    $(dirname "$0")/xbmc-toggle-fs
+    $(dirname "$0")/kodi-toggle-fs
 fi
 sleep 0.05
