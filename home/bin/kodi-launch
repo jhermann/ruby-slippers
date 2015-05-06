@@ -39,16 +39,16 @@ if test -n "$desktop"; then
 fi
 
 make_fullscreen() {
-    NAME='Kodi Media Center'
+    WINDOWNAME='Kodi'
 
     # Wait for window to come up
-    while [ -z "`wmctrl -l | grep \"$NAME\"`" ]; do
+    while [ -z "`wmctrl -l | grep \"$WINDOWNAME\"`" ]; do
         sleep .25
     done
 
     # Put at X position 0 (left-most on nVidia twinview) and make fullscreen
-    wmctrl -r "$NAME" -e '0,0,-1,-1,-1'
-    wmctrl -r "$NAME" -b toggle,fullscreen
+    wmctrl -r "$WINDOWNAME" -e '0,0,-1,-1,-1'
+    wmctrl -r "$WINDOWNAME" -b toggle,fullscreen
 }
 
 if test $pid != $$; then

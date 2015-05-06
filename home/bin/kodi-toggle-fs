@@ -4,5 +4,5 @@
 #
 # See ".local/share/applications/kodi.desktop" for using it.
 #
-NAME='Kodi Media Center'
-wmctrl -r "$NAME" -b toggle,fullscreen
+WINDOWNAME='Kodi'
+wmctrl -r "$WINDOWNAME" -b toggle,fullscreen
