@@ -15,6 +15,19 @@ if test -d ~/.local/bin && grep -v ":$HOME/.local/bin:" <<<":$PATH:" >/dev/null;
     export PATH="$HOME/.local/bin:$PATH"
 fi
 
+# Activate "miniconda3" installs
+CONDA_HOME="$HOME/.local/miniconda3"
+if test -d "$CONDA_HOME"; then
+    alias conda="$CONDA_HOME/bin/conda"
+    alias conda-env="$CONDA_HOME/bin/conda-env"
+    alias conda-activate="source $CONDA_HOME/bin/activate"
+    alias conda-deactivate="source $CONDA_HOME/bin/deactivate"
+
+    #if grep -v ":$CONDA_HOME/bin:" <<<":$PATH:" >/dev/null; then
+    #    export PATH="$CONDA_HOME/bin:$PATH"
+    #fi
+fi
+
 # devpi
 local_devpi() {
     devpi use http://localhost:3141/
