@@ -3,6 +3,7 @@
 *.so
 *.py[oc]
 *.egg-info
+.venv/
 
 # Packages
 *.gz
