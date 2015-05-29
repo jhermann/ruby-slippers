@@ -12,7 +12,7 @@ dos2unix
 gawk
 git
 gnupg
-gnupg-doc
+gnupg-doc|base-files
 gsmartcontrol
 iputils-tracepath
 meld
