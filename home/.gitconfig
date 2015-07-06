@@ -20,5 +20,6 @@
         grok = log --all --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue) <%an>%Creset' --abbrev-commit
         unstage = reset HEAD
         uncommit = reset --soft HEAD^
+        unchange = checkout HEAD
 [push]
         default = simple
