@@ -127,8 +127,20 @@ main() {
 
     # less.vim "m"
     if test ! -x ~/bin/m; then
-        curl -skS https://raw.githubusercontent.com/jhermann/less.vim/master/m >~/bin/m
+        curl -skSL https://raw.githubusercontent.com/jhermann/less.vim/master/m >~/bin/m
         chmod a+x ~/bin/m
+    fi
+
+    # ansible-new-role
+    if test ! -x ~/bin/ansible-new-role; then
+        curl -skSL https://raw.githubusercontent.com/realgo/ansible-new-role/master/ansible-new-role >~/bin/ansible-new-role
+        chmod a+x ~/bin/ansible-new-role
+    fi
+
+    # gimme (go installer)
+    if test ! -x ~/bin/gimme; then
+        curl -sL -o ~/bin/gimme "https://raw.githubusercontent.com/travis-ci/gimme/master/gimme"
+        chmod a+x ~/bin/gimme
     fi
 
     # Manual intervention needed?
