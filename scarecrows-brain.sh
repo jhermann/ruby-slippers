@@ -131,6 +131,12 @@ main() {
         chmod a+x ~/bin/m
     fi
 
+    # Git Goodies
+    if test ! -x ~/bin/gg; then
+        curl -skSL https://raw.githubusercontent.com/qw3rtman/gg/master/bin/gg >~/bin/gg
+        chmod a+x ~/bin/gg
+    fi
+
     # ansible-new-role
     if test ! -x ~/bin/ansible-new-role; then
         curl -skSL https://raw.githubusercontent.com/realgo/ansible-new-role/master/ansible-new-role >~/bin/ansible-new-role
