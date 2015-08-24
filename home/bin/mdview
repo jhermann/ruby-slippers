@@ -105,7 +105,7 @@ esac
 # Get cleaned up first line (no images / links)
 title=$(head -n1 "$mdfile" | sed -r -e 's/^#+ ?//' -e 's/!?(\[|\().+?(\]|\)) ?//g')
 
-htmlfile="/tmp/.mdview_$USER_"$(cd $(dirname "$mdfile") && pwd | tr / _)_$(basename "$mdfile")
+htmlfile="/tmp/.mdview_$USER_"$(command cd $(dirname "$mdfile") >/dev/null 2>&1 && pwd | tr / _)_$(basename "$mdfile")
 htmlfile="${htmlfile%.md}.html"
 intro >"$htmlfile" "$title" \
     && $filter <"$mdfile" >>"$htmlfile" \
