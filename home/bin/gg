@@ -738,8 +738,8 @@ display_help() {
     $(success "gg cl <url>")                     $(notice "Clone repository from <url>")
     $(success "gg a")                            $(notice "Add all files")
     $(success "gg a <file ...>")                 $(notice "Add all <file>(s)")
-    $(success "gg c <message>")                  $(notice "Add all files and commit with <message>")
-    $(success "gg cn <message>")                 $(notice "Commit with <message>")
+    $(success "gg ca <message>")                 $(notice "Add all files and commit with <message>")
+    $(success "gg c <message>")                  $(notice "Commit with <message>")
     $(success "gg uc <count>")                   $(notice "Go back (uncommit) <count> commits")
     $(success "gg rc <message>")                 $(notice "Add all files and recommit (amend) with <message>")
     $(success "gg rcn <message>")                $(notice "Recommit (amend) with <message>")
@@ -780,8 +780,8 @@ else
 			igf|ignorefile) ignore_file "${@:2}"; exit ;;
 			cl|clone) clone $2; exit ;;
 			a|add) add $2; exit ;;
-			c|commit) commit "${@:2}"; exit ;;
-			cn) commit_no_add "${@:2}"; exit ;;
+			ca) commit "${@:2}"; exit ;;
+			c|commit) commit_no_add "${@:2}"; exit ;;
 			uc|uncommit|back) uncommit $2; exit ;;
 			am|amend|rc|recommit) amend "${@:2}"; exit ;;
 			amn|rcn) amend_no_add "${@:2}"; exit ;;
