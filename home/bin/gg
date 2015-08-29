@@ -748,6 +748,7 @@ display_help() {
     $(success "gg f")                            $(notice "Fetch all commits from remote")
     $(success "gg s")                            $(notice "Display repository status")
     $(success "gg l")                            $(notice "Display repository commit log")
+    $(success "gg h")                            $(notice "Show last commit (HEAD)")
     $(success "gg b")                            $(notice "List all branches in repository")
     $(success "gg b <branch>")                   $(notice "Create and checkout <branch>")
     $(success "gg ch")                           $(notice "List all branches in repository")
@@ -790,6 +791,7 @@ else
 			f|fetch) fetch ;;
 			s|status) status ;;
 			l|log) log ;;
+			h|head) git show ;;
 			b|branch) branch $2; exit ;;
 			ch|checkout) checkout $2; exit ;;
 			v|view|in|info) info $2; exit ;;
