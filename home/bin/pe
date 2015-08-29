@@ -50,7 +50,7 @@ for filename in "${files[@]}"; do
     fi
 
     case $(lsb_release -cs) in
-        trusty)
+        trusty | vivid)
             gedit "${args[@]}" "$filename" $line >>/tmp/gedit-$USER.log 2>&1 &
             disown
             ;;
