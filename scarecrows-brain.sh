@@ -143,6 +143,13 @@ main() {
         chmod a+x ~/bin/gimme
     fi
 
+    # Hack font
+    if test ! -f ~/.fonts/Hack-Regular.ttf; then
+        curl -sL -o /tmp/hack-ttf.zip "https://github.com/chrissimpkins/Hack/releases/download/v2.010/Hack-v2_010-ttf.zip"
+        mkdir -p ~/.fonts
+        ( cd ~/.fonts && unzip -j -o /tmp/hack-ttf.zip )
+    fi
+
     # Manual intervention needed?
     test -d ~/lib/yed-current || echo "WARN: for yEd, you need to download it to /tmp," \
         "from http://www.yworks.com/en/products_download.php"
