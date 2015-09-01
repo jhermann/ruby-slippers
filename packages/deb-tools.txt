@@ -11,6 +11,7 @@ colordiff
 dos2unix
 gawk
 git
+gksu
 gnupg
 gnupg-doc|base-files
 gsmartcontrol
