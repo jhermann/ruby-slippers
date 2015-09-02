@@ -433,6 +433,7 @@ push() {
 }
 
 pull() {
+	local mode="$1"
 	if [ -z "$(git remote show)" ]; then
 		whoops "[✖] No remote to pull from.\n"
 	else
@@ -446,7 +447,7 @@ pull() {
 		OUTPUT=$((git fetch --quiet) 2>&1)
 		commits=$(git log --left-right --graph --cherry-pick --oneline $(current_branch)...$(current_remote)/$(current_branch))
 
-		OUTPUT=$((git pull) 2>&1)
+		OUTPUT=$((git pull $mode) 2>&1)
 		if [ $? -eq 0 ]; then
 			if [ "$OUTPUT" == "Already up-to-date." ]; then
 				success "[✔] Everything is already up-to-date.\n"
@@ -788,6 +789,7 @@ else
 			amn|rcn) amend_no_add "${@:2}"; exit ;;
 			p|push) push ;;
 			pl|pull) pull ;;
+			ff|fast-forward) pull --ff-only ;;
 			f|fetch) fetch ;;
 			s|status) status ;;
 			l|log) log ;;
