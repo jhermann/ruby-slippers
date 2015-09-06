@@ -34,7 +34,13 @@ for arg in "$@"; do
             test -n "$match" && files+=("${arg%%~*}:${match%%:*}") || files+=("${arg%%~*}")
             ;;
         *)
-            files+=("$arg")
+            if test -d "$arg"; then
+                IFS=$'\n'
+                files+=( $(findall "$arg" -type f | sort | head -n 25) )
+                unset IFS
+            else
+                files+=("$arg")
+            fi
             ;;
     esac
 done
