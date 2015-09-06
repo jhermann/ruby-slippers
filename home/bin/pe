@@ -3,6 +3,18 @@
 # "gedit" wrapper
 #
 
+outer_python=$(command which python)
+
+fail() { # fail with error message on stderr and exit code 1
+    echo >&2 "ERROR:" "$@"
+    exit 1
+}
+py_file() {
+    file="$($outer_python -c "import $1; print $1.__file__")"
+    file="${file/.pyc/.py}"
+    file="${file/.pyo/.py}"
+}
+
 # Clean environment for built-in interpreter
 deactivate 2>/dev/null || :
 export PYTHONPATH=
@@ -27,13 +39,31 @@ files=()
 for arg in "$@"; do
     case "$arg" in
         -*)
+            # copy over any option
             args+=("$arg")
             ;;
+        ^*)
+            # Magic open (auto-detect and lookup filename)
+            file=''
+            if test -f setup.py; then
+                py_file "${arg#?}"
+            fi
+            test -n "$file" || fail "Cannot locate anything for '${arg#?}'!"
+            files+=("$file")
+            ;;
+        py^*)
+            # Open Python module
+            py_file "${arg#py?}"
+            test -n "$file" || fail "Cannot locate python module '${arg#py?}'!"
+            files+=("$file")
+            ;;
         ?*~*)
+            # open file at first regex match (file~pattern)
             match=$(grep -nim1 -E -e "${arg#*~}" "${arg%%~*}")
             test -n "$match" && files+=("${arg%%~*}:${match%%:*}") || files+=("${arg%%~*}")
             ;;
         *)
+            # some file or directory
             if test -d "$arg"; then
                 IFS=$'\n'
                 files+=( $(findall "$arg" -type f | sort | head -n 25) )
