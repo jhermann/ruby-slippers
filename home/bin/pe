@@ -23,7 +23,7 @@ py_file() {
     file="$($outer_python -c "import ${file}; print ${file}.__file__")"
     file="${file/.pyc/.py}"
     file="${file/.pyo/.py}"
-    test -n "$file" || "Cannot locate python module for '${spec}'!"
+    test -n "$file" || fail "Cannot locate python module for '${spec}'!"
     if test "$maxdepth" -gt 0; then
         IFS=$'\n'
         files+=( $(find "$(dirname "$file")" -type f -name '*.py' | sort | head -n $max_find_files) )
