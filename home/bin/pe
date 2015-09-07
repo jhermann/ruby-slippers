@@ -12,6 +12,18 @@ fail() { # fail with error message on stderr and exit code 1
     exit 1
 }
 
+editor() {
+    case $(lsb_release -cs) in
+        trusty|utopic|vivid|wily)
+            gedit "$@" >>/tmp/gedit-$USER.log 2>&1 &
+            disown
+            ;;
+        precise|lucid|*)
+            gedit --background "$@"
+            ;;
+    esac
+}
+
 py_file() {
     local spec="$1"
     local file="$spec"
@@ -39,17 +51,7 @@ export PYTHONPATH=
 
 # Put system binaries upfront
 export PATH=/usr/bin:$PATH
-test $# -gt 0 || case $(lsb_release -cs) in
-    trusty|utopic|vivid|wily)
-        gedit >>/tmp/gedit-$USER.log 2>&1 &
-        disown
-        exit 0
-        ;;
-    precise|lucid|*)
-        gedit --background
-        exit 0
-        ;;
-esac
+test $# -gt 0 || { editor; exit $?; }
 
 # Look out for grep results (containing a ':') and load file at the matching line
 args=()
@@ -100,15 +102,7 @@ for filename in "${files[@]}"; do
         test -d "${filename:0:1}" || filename="${filename:2}"
     fi
 
-    case $(lsb_release -cs) in
-        trusty|utopic|vivid|wily)
-            gedit "${args[@]}" "$filename" $line >>/tmp/gedit-$USER.log 2>&1 &
-            disown
-            ;;
-        precise|lucid|*)
-            gedit --background "${args[@]}" "$filename" $line
-            ;;
-    esac
+    editor "${args[@]}" "$filename" $line
 done
 
 # Bring window to front
