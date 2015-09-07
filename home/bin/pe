@@ -40,12 +40,12 @@ export PYTHONPATH=
 # Put system binaries upfront
 export PATH=/usr/bin:$PATH
 test $# -gt 0 || case $(lsb_release -cs) in
-    trusty)
+    trusty|utopic|vivid|wily)
         gedit >>/tmp/gedit-$USER.log 2>&1 &
         disown
         exit 0
         ;;
-    precise | lucid | *)
+    precise|lucid|*)
         gedit --background
         exit 0
         ;;
@@ -61,7 +61,7 @@ for arg in "$@"; do
             args+=("$arg")
             ;;
         ^*)
-            # Magic open (auto-detect and lookup filename)
+            # magic open (auto-detect and lookup filename)
             if test -f setup.py; then
                 py_file "${arg#?}"
             else
@@ -69,7 +69,7 @@ for arg in "$@"; do
             fi
             ;;
         py^*)
-            # Open Python module
+            # open Python module
             py_file "${arg#py?}"
             ;;
         ?*~*)
@@ -78,7 +78,7 @@ for arg in "$@"; do
             test -n "$match" && files+=("${arg%%~*}:${match%%:*}") || files+=("${arg%%~*}")
             ;;
         *)
-            # some file or directory
+            # open some file or directory
             if test -d "$arg"; then
                 IFS=$'\n'
                 files+=( $(findall "$arg" -type f | sort | head -n $max_find_files) )
@@ -101,11 +101,11 @@ for filename in "${files[@]}"; do
     fi
 
     case $(lsb_release -cs) in
-        trusty | vivid)
+        trusty|utopic|vivid|wily)
             gedit "${args[@]}" "$filename" $line >>/tmp/gedit-$USER.log 2>&1 &
             disown
             ;;
-        precise | lucid | *)
+        precise|lucid|*)
             gedit --background "${args[@]}" "$filename" $line
             ;;
     esac
