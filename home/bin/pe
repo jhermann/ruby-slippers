@@ -38,7 +38,7 @@ py_file() {
     test -n "$file" || fail "Cannot locate python module for '${spec}'!"
     if test "$maxdepth" -gt 0; then
         IFS=$'\n'
-        files+=( $(find "$(dirname "$file")" -type f -name '*.py' | sort | head -n $max_find_files) )
+        files+=( $(find "$(dirname "$file")" -maxdepth $maxdepth -type f -name '*.py' | sort | head -n $max_find_files) )
         unset IFS
     else
         files+=("$file")
