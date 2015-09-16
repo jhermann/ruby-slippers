@@ -86,7 +86,7 @@ all_branches_pretty() {
 }
 
 all_commits_to_push() {
-	git cherry --abbrev -v
+	git cherry --abbrev -v 2>/dev/null
 }
 
 all_commits_to_push_pretty() {
@@ -126,7 +126,7 @@ all_commits_to_pull_pretty() {
 }
 
 current_remote() {
-	remote=$(git rev-parse --abbrev-ref $(current_branch)@{upstream})
+	remote=$(git rev-parse --abbrev-ref $(current_branch)@{upstream} 2>/dev/null)
 	remote=(${remote//\// })
 
 	if [ "${remote[0]}" = "remotes" ]; then
@@ -517,26 +517,26 @@ status() {
 	# http://stackoverflow.com/a/3278427
 	git fetch --quiet
 
-	LOCAL=$(git rev-parse @{0})
-	REMOTE=$(git rev-parse @{u})
-	BASE=$(git merge-base @{0} @{u})
+	LOCAL=$(git rev-parse @{0} 2>/dev/null)
+	REMOTE=$(git rev-parse @{u} 2>/dev/null)
+	BASE=$(git merge-base @{0} @{u} 2>/dev/null)
 
 	push=0
 	pull=0
 
-	if [ $LOCAL != $REMOTE ]; then
+	if [ "$LOCAL" != "$REMOTE" ]; then
 		position=($(git rev-list --left-right --count $(current_branch)...$(current_remote)/$(current_branch)))
 
 		ahead=${position[0]}
 		behind=${position[1]}
 	fi
 
-	if [ $LOCAL = $REMOTE ]; then
+	if [ "$LOCAL" = "$REMOTE" ]; then
 	    display "position" "up-to-date with remote"
-	elif [ $LOCAL = $BASE ]; then
+	elif [ "$LOCAL" = "$BASE" ]; then
 	    display_active "position" "$(notice "$behind commits behind remote (pull)")"
 		pull=1
-	elif [ $REMOTE = $BASE ]; then
+	elif [ "$REMOTE" = "$BASE" ]; then
 		display_active "position" "$(notice "$ahead commits ahead of remote (push)")"
 		push=1
 	else
