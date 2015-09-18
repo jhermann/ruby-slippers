@@ -3,6 +3,7 @@
 coreutils
 curl
 debian-keyring
+haveged
 htop
 links
 locales
