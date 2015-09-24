@@ -19,7 +19,7 @@ def main():
     scan_dir = os.path.abspath(sys.argv[1]) if len(sys.argv) > 1 else os.path.expanduser('~/src')
     homedir = os.path.expanduser('~') + os.sep
     cd_path = set(i.replace(homedir, '$HOME/') for i in walk_git_repos(scan_dir))
-    print os.pathsep.join(sorted(cd_path))
+    print(os.pathsep.join(sorted(cd_path)))
 
 
 if __name__ == '__main__':
