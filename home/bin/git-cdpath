@@ -5,13 +5,19 @@
 import os
 import sys
 
+STOP_NAMES = set((
+    '.svn', '.gitignore', 'Makefile', 'setup.py', 'pom.xml',
+))
+
 
 def walk_git_repos(topdir):
     """Yield directories containing git repositories."""
     for dirpath, dirnames, filenames in os.walk(topdir):
-        if '.git' in dirnames or '.gitignore' in filenames:
+        if '.git' in dirnames:
             dirnames[:] = []  # prune directory tree scanning
             yield os.path.dirname(dirpath)
+        elif any(i in dirnames or i in filenames for i in STOP_NAMES):
+            dirnames[:] = []  # stop scanning other types of source trees
 
 
 def main():
