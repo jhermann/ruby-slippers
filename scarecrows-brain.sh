@@ -40,6 +40,15 @@ script_install() {
 }
 
 
+script_py_install() {
+    local script="$1"
+    script_install "$@"
+
+    head -n1 <~/bin/"$script" | grep "$venvdir/bin/python" >/dev/null \
+        || sed -i,orig -re "1s:#!.*:#! $venvdir/bin/python:" ~/bin/"$script"
+}
+
+
 main() {
     mkdir -p ~/.local ~/bin
 
@@ -119,6 +128,9 @@ main() {
     # mkcast
     script_install mkcast "https://raw.githubusercontent.com/KeyboardFire/mkcast/master/mkcast"
     script_install newcast "https://raw.githubusercontent.com/KeyboardFire/mkcast/master/newcast"
+
+    # git tbdiff
+    script_py_install git-tbdiff "https://raw.githubusercontent.com/trast/tbdiff/master/git-tbdiff.py"
 
     # autoenv
     test -d ~/.local/autoenv || git clone "https://github.com/kennethreitz/autoenv.git" ~/.local/autoenv
