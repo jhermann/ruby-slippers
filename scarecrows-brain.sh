@@ -132,6 +132,9 @@ main() {
     # git tbdiff
     script_py_install git-tbdiff "https://raw.githubusercontent.com/trast/tbdiff/master/git-tbdiff.py"
 
+    # distribution (histograms)
+    script_py_install distribution "https://raw.githubusercontent.com/philovivero/distribution/master/distribution.py"
+
     # autoenv
     test -d ~/.local/autoenv || git clone "https://github.com/kennethreitz/autoenv.git" ~/.local/autoenv
     test -f ~/.bashrc.d/autoenv.sh || \
