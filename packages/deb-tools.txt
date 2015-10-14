@@ -20,6 +20,7 @@ meld
 mercurial
 ncdu
 pandoc
+pv
 python-pkg-resources
 python-setuptools
 python-virtualenv
