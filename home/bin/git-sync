@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+#
+# "git sync" helper to fetch upstream changes into the main
+# and your current branch.
+#
+# Originally from https://gist.github.com/miguelgonz/9fc4cb57c07c52e5f980
+
+set -e
+MAIN_BRANCH="develop"
+
+CURRENT_CHANGES=$(git status --porcelain)
+CURRENT_BRANCH=$(git symbolic-ref -q --short HEAD)
+
+if [ "$CURRENT_CHANGES" != "" ]; then
+    git stash --include-untracked
+fi
+git fetch upstream
+
+if [ "$CURRENT_BRANCH" != "$MAIN_BRANCH" ]; then
+    git checkout $MAIN_BRANCH
+fi
+git merge upstream/$MAIN_BRANCH
+
+if [ "$CURRENT_BRANCH" != "$MAIN_BRANCH" ]; then
+    git checkout $CURRENT_BRANCH
+fi
+git rebase $MAIN_BRANCH
+
+if [ "$CURRENT_CHANGES" != "" ]; then
+    git stash pop
+fi
