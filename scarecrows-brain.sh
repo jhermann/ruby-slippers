@@ -57,6 +57,7 @@ main() {
 
     # Install tools into venv
     tools=""
+    pip_install -U "pip>=8" "wheel" || :
     pip_install "yolk3k" || :
     pip_install "pylint>=1.0"; tools="$tools pyreverse epylint pylint pylint-gui symilar"
     pip_install "flake8"; tools="$tools pyflakes pep8 flake8"
@@ -68,7 +69,7 @@ main() {
     pip_install "Sphinx == 1.1.3"; tools="$tools sphinx-quickstart sphinx-build sphinx-autogen sphinx-apidoc"
     pip_install "https://github.com/jhermann/nodeenv/archive/master.zip#egg=nodeenv"; tools="$tools nodeenv"
     pip_install "mercurial"; tools="$tools hg"
-    pip_install "devpi-client"; tools="$tools devpi"
+    #pip_install "devpi-client"; tools="$tools devpi"
     tool_install "pipsi"
     pip_install "pip-tools"; tools="$tools pip-review pip-dump"
     pip_install "pythonpy"; tools="$tools py"
