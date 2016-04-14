@@ -7,6 +7,7 @@ scriptdir="$(cd "$(dirname "$0")" && pwd)"
 venvdir="$HOME/.pyvenv/ruby-slippers"
 tmpbase="/tmp/$(basename "$0")-$USER-$$"
 git_remote_hg_url="https://raw.github.com/felipec/git-remote-hg/master/git-remote-hg"
+git_standup_url="https://raw.githubusercontent.com/kamranahmedse/git-standup/master/git-standup"
 action="$1"; shift || :
 
 
@@ -115,6 +116,12 @@ main() {
         mkdir -p ~/lib; cd ~/lib
         unzip -xu "$(ls -1rt /tmp/yEd-*.zip | tail -n1)"
         ln -nfs $(ls -1rtd yed-[0-9]* | tail -n1) yed-current
+    fi
+
+    # Install git-standup
+    if test ! -x ~/bin/git-standup; then
+        { curl -skSL "$git_standup_url"; } > ~/bin/git-standup
+        chmod +x ~/bin/git-standup
     fi
 
     # Install git-remote-hg
