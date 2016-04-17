@@ -1,0 +1,117 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use 5.01;
+
+use Text::Markdown;
+use Encode;
+use HTML::Entities;
+use Getopt::Long;
+
+# Ensure proper encoding of IO
+use open qw/:std :utf8/;
+binmode(STDIN, ':utf8');
+binmode(STDOUT, ':utf8');
+binmode(STDERR, ':utf8');
+
+# Get options
+my $opt = { code => 1, lists => 0, smartypants => 1, size => 'size' };
+GetOptions($opt, qw/code lists smartypants!/);
+
+# Read input
+my $in;
+my $fn = shift;
+if (defined $fn && -r $fn) {
+    open READ, '<', $fn;
+    $in = eval { local $/; <READ> };
+    close READ;
+}
+else {
+    $in = eval { local $/; <STDIN> };
+}
+
+# Profit
+print md2bbc($in, $opt);
+
+sub md2bbc {
+    local $_ = shift or return '';
+    my $opt = shift;
+
+    # Override the Text::Markdown method that handles lists to do
+    # nothing if we don't have BBCode lists supported
+    eval {
+        no warnings 'redefine';
+
+        sub Text::Markdown::_DoLists {
+            my( $self, $text ) = @_;
+
+            return $text;
+        }
+    } unless $opt->{lists};
+
+    $_ = Text::Markdown->new->markdown($_);
+
+    # Smartypants operates first so that attributes (e.g., URLs) don't get converted
+    if ($opt->{smartypants}) {
+        if (eval { require Text::SmartyPants }) {
+            $_ = Text::SmartyPants::process($_, 2);
+        }
+        elsif (eval { require Text::Typography }) {
+            $_ = Text::Typography::typography($_, 2);
+        }
+    }
+
+    # Simple elements
+    my %html2bb = (
+        strong     => 'b',
+        em         => 'i',
+        blockquote => 'quote',
+        hr         => 'hr',
+    );
+    while (my($html, $bb) = each %html2bb) {
+        s{<(/|)$html[^>]*>}{[$1$bb]}g;
+    }
+
+    # Convert links
+    s{<a
+        [^>]*?       # random attributes we don't care about
+        href="(.+?)" # target
+        [^>]*?       # more random attributes we don't care about
+    >
+        (.+?)        # text
+        </a>
+    }{[url="$1"]$2\[/url]}xg;
+
+    # Undo paragraphs elements
+    s{</?p>}{}g;
+
+    # Headers
+    my $size = $opt->{size};
+    s{<h1>}{[$size=5][b]}g;
+    s{<h2>}{[$size=4][b]}g;
+    s{<h3>}{[$size=3][b]}g;
+    s{</h.>}{[/b][/$size]}g;
+
+    # Undo code elemeents
+    if ($opt->{code}) {
+        s{<pre><code>}      {[code]}g;
+        s{</code></pre>}    {[/code]}g;
+    }
+    else {
+        s{<pre><code>\s*}   {}g;
+        s{\s*</code></pre>} {}g;
+    }
+
+    # Convert list elements
+    if ($opt->{lists}) {
+        s{<ul>}     {[list]}g;
+        s{<ol>}     {[list=1]}g;
+        s{</[uo]l>} {[/list]}g;
+        s{<li>}     {[*]}g;
+        s{</li>}    {}g;
+    }
+
+    # Decode HTML entities
+    return decode_entities $_;
+}
