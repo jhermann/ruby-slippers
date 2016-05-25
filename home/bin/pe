@@ -3,6 +3,7 @@
 # "gedit" wrapper
 #
 
+shopt -s extglob
 outer_python=$(command which python)
 max_find_files=25
 
