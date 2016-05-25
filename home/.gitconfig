@@ -18,6 +18,7 @@
         cfg = config -l --global
         cfl = config -l --local
         grok = log --all --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue) <%an>%Creset' --abbrev-commit
+        daily = log --all --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue) <%an>%Creset' --abbrev-commit --since='24 hours ago'
         unstage = reset HEAD
         uncommit = reset --soft HEAD^
         unchange = checkout HEAD
