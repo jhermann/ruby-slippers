@@ -15,7 +15,7 @@ fail() { # fail with error message on stderr and exit code 1
 
 editor() {
     case $(lsb_release -cs) in
-        trusty|utopic|vivid|wily)
+        trusty|utopic|vivid|wily|xenial)
             gedit "$@" >>/tmp/gedit-$USER.log 2>&1 &
             disown
             ;;
