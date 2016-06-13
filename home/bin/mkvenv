@@ -15,14 +15,14 @@ set -e
 #set -x
 basedir=$(cd $(dirname $(readlink -f "$0" || echo "$0")) && pwd)
 venv_version=1.9.1 # virtualenv version to use
-venv_basedir="$HOME/.pyvenv" # venv default base directory
+venv_basedir="$HOME/.local/virtualenvs" # venv default base directory
 virtualenv="$venv_basedir/.virtualenv"
 pypi_url="${PYPI_URL:-https://pypi.python.org}"
 
 # If started as bootstrap script in a project, create local virtualenv
 in_project=false
 if test -f "$basedir/setup.py" -o -f "$basedir/setup.cfg"; then
-    venvdir="$basedir/.pyvenv/$(basename "$basedir")"
+    venvdir="$basedir/.venv/$(basename "$basedir")"
     cd "$basedir"
     in_project=true
 fi
@@ -33,7 +33,7 @@ if test ! -f "$venv_basedir/.complete"; then
     rm -rf "$virtualenv"
     if test ! -f "$venv_basedir/.virtualenv-$venv_version.tar.gz"; then
         echo "*** Downloading virtualenv-$venv_version.tar.gz"
-        if pip install --log "$venv_basedir/.virtualenv.log" -d "$venv_basedir" virtualenv==$venv_version; then
+        if pip install --log "$venv_basedir/.virtualenv.log" -d "$venv_basedir" virtualenv==$venv_version 2>/dev/null; then
             echo "*** Downloaded virtualenv-$venv_version.tar.gz using pip"
         else
             ( cd "$venv_basedir" && curl -sOkS "$pypi_url/packages/source/v/virtualenv/virtualenv-$venv_version.tar.gz" )
