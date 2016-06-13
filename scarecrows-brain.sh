@@ -5,6 +5,8 @@
 set -e
 scriptdir="$(cd "$(dirname "$0")" && pwd)"
 venvdir="$HOME/.pyvenv/ruby-slippers"
+test -d $venvdir || venvdir="$HOME/.local/virtualenvs/ruby-slippers"
+venv_base=$(dirname $venvdir)
 tmpbase="/tmp/$(basename "$0")-$USER-$$"
 git_remote_hg_url="https://raw.github.com/felipec/git-remote-hg/master/git-remote-hg"
 git_standup_url="https://raw.githubusercontent.com/kamranahmedse/git-standup/master/git-standup"
@@ -12,13 +14,22 @@ action="$1"; shift || :
 
 
 pyvenv() {
-    if test ! -d "$venvdir"; then
+    local name="${1:-ruby-slippers}"
+    local pyvenv_dir="$venv_base/$name"
+    if test ! -d "$pyvenv_dir"; then
         hostpython="/usr/bin/python2"
         test -x "$hostpython" || hostpython="/usr/bin/python"
-        "$scriptdir"/home/bin/mkvenv "$hostpython" --setuptools --no-site-packages "$venvdir"
+        "$scriptdir"/home/bin/mkvenv "$hostpython" --setuptools --no-site-packages "$pyvenv_dir"
     fi
 }
 
+
+pipsi_install() {
+    local name="${1:?You must provide a name}"; shift
+    echo "*** pip script install" "$name"
+    pyvenv "$name"
+    "$venv_base/$name/bin/pip" install "$name" "$@"
+}
 
 pip_install() {
     echo "*** pip install" "$@"
@@ -87,9 +98,9 @@ main() {
     pip_install "ansible"; tools="$tools ansible ansible-doc ansible-galaxy ansible-playbook ansible-pull ansible-vault"
 
     # Nikola
-    command which nikola || pipsi install "nikola"
-    ~/.local/venvs/nikola/bin/python -c "import certifi" 2>/dev/null \
-        || ~/.local/venvs/nikola/bin/pip install "nikola[extras]"
+    command which nikola || pipsi_install "nikola"
+    $venv_base/nikola/bin/python -c "import certifi" 2>/dev/null \
+        || $venv_base/nikola/bin/pip install "nikola[extras]"
 
     # Link selected tools into ~/bin
     mkdir -p ~/bin
