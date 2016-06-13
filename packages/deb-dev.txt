@@ -24,6 +24,7 @@ libcurl4-openssl-dev
 libexpat1-dev
 libffi-dev
 libgdbm-dev
+libjpeg-dev
 libmysqlclient-dev
 libncurses5-dev
 libncursesw5-dev
