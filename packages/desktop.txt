@@ -1,0 +1,21 @@
+chromium-browser
+compizconfig-settings-manager
+cifs-utils
+gedit-plugins
+gedit-developer-plugins
+gedit-source-code-browser-plugin
+gimp
+libavcodec-extra
+nautilus-dropbox
+thunderbird
+ubuntu-restricted-extras
+unity-tweak-tool
+wmctrl
+xchat-gnome
+xdotool
+
+portmap nfs-common
+rdesktop
+
+my-weather-indicator
+nonotifs
