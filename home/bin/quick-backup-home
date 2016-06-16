@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#
+# Make a quick mirror of $HOME via rsync.
+#
+# Exclude patterns are read from
+#
+#   ~/.config/quick-backup-home-exclude.txt
+#
+target="${1:?You MUST provide a target path}"
+command cd
+rsync -auxv --delete-before --delete-excluded \
+    --exclude-from=$HOME/.config/quick-backup-home-exclude.txt \
+    "." "$target/$(hostname)-$(id -un)"
