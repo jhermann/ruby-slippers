@@ -17,5 +17,9 @@ xdotool
 portmap nfs-common
 rdesktop
 
+# PPAs
 my-weather-indicator
 nonotifs
+
+# https://raw.githubusercontent.com/nodesource/distributions/master/deb/setup_4.x
+nodejs nodejs-dev npm
