@@ -2,6 +2,7 @@
 Backups
 Desktop
 tmp
+lib
 cache
 venvs
 virtualenvs
