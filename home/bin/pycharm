@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#
+# PyCharm startup wrapper
+#
+export PYCHARM_JDK=/usr/lib/jvm/java-8-oracle
+~/.local/lib/pycharm-2016/bin/pycharm.sh "$@" >/tmp/pycharm-$LOGNAME-run.log 2>&1 &
+disown
