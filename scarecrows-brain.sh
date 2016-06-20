@@ -66,6 +66,7 @@ main() {
 
     # Make venv
     pyvenv
+    ln -s "$venvdir/bin/python" "$HOME/bin/python-$(basename $venvdir)"
 
     # Install tools into venv
     tools=""
