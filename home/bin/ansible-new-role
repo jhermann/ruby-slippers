@@ -1,0 +1,74 @@
+#!/bin/bash
+#
+#  Create a new Ansible role
+
+if [ "$#" -ne 1 ]; then
+	echo "usage: ${0##*/} ROLE_NAME"
+	exit 1
+fi
+
+if [ -d roles/"$1" ]; then
+	echo "ERROR: roles/$1 already exists."
+	exit 1
+fi
+
+mkdir -p roles/"$1"/
+mkdir -p roles/"$1"/{tasks,handlers,templates,defaults,meta,vars}
+
+user_name="$(git config user.name)"
+user_email="$(git config user.email)"
+
+cat <<@EOF >roles/"$1"/tasks/main.yml
+---
+#- name: Install packages
+#  apt: name={{ item }} state=present
+#  with_items:
+#    - bridge-utils
+#    - fping
+#
+#- name: /etc/hostname
+#  template: src=hostname dest=/etc/hostname owner=root group=root mode=0644
+#  notify:
+#    - Reset hostname
+@EOF
+
+cat <<@EOF >roles/"$1"/handlers/main.yml
+---
+#- name: Reset hostname
+#  shell: hostname -F /etc/hostname
+@EOF
+
+cat <<@EOF >roles/"$1"/defaults/main.yml
+---
+#network_ether_interfaces: []
+#network_bridge_interfaces: []
+#network_bond_interfaces:
+#  - device: bond0
+#    bootproto: static
+#    bond_mode: active-backup
+#    bond_miimon: 101
+#    bond_slaves: "{{ bond_interfaces }}"
+@EOF
+
+cat <<@EOF >roles/"$1"/meta/main.yml
+---
+#galaxy_info:
+#  author: "$user_name <$user_email>"
+#  min_ansible_version: 1.9
+#  platforms:
+#   - name: Ubuntu
+#     versions:
+#      - xenial
+#      - trusty
+#      - precise
+#  categories:
+#    - networking
+#    - system
+#dependencies: []
+@EOF
+
+cat <<@EOF >roles/"$1"/vars/main.yml
+---
+#env:
+# RUNLEVEL: 1
+@EOF
