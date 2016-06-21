@@ -28,6 +28,7 @@ pipsi_install() {
     local name="${1:?You must provide a name}"; shift
     echo "*** pip script install" "$name"
     pyvenv "$name"
+    "$venv_base/$name/bin/pip" install -U "pip>=8" "wheel" "setuptools" || :
     "$venv_base/$name/bin/pip" install "$name" "$@"
 }
 
@@ -66,11 +67,11 @@ main() {
 
     # Make venv
     pyvenv
-    ln -s "$venvdir/bin/python" "$HOME/bin/python-$(basename $venvdir)"
+    ln -nfs "$venvdir/bin/python" "$HOME/bin/python-$(basename $venvdir)"
 
     # Install tools into venv
     tools=""
-    pip_install -U "pip>=8" "wheel" || :
+    pip_install -U "pip>=8" "wheel" "setuptools" || :
     pip_install "yolk3k" || :
     pip_install "pylint>=1.0"; tools="$tools pyreverse epylint pylint pylint-gui symilar"
     pip_install "flake8"; tools="$tools pyflakes pep8 flake8"
@@ -124,8 +125,8 @@ main() {
     fi
 
     # Install yEd
-    if test ! -d ~/lib/yed-current -a -n "$(ls -1 /tmp/yEd-*.zip 2>/dev/null)"; then
-        mkdir -p ~/lib; cd ~/lib
+    if test ! -d ~/.local/lib/yed-current -a -n "$(ls -1 /tmp/yEd-*.zip 2>/dev/null)"; then
+        mkdir -p ~/.local/lib; cd ~/.local/lib
         unzip -xu "$(ls -1rt /tmp/yEd-*.zip | tail -n1)"
         ln -nfs $(ls -1rtd yed-[0-9]* | tail -n1) yed-current
     fi
@@ -166,12 +167,6 @@ main() {
         chmod a+x ~/bin/m
     fi
 
-    # ansible-new-role
-    if test ! -x ~/bin/ansible-new-role; then
-        curl -skSL https://raw.githubusercontent.com/realgo/ansible-new-role/master/ansible-new-role >~/bin/ansible-new-role
-        chmod a+x ~/bin/ansible-new-role
-    fi
-
     # gimme (go installer)
     if test ! -x ~/bin/gimme; then
         curl -sL -o ~/bin/gimme "https://raw.githubusercontent.com/travis-ci/gimme/master/gimme"
@@ -186,7 +181,7 @@ main() {
     fi
 
     # Manual intervention needed?
-    test -d ~/lib/yed-current || echo "WARN: for yEd, you need to download it to /tmp," \
+    test -d ~/.local/lib/yed-current || echo "WARN: for yEd, you need to download the 'Java' ZIP file to /tmp," \
         "from http://www.yworks.com/en/products_download.php"
 }
 
