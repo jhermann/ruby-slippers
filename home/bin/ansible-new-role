@@ -1,6 +1,8 @@
 #!/bin/bash
 #
 #  Create a new Ansible role
+#
+# Source: https://raw.githubusercontent.com/realgo/ansible-new-role/master/ansible-new-role
 
 if [ "$#" -ne 1 ]; then
 	echo "usage: ${0##*/} ROLE_NAME"
