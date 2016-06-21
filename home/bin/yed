@@ -1,4 +1,6 @@
 #! /bin/bash
 #usejava7
-java -jar ~/lib/yed-current/yed.jar "$@" >/dev/null 2>&1 &
+yed_jar="$HOME/.local/lib/yed-current/yed.jar"
+test -f "$yed_jar" || yed_jar="$HOME/lib/yed-current/yed.jar"
+java -jar "$yed_jar" "$@" >/dev/null 2>&1 &
 disown
