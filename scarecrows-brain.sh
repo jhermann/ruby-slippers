@@ -109,7 +109,7 @@ main() {
     for tool in $tools; do
         target=${tool%.py}
         echo "Symlinking ~/bin/$target"
-        ln -nfs "../.pyvenv/ruby-slippers/bin/$tool" "$HOME/bin/$target"
+        ln -nfs "$(sed -re s:$HOME:..: <<<$venvdir)/bin/$tool" "$HOME/bin/$target"
     done
     ls -lrt "$venvdir/bin" | tail -n10
 
