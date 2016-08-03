@@ -95,6 +95,7 @@ main() {
     tool_install "pypirc"
     tool_install "twine"
     tool_install "pawk"
+    tool_install "cookiecutter"
     tool_install "restview"
     tool_install "pex"
     # tool_install "joe"
