@@ -10,6 +10,7 @@ locales
 lsb-release
 lsof
 ntp
+rng-tools
 tmux
 vim
 vnstat
