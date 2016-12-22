@@ -24,12 +24,18 @@ pyvenv() {
 }
 
 
-pipsi_install() {
+pipsi_install_spec() {
     local name="${1:?You must provide a name}"; shift
+    local pkgspec="${1:?You must provide a package spec or URL}"; shift
     echo "*** pip script install" "$name"
     pyvenv "$name"
     "$venv_base/$name/bin/pip" install -U "pip>=8" "wheel" "setuptools" || :
-    "$venv_base/$name/bin/pip" install "$name" "$@"
+    "$venv_base/$name/bin/pip" install "$pkgspec" "$@"
+}
+
+pipsi_install() {
+    local name="${1:?You must provide a name}"; shift
+    pipsi_install_spec "$name" "$name" "$@"
 }
 
 pip_install() {
@@ -101,6 +107,8 @@ main() {
     tool_install "pex"
     # tool_install "joe"
     pip_install "ansible"; tools="$tools ansible ansible-doc ansible-galaxy ansible-playbook ansible-pull ansible-vault"
+    pipsi_install_spec urbandicli "https://github.com/novel/py-urbandict/archive/master.zip#egg=urbandict";
+        tools="$tools urbandicli"
 
     # Nikola
     command which nikola || pipsi_install "nikola"
@@ -186,6 +194,9 @@ main() {
     # Manual intervention needed?
     test -d ~/.local/lib/yed-current || echo "WARN: for yEd, you need to download the 'Java' ZIP file to /tmp," \
         "from http://www.yworks.com/en/products_download.php"
+
+    echo
+    echo "*** ALL OK ***"
 }
 
 
