@@ -1,8 +1,11 @@
 #
 # Python related stuff
 #
+RUBY_SLIPPERS_VENV="$HOME/.local/virtualenvs/ruby-slippers"
+test -d "$RUBY_SLIPPERS_VENV" \
+    || RUBY_SLIPPERS_VENV="$HOME/.pyvenv/ruby-slippers"
 
-alias click-click-click='source ~/.pyvenv/ruby-slippers/bin/activate'
+alias click-click-click='source $RUBY_SLIPPERS_VENV/bin/activate'
 alias pyzen="python -c 'import this'"
 alias pypi="pip install -i https://pypi.python.org/simple"
 
