@@ -1,6 +1,6 @@
 ## (Temporarily) Ignoring Changed Files
 
-`git update-index` offers the `--assume-unchanged` option to tell git that it should, well, assume the files provided with that option as unchanged. This excludes that file from being considered for `git commit -a`, `git add .`, and so on.
+`git update-index` offers the `--assume-unchanged` option to tell git that it should, well, assume the files provided with that option are unchanged. This excludes that file from being considered for `git commit -a`, `git add .`, and so on.
 
 Practical uses are ignoring local changes to files that should never be committed, like changing the version / distro in a `debian/changelog`, or adding git status information to an in-development version number stored in build configuration files.
 
