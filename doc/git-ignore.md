@@ -4,7 +4,7 @@
 
 Practical uses are ignoring local changes to files that should never be committed, like changing the version / distro in a `debian/changelog`, or adding git status information to an in-development version number stored in build configuration files.
 
-Any upstream changes on such files cause a merge conflict that must be manually resolved. Also note you can always *explictly* add such files to a change set.
+Any upstream changes on such files cause a merge conflict that must be manually resolved. Also note you can always *explicitly* add such files to a change set.
 
 To help with daily usage, add these to the `[alias]` section of your `~/.gitconfig`:
 
