@@ -1,0 +1,5 @@
+#! /usr/bin/env bash
+# Show "assumed unchanged" files in the current repo
+repo=$(git rev-parse --show-toplevel)
+test -z "$1" || { repo="$1"; shift; }
+git ls-files -v "$@" "$repo" | grep "^[a-z]"

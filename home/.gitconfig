@@ -22,5 +22,7 @@
         unstage = reset HEAD
         uncommit = reset --soft HEAD^
         unchange = checkout HEAD
+        ignore = update-index --assume-unchanged
+        unignore = update-index --no-assume-unchanged
 [push]
         default = simple
