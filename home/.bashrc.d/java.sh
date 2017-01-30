@@ -1,37 +1,44 @@
 # Debian / Ubuntu Java
-function usejava5 {
+function _clean_java_env {
+    export MANPATH=$(sed -r -e 's~:/usr/lib/jvm/[^:]+~~g' -e 's/:+/:/g' -e 's/^:|:$//g' <<<":$MANPATH")
     test -n "$JAVA_HOME" && export PATH="$(tr : \\n <<<"$PATH" | grep -v ^$JAVA_HOME/ | tr \\n :)"
-    export JAVA_HOME=/usr/lib/jvm/java-1.5.0-sun
+}
+function usejava5 {
+    _clean_java_env
+    export JAVA_HOME="/usr/lib/jvm/java-1.5.0-sun"
     prependpathvar PATH $JAVA_HOME/jre/bin
     prependpathvar PATH $JAVA_HOME/bin
 }
 function usejava6 {
-    test -n "$JAVA_HOME" && export PATH="$(tr : \\n <<<"$PATH" | grep -v ^$JAVA_HOME/ | tr \\n :)"
-    export JAVA_HOME="/usr/lib/jvm/java-6-openjdk-$(dpkg-architecture -q DEB_HOST_ARCH)"
-    test -d "$JAVA_HOME" || export JAVA_HOME="/usr/lib/jvm/java-6-sun"  # Prefer Oracle JVM if found
+    _clean_java_env
+    export JAVA_HOME="/usr/lib/jvm/java-6-sun"  # Prefer Oracle JVM if found
+    test -d "$JAVA_HOME" || \
+        export JAVA_HOME="/usr/lib/jvm/java-6-openjdk-$(dpkg-architecture -q DEB_HOST_ARCH)"
     prependpathvar PATH $JAVA_HOME/jre/bin
     prependpathvar PATH $JAVA_HOME/bin
 }
 function usejava7 {
-    test -n "$JAVA_HOME" && export PATH="$(tr : \\n <<<"$PATH" | grep -v ^$JAVA_HOME/ | tr \\n :)"
-    export JAVA_HOME="/usr/lib/jvm/java-7-openjdk-$(dpkg-architecture -q DEB_HOST_ARCH)"
-    test -d "$JAVA_HOME" || export JAVA_HOME="/usr/lib/jvm/java-7-oracle"  # Prefer Oracle JVM if found
+    _clean_java_env
+    export JAVA_HOME="/usr/lib/jvm/java-7-oracle"  # Prefer Oracle JVM if found
+    test -d "$JAVA_HOME" || \
+        export JAVA_HOME="/usr/lib/jvm/java-7-openjdk-$(dpkg-architecture -q DEB_HOST_ARCH)"
     prependpathvar PATH $JAVA_HOME/jre/bin
     prependpathvar PATH $JAVA_HOME/bin
     prependpathvar MANPATH "$JAVA_HOME/man"
     export MANPATH="${MANPATH%:}:"  # ensure it ends with ':'
 }
 function usejava8 {
-    test -n "$JAVA_HOME" && export PATH="$(tr : \\n <<<"$PATH" | grep -v ^$JAVA_HOME/ | tr \\n :)"
-    export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-$(dpkg-architecture -q DEB_HOST_ARCH)"
-    test -d "$JAVA_HOME" || export JAVA_HOME="/usr/lib/jvm/java-8-oracle"  # Prefer Oracle JVM if found
+    _clean_java_env
+    export JAVA_HOME="/usr/lib/jvm/java-8-oracle"  # Prefer Oracle JVM if found
+    test -d "$JAVA_HOME" || \
+        export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-$(dpkg-architecture -q DEB_HOST_ARCH)"
     prependpathvar PATH $JAVA_HOME/jre/bin
     prependpathvar PATH $JAVA_HOME/bin
     prependpathvar MANPATH "$JAVA_HOME/man"
     export MANPATH="${MANPATH%:}:"  # ensure it ends with ':'
 }
 function usezulu9 {  # Azul Zulu9 Certified OpenJDK
-    test -n "$JAVA_HOME" && export PATH="$(tr : \\n <<<"$PATH" | grep -v ^$JAVA_HOME/ | tr \\n :)"
+    _clean_java_env
     export JAVA_HOME="/usr/lib/jvm/zulu-9-$(dpkg-architecture -q DEB_HOST_ARCH)"
     prependpathvar PATH "$JAVA_HOME/bin"
     prependpathvar MANPATH "$JAVA_HOME/man"
