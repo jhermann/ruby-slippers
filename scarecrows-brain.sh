@@ -178,12 +178,6 @@ main() {
         chmod a+x ~/bin/m
     fi
 
-    # gimme (go installer)
-    if test ! -x ~/bin/gimme; then
-        curl -sL -o ~/bin/gimme "https://raw.githubusercontent.com/travis-ci/gimme/master/gimme"
-        chmod a+x ~/bin/gimme
-    fi
-
     # Hack font
     if test ! -f ~/.fonts/Hack-Regular.ttf; then
         curl -sL -o /tmp/hack-ttf.zip "https://github.com/chrissimpkins/Hack/releases/download/v2.010/Hack-v2_010-ttf.zip"
