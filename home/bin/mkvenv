@@ -14,8 +14,8 @@
 set -e
 #set -x
 basedir=$(command cd >/dev/null $(dirname $(readlink -f "$0" || echo "$0")) && pwd)
-venv_version=1.9.1 # virtualenv version to use
-venv_basedir="$HOME/.local/virtualenvs" # venv default base directory
+venv_version=15.1.0  # virtualenv version to use
+venv_basedir="$HOME/.local/virtualenvs"  # venv default base directory
 virtualenv="$venv_basedir/.virtualenv"
 pypi_url="${PYPI_URL:-https://pypi.python.org}"
 
@@ -77,6 +77,17 @@ if test -z "$venvdir" ; then
         fi
     done
 fi
+
+# Update basic install machinery
+echo "Updating pip..."
+"$venvdir/bin/pip" -q install -U "pip"
+echo "Updating setuptools..."
+"$venvdir/bin/pip" -q install -U  "setuptools>=14.3" >/dev/null 2>&1 || :
+for req in "wheel" "no-manylinux1"; do
+    echo "Updating $req..."
+    "$venvdir/bin/pip" -q install -U "$req" || :
+done
+"$venvdir/bin/pip" uninstall --yes "distribute" >/dev/null 2>&1 || :
 
 # Auto-install any requirements
 if $in_project; then
