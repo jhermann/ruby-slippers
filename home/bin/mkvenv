@@ -13,7 +13,7 @@
 #
 set -e
 #set -x
-basedir=$(cd $(dirname $(readlink -f "$0" || echo "$0")) && pwd)
+basedir=$(command cd >/dev/null $(dirname $(readlink -f "$0" || echo "$0")) && pwd)
 venv_version=1.9.1 # virtualenv version to use
 venv_basedir="$HOME/.local/virtualenvs" # venv default base directory
 virtualenv="$venv_basedir/.virtualenv"
@@ -23,7 +23,7 @@ pypi_url="${PYPI_URL:-https://pypi.python.org}"
 in_project=false
 if test -f "$basedir/setup.py" -o -f "$basedir/setup.cfg"; then
     venvdir="$basedir/.venv/$(basename "$basedir")"
-    cd "$basedir"
+    command cd "$basedir"
     in_project=true
 fi
 
@@ -36,11 +36,11 @@ if test ! -f "$venv_basedir/.complete"; then
         if pip install --log "$venv_basedir/.virtualenv.log" -d "$venv_basedir" virtualenv==$venv_version 2>/dev/null; then
             echo "*** Downloaded virtualenv-$venv_version.tar.gz using pip"
         else
-            ( cd "$venv_basedir" && curl -sOkS "$pypi_url/packages/source/v/virtualenv/virtualenv-$venv_version.tar.gz" )
+            ( command cd "$venv_basedir" && curl -sOkS "$pypi_url/packages/source/v/virtualenv/virtualenv-$venv_version.tar.gz" )
         fi
         mv "$venv_basedir/virtualenv-$venv_version.tar.gz" "$venv_basedir/.virtualenv-$venv_version.tar.gz"
     fi
-    ( cd "$venv_basedir" && tar xfz .virtualenv-$venv_version.tar.gz && mv virtualenv-$venv_version .virtualenv )
+    ( command cd "$venv_basedir" && tar xfz .virtualenv-$venv_version.tar.gz && mv virtualenv-$venv_version .virtualenv )
     echo "$venv_version" >"$venv_basedir/.complete"
 fi
 
@@ -72,7 +72,7 @@ if test -z "$venvdir" ; then
     venvdir="."
     for arg in "${argv[@]}"; do
         if test -d "$arg/bin" -a -r "$arg/bin/activate"; then
-            venvdir=$(cd "$arg" && pwd)
+            venvdir=$(command cd >/dev/null "$arg" && pwd)
             break
         fi
     done
@@ -82,7 +82,7 @@ fi
 if $in_project; then
     for deps in requirements.txt requires.txt *-requirements.txt requirements-*.txt; do
         deps="$PWD/$deps"
-        test -r "$deps" && ( cd "$venvdir" && "./bin/pip" install -r "$deps" \
+        test -r "$deps" && ( command cd "$venvdir" && "./bin/pip" install -r "$deps" \
             -i "$pypi_url/simple/" --build "pip-build" --download-cache "pip-cache" )
     done
     "$venvdir/bin/python" "$basedir/setup.py" develop -U -i "$pypi_url/simple/"
@@ -93,6 +93,6 @@ echo >"$venvdir/.env" "test ! -f bin/activate || . bin/activate"
 if test "$(which python 2>/dev/null)" != "$venvdir/bin/python" ; then
     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
     echo "Please call the following command to activate this virtualenv..."
-    echo "." $(cd "$venvdir/bin" && pwd)"/activate"
+    echo "." $(command cd >/dev/null "$venvdir/bin" && pwd)"/activate"
     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 fi
