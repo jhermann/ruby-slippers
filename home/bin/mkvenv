@@ -26,13 +26,16 @@
 set -e
 #set -x
 basedir=$(command cd >/dev/null $(dirname $(readlink -f "$0" || echo "$0")) && pwd)
-venv_version=15.1.0  # virtualenv version to use
 venv_basedir="$HOME/.local/virtualenvs"  # venv default base directory
-virtualenv="$venv_basedir/.virtualenv"
+virtualenv_version=15.1.0  # virtualenv version to use
+virtualenv_install_dir="$venv_basedir/.virtualenv"
 pypi_url="${PYPI_URL:-https://pypi.python.org}"
 
-# If started as bootstrap script in a project, create local virtualenv
+# If started as bootstrap script in a project, or if being in a workdir, create local virtualenv
 in_project=false
+if test -f "setup.py" -o -f "setup.cfg"; then
+    basedir="$PWD"
+fi
 if test -f "$basedir/setup.py" -o -f "$basedir/setup.cfg"; then
     venvdir="$basedir/.venv/$(basename "$basedir")"
     command cd "$basedir"
@@ -41,19 +44,19 @@ fi
 
 # Download virtualenv tool if missing
 if test ! -f "$venv_basedir/.complete"; then
-    mkdir -p "$virtualenv"
-    rm -rf "$virtualenv"
-    if test ! -f "$venv_basedir/.virtualenv-$venv_version.tar.gz"; then
-        echo "*** Downloading virtualenv-$venv_version.tar.gz"
-        if pip install --log "$venv_basedir/.virtualenv.log" -d "$venv_basedir" virtualenv==$venv_version 2>/dev/null; then
-            echo "*** Downloaded virtualenv-$venv_version.tar.gz using pip"
+    mkdir -p "$virtualenv_install_dir"
+    rm -rf "$virtualenv_install_dir"
+    if test ! -f "$venv_basedir/.virtualenv-$virtualenv_version.tar.gz"; then
+        echo "*** Downloading virtualenv-$virtualenv_version.tar.gz"
+        if pip install --log "$venv_basedir/.virtualenv.log" -d "$venv_basedir" virtualenv==$virtualenv_version 2>/dev/null; then
+            echo "*** Downloaded virtualenv-$virtualenv_version.tar.gz using pip"
         else
-            ( command cd "$venv_basedir" && curl -sOkS "$pypi_url/packages/source/v/virtualenv/virtualenv-$venv_version.tar.gz" )
+            ( command cd "$venv_basedir" && curl -sOkS "$pypi_url/packages/source/v/virtualenv/virtualenv-$virtualenv_version.tar.gz" )
         fi
-        mv "$venv_basedir/virtualenv-$venv_version.tar.gz" "$venv_basedir/.virtualenv-$venv_version.tar.gz"
+        mv "$venv_basedir/virtualenv-$virtualenv_version.tar.gz" "$venv_basedir/.virtualenv-$virtualenv_version.tar.gz"
     fi
-    ( command cd "$venv_basedir" && tar xfz .virtualenv-$venv_version.tar.gz && mv virtualenv-$venv_version .virtualenv )
-    echo "$venv_version" >"$venv_basedir/.complete"
+    ( command cd "$venv_basedir" && tar xfz .virtualenv-$virtualenv_version.tar.gz && mv virtualenv-$virtualenv_version .virtualenv )
+    echo "$virtualenv_version" >"$venv_basedir/.complete"
 fi
 
 # Find proper Python executable; if first arg is executable, use that as the interpreter
@@ -77,7 +80,7 @@ fi
 
 # Create the virtualenv
 echo "Using interpreter '$python'"
-$python "$virtualenv/virtualenv.py" "${argv[@]}" $venvdir
+$python "$virtualenv_install_dir/virtualenv.py" "${argv[@]}" $venvdir
 
 # Try to find the created virtualenv from arguments, if not pre-determined
 if test -z "$venvdir" ; then
