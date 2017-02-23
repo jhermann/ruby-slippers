@@ -100,7 +100,7 @@ echo "Updating pip..."
 "$venvdir/bin/pip" -q install -U "pip"
 echo "Updating setuptools..."
 "$venvdir/bin/pip" -q install -U  "setuptools>=14.3" >/dev/null 2>&1 || :
-for req in "wheel" "no-manylinux1"; do
+for req in "wheel"; do
     echo "Updating $req..."
     "$venvdir/bin/pip" -q install -U "$req" || :
 done
