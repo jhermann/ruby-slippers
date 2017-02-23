@@ -120,13 +120,20 @@ if $in_project; then
     if ! grep "^# mkvenv: no-deps" "$basedir/setup.py" >/dev/null; then
         "$venvdir/bin/python" "$basedir/setup.py" develop -U -i "$pypi_url/simple/"
     fi
+
+    # Create autoenv script
+    if test ! -f "$basedir/.env"; then
+        echo >"$basedir/.env" \
+             "test ! -f \"${venvdir#$basedir/}/bin/activate\"" \
+             "|| . \"${venvdir#$basedir/}/bin/activate\""
+    fi
 fi
 
 # Report activation instructions
-echo >"$venvdir/.env" "test ! -f bin/activate || . bin/activate"
 if test "$(which python 2>/dev/null)" != "$venvdir/bin/python" ; then
     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
     echo "Please call the following command to activate this virtualenv..."
     echo "." $(command cd >/dev/null "$venvdir/bin" && pwd)"/activate"
+    test ! -f "$basedir/.env" || echo -e "\nOr use the provided autoenv script (.env)."
     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 fi
