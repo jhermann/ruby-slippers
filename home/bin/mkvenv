@@ -109,11 +109,17 @@ done
 # Auto-install any requirements
 if $in_project; then
     for deps in requirements.txt requires.txt *-requirements.txt requirements-*.txt; do
-        deps="$PWD/$deps"
-        test -r "$deps" && ( command cd "$venvdir" && "./bin/pip" install -r "$deps" \
-            -i "$pypi_url/simple/" --build "pip-build" --download-cache "pip-cache" )
+        deps="$basedir/$deps"
+        test -r "$deps" || continue
+        grep "^# mkvenv: no-deps" "$deps" >/dev/null && continue || :
+        ( command cd "$venvdir" \
+            && "$venvdir/bin/pip" install -r "$deps" -i "$pypi_url/simple/" \
+                                          --build "pip-build" --cache-dir "$basedir/.pip-cache" \
+            || echo >&2 "WARNING: pip failed with RC=$?" )
     done
-    "$venvdir/bin/python" "$basedir/setup.py" develop -U -i "$pypi_url/simple/"
+    if ! grep "^# mkvenv: no-deps" "$basedir/setup.py" >/dev/null; then
+        "$venvdir/bin/python" "$basedir/setup.py" develop -U -i "$pypi_url/simple/"
+    fi
 fi
 
 # Report activation instructions
