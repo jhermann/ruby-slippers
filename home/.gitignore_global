@@ -4,6 +4,7 @@
 *.py[oc]
 *.egg-info
 .venv/
+.pip-cache/
 
 # Packages
 *.gz
