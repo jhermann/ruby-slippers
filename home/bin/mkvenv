@@ -1,5 +1,17 @@
 #! /bin/bash
 #
+# SYNOPSIS
+#
+#   mkvenv
+#       Create local ".venv/‹basename›" if script is copied
+#       into workdir or called from within workdir
+#
+#   mkvenv ~name
+#       Create named venv in ~/.local/virtualenvs
+#
+#   mkvenv /path/to/python …
+#       Use a specific Python interpreter (1st arg is an executable)
+#
 # Make a Python virtualenv with a know version of "virtualenv", so
 # we don't have to worry about unsupported options, and age-old versions
 #
