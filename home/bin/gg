@@ -805,6 +805,7 @@ else
 			s|status) status ;;
 			l|log) log ;;
 			h|head) git show ;;
+			hw) git show -w ;;
 			b|branch) branch $2; exit ;;
 			ch|checkout) checkout $2; exit ;;
 			v|view|in|info) info $2; exit ;;
