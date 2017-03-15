@@ -17,6 +17,7 @@ alias rebashrc=". ~/.bashrc"
 alias total="awk '{tot=tot+\$1} END {print tot}'"
 alias avg="awk '{sum+=\$1} END { print sum/NR}'"
 alias utf8tolatin1="iconv -f utf-8 -t iso8859-1"
+alias sz-tty='wmctrl -r :ACTIVE: -e 0,-1,-1,1470,990; echo "Terminal size set to $(tput cols)×$(tput lines)"'
 
 # SCM
 alias cdiff='colordiff | less -r'
