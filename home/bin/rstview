@@ -1,0 +1,53 @@
+#! /bin/bash
+#
+# Quick preview of a reStructuredText file.
+#
+# Tries to find a fitting conversion tool, and displays common default files if present.
+#
+set -e
+#set -x
+filters="rst2html"
+defaultdocs="README.rst ReadMe.rst index.rst"
+
+
+fail() {
+    echo >&2 "FATAL:" "$@"
+    exit 1
+}
+
+usage() {
+    echo "usage:" $(basename "$1") "[-h|--help] [<file.rst>]"
+    echo
+    echo "Displays the given file or else one of '$defaultdocs' in your browser"
+    exit 1
+}
+
+
+for filter in $filters; do
+    which $filter >/dev/null && break
+done
+which $filter >/dev/null || fail "No reStructuredText filter installed!"
+
+for defaultdoc in $defaultdocs; do
+    test -f "$defaultdoc" && break
+done
+test -f "$defaultdoc" || defaultdoc=""
+
+
+case "$1" in
+    -h | --help)
+        usage "$0"
+        ;;
+    "")
+        test -n "$defaultdoc" || usage "$0"
+        rstfile="$defaultdoc"
+        ;;
+    *)
+        rstfile="$1"
+        ;;
+esac
+
+htmlfile="/tmp/.rstview_$USER_"$(command cd $(dirname "$rstfile") >/dev/null 2>&1 && pwd | tr / _)_$(basename "$rstfile")
+htmlfile="${htmlfile%.rst}.html"
+$filter <"$rstfile" >"$htmlfile" \
+    && xdg-open "$htmlfile"
