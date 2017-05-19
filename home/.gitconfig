@@ -29,5 +29,6 @@
         # http://megakemp.com/2016/08/25/git-undo/
         undo = "!f() { \\\n    git reset --hard $(git rev-parse --abbrev-ref HEAD)@{${1-1}}; \\\n}; f"
         # http://durdn.com/blog/2012/11/22/must-have-git-aliases-advanced-examples/
+        ll = log --pretty=format:"%C(red)%h%C(yellow)%d\\ %C(reset)%s%C(green)\\ [%cn]" --decorate --numstat
 [push]
         default = simple
