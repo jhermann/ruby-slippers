@@ -727,7 +727,7 @@ browse() {
     local url="$(git remote show origin | grep -i fetch.url | cut -f2- -d: | tr -d ' \n')"
     url="${url%.git}"
     url="${url#ssh://}"
-    url=$(sed -r -e 's~git@([^:/]+)[:/]~https://\1/~' <<<"$url")
+    url=$(sed -r -e 's~git@([^:/]+)[:/]~https://\1/~' -e 's~\.com-[^/]+/~.com/~' <<<"$url")
     python2 -c "import webbrowser; webbrowser.open_new_tab('$url')" >/dev/null 2>&1 &
     disown
 }
