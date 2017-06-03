@@ -50,7 +50,7 @@ if test ! -f "$venv_basedir/.complete"; then
     rm -rf "$virtualenv_install_dir"
     if test ! -f "$venv_basedir/.virtualenv-$virtualenv_version.tar.gz"; then
         echo "*** Downloading virtualenv-$virtualenv_version.tar.gz"
-        if pip install --log "$venv_basedir/.virtualenv.log" -d "$venv_basedir" virtualenv==$virtualenv_version 2>/dev/null; then
+        if pip install --log "$venv_basedir/.virtualenv.log" -d "$venv_basedir" --no-binary :all: virtualenv==$virtualenv_version 2>/dev/null; then
             echo "*** Downloaded virtualenv-$virtualenv_version.tar.gz using pip"
         else
             ( command cd "$venv_basedir" && curl -sOkS "$pypi_url/packages/source/v/virtualenv/virtualenv-$virtualenv_version.tar.gz" )
