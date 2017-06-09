@@ -4,6 +4,8 @@
 #
 set -e
 
+pixels=1080  # horizontal resolution (2K=1920, 4K=3840)
+
 if test $# -eq 0 -o "$1" = '-h' -o "$1" = '--help'; then
     cat <<-...
 	usage: $(basename $0) ‹image›…
@@ -19,13 +21,22 @@ skip() {
     continue
 }
 
+pipeline=(
+    -morphology Convolve DoG:15,100,0
+    -negate
+    -normalize
+    -blur 0x1
+    -channel RBG -level 60%,91%,0.1
+)
+label=clean
+test $pixels -eq 0 || pipeline+=( -geometry ${pixels}x9999 )
+test $pixels -eq 0 || label="$label-${pixels}p"
+
 for img in "$@"; do
-    cleaned="${img%.*}-clean.${img##*.}"
-    test "${img##*-clean.}" = "$img" || continue
+    cleaned="${img%.*}-$label.${img##*.}"
+    test "${img##*-${label%%-*}[-.]}" = "$img" || continue
     test ! -f "$cleaned" || skip "$img" "already cleaned"
 
     echo "$img…"
-    convert -morphology Convolve DoG:15,100,0 -negate -normalize \
-            -blur 0x1 -channel RBG -level 60%,91%,0.1 \
-            "$img" "$cleaned"
+    convert "${pipeline[@]}" "$img" "$cleaned"
 done
