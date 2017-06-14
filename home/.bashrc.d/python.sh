@@ -15,9 +15,14 @@ alias pypi="pip install -i https://pypi.python.org/simple"
 alias pydoc="python -c 'import pydoc; pydoc.cli()'"
 alias spydoc="command pydoc"
 
-# Activate "pipsi" installs
-if test -d ~/.local/bin && grep -v ":$HOME/.local/bin:" <<<":$PATH:" >/dev/null; then
+# Activate "~/.local/bin" binaries
+if test -d ~/.local/bin && ! grep ":$HOME/.local/bin:" <<<":$PATH:" >/dev/null; then
     export PATH="$HOME/.local/bin:$PATH"
+fi
+
+# Activate "/opt/pyenv/bin" binaries (low prio)
+if test -d /opt/pyenv/bin && ! grep ":/opt/pyenv/bin:" <<<":$PATH:" >/dev/null; then
+    export PATH="$PATH:/opt/pyenv/bin"
 fi
 
 # Activate "miniconda3" installs
