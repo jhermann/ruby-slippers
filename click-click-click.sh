@@ -14,10 +14,10 @@ test -n "$1" && { names="-iname *$1*"; shift; }
 
 set -e
 
-root="$(cd "$(dirname "$0")" && pwd)"
+root="$(command cd "$(dirname "$0")" && pwd)"
 linkbase="$root/home"
 
-( cd "$linkbase" && find . -type f $names ) | sort | while read file; do
+( command cd "$linkbase" && find . -type f $names ) | sort | while read file; do
     # omit "./"
     file="${file:2}"
 
