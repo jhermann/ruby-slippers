@@ -1,0 +1,21 @@
+MAVEN_OPTS="${MAVEN_OPTS}${MAVEN_OPTS:+ }-Xmx512m"
+#MAVEN_OPTS="${MAVEN_OPTS}${MAVEN_OPTS:+ }-XX:MaxPermSize=196m"
+
+# Enable GC log in target/mvn-gc.DATE.log"
+if false; then
+    # Create "target" in a mvn workdir if missing, else the JVM will log GC to stdout
+    test -f ./pom.xml && { test -d ./target || mkdir target; }
+
+    MAVEN_OPTS="${MAVEN_OPTS} -Xloggc:./target/mvn-gc.$(date +'%Y-%m-%d-%H%M%S-%N').log"
+    MAVEN_OPTS="${MAVEN_OPTS} -verbose:gc"
+    MAVEN_OPTS="${MAVEN_OPTS} -XX:+PrintGC"
+    MAVEN_OPTS="${MAVEN_OPTS} -XX:+PrintGCTimeStamps"
+    MAVEN_OPTS="${MAVEN_OPTS} -XX:+PrintGCDateStamps"
+    MAVEN_OPTS="${MAVEN_OPTS} -XX:+PrintHeapAtGC"
+    MAVEN_OPTS="${MAVEN_OPTS} -XX:+PrintGCDetails"
+    MAVEN_OPTS="${MAVEN_OPTS} -XX:+PrintTenuringDistribution"
+    MAVEN_OPTS="${MAVEN_OPTS} -XX:+PrintReferenceGC"
+    MAVEN_OPTS="${MAVEN_OPTS} -XX:+PrintAdaptiveSizePolicy"
+fi
+
+export MAVEN_OPTS
