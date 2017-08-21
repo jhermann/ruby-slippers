@@ -4,6 +4,8 @@
 [user]
         name = nobody
         email = nobody@example.com
+[includeIf "gitdir:~/src/github/"]
+        path = ~/.config/gitconfig/src_github.ini
 [color]
         diff = auto
         status = auto
