@@ -52,7 +52,6 @@ export PYTHONPATH=
 
 # Put system binaries upfront
 export PATH=/usr/bin:$PATH
-test $# -gt 0 || { editor; exit $?; }
 
 # Look out for grep results (containing a ':') and load file at the matching line
 args=()
@@ -92,6 +91,21 @@ for arg in "$@"; do
             ;;
     esac
 done
+
+# If called with no files in a git repo, open working set
+# Inspired by http://blog.amjith.com/git-open-a-small-git-hack
+if test ${#files[@]} -eq 0 ; then
+    if git rev-parse --show-toplevel >/dev/null 2>&1 ; then
+        readarray -t files < <(git status --porcelain -uno | cut -b4-)
+        #echo ${#files[@]} ${files[@]}
+        if test ${#files[@]} -eq 0 ; then
+            readarray -t files < <(git show --pretty="format:" --name-only HEAD)
+            #echo ${#files[@]} ${files[@]}
+        fi
+    fi
+fi
+
+test ${#files[@]} -gt 0 || { editor; exit $?; }
 
 # Open files
 for filename in "${files[@]}"; do
