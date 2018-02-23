@@ -3,7 +3,7 @@
 
 set -e
 max_depth=1
-age_days=3
+age_days=1
 
 if test -z "$1"; then
     echo "usage: $0 <directory>..."
