@@ -45,6 +45,7 @@ make_fullscreen() {
     while [ -z "`wmctrl -l | grep \"$WINDOWNAME\"`" ]; do
         sleep .25
     done
+    sleep .25
 
     # Put at X position 0 (left-most on nVidia twinview) and make fullscreen
     wmctrl -r "$WINDOWNAME" -e '0,0,-1,-1,-1'
@@ -64,7 +65,7 @@ elif test -z "$(pidof /usr/lib/kodi/kodi.bin)"; then
     /usr/bin/kodi --lircdev /var/run/lirc/lircd "$@" &
     disown
     sleep .75
-    make_fullscreen
+    #make_fullscreen
 else
     echo "$stamp Kodi already running" >>/tmp/kodi-launcher.log
 
