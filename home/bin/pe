@@ -33,7 +33,7 @@ py_file() {
         *'.**') file=${file%???}; maxdepth=99 ;;
         *'.*')  file=${file%??};  maxdepth=1  ;;
     esac
-    file="$($outer_python -c "import ${file}; print ${file}.__file__")"
+    file="$($outer_python -c "import ${file}; print(${file}.__file__)")"
     file="${file/.pyc/.py}"
     file="${file/.pyo/.py}"
     test -n "$file" || fail "Cannot locate python module for '${spec}'!"
