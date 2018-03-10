@@ -1,0 +1,25 @@
+#######################################################################
+# Beets configuration
+#
+# https://beets.readthedocs.io/en/v1.4.6/reference/config.html
+
+directory: ~/Music/beets
+library: ~/.local/share/beets/library.db
+art_filename: folder
+
+plugins:
+    - fetchart
+
+fetchart:
+    minwidth: 300
+    maxwidth: 800
+    # yes = require ratio of 1:1 (skip otherwise); 10px = deviation in pixels; 10% = in percent
+    enforce_ratio: 10%
+
+#import:
+    # Move files to 'directory'/artist/album
+    #move: yes
+    # Just fix tags
+    #copy: no
+    # Do not write tags back (just store them in the library DB)
+    #write: no
