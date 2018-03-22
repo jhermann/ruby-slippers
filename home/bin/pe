@@ -74,6 +74,12 @@ for arg in "$@"; do
             # open Python module
             py_file "${arg#py?}"
             ;;
+        /*/)
+            # open filename(s) by regex
+            IFS=$'\n'
+            files+=( $(findall . -regextype posix-egrep -iregex ".*${arg:1:-1}.*" -type f | sort | head -n $max_find_files) )
+            unset IFS
+            ;;
         ?*~*)
             # open file at first regex match (file~pattern)
             match=$(grep -nim1 -E -e "${arg#*~}" "${arg%%~*}")
