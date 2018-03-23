@@ -11,6 +11,7 @@ if test -z "$1"; then
     exit 1
 fi
 
+cond=""
 loop=true
 while $loop; do
     case "$1" in
@@ -21,8 +22,9 @@ while $loop; do
     *) loop=false ;;
     esac
 done
+test $age_days -eq 0 || cond="-mtime +$age_days"
 
-find "$@" -maxdepth $max_depth -type l -mtime +$age_days | sort | \
+find "$@" -maxdepth $max_depth -type l $cond | sort | \
 while read link; do
     #test -e "$link" && echo -n good || echo -n "bad "; echo "$link"
     #readlink "$link"
