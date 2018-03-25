@@ -97,7 +97,7 @@ main() {
     tool_install "check-manifest"
     tool_install "howdoi"
     tool_install "clf"
-    tool_install "pypirc"
+    pip_install "nose"; tool_install "pypirc"
     tool_install "twine"
     tool_install "pawk"
     tool_install "starred"
