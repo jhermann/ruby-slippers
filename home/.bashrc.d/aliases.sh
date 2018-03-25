@@ -12,6 +12,9 @@ alias ...="cd ../.."
 alias xo=xdg-open
 alias notes="pe $HOME/Documents/notes.md"
 
+# Default args
+alias eg="command eg --config-file=$HOME/.local/eg/config.ini"
+
 # Little helpers
 alias rebashrc=". ~/.bashrc"
 alias total="awk '{tot=tot+\$1} END {print tot}'"

@@ -104,6 +104,7 @@ main() {
     tool_install "cookiecutter"
     tool_install "restview"
     tool_install "pex"
+    tool_install "eg"
     # tool_install "joe"
     pip_install "ansible"; tools="$tools ansible ansible-doc ansible-galaxy ansible-playbook ansible-pull ansible-vault"
     pipsi_install_spec urbandicli "https://github.com/novel/py-urbandict/archive/master.zip#egg=urbandict";
