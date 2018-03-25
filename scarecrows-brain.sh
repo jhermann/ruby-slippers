@@ -130,10 +130,10 @@ main() {
     fi
 
     # Install pastee
-    if test ! -x ~/bin/pastee; then
-        curl -skSL "https://pastee.org/pastee.py" >~/bin/pastee
-        chmod a+x ~/bin/pastee
-    fi
+#    if test ! -x ~/bin/pastee; then
+#        curl -skSL "https://pastee.org/pastee.py" >~/bin/pastee
+#        chmod a+x ~/bin/pastee
+#    fi
 
     # Install yEd
     if test ! -d ~/.local/lib/yed-current -a -n "$(ls -1 /tmp/yEd-*.zip 2>/dev/null)"; then
