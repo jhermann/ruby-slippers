@@ -3,9 +3,8 @@
 # install platform-independant tools into $HOME
 #
 set -e
-scriptdir="$(cd "$(dirname "$0")" && pwd)"
-venvdir="$HOME/.pyvenv/ruby-slippers"
-test -d $venvdir || venvdir="$HOME/.local/virtualenvs/ruby-slippers"
+scriptdir="$(command cd "$(dirname "$0")" && pwd)"
+venvdir="${RUBY_SLIPPERS_VENV:-$HOME/.local/virtualenvs/ruby-slippers}"
 venv_base=$(dirname $venvdir)
 tmpbase="/tmp/$(basename "$0")-$USER-$$"
 git_remote_hg_url="https://raw.github.com/felipec/git-remote-hg/master/git-remote-hg"

@@ -17,17 +17,18 @@
 #
 # If the first argument is an executable, use that as the Python interpreter.
 #
-# If the last argument is like "~name", then create the virtualenv in "~/.pyvenv/<name>".
+# If the last argument is like "~name", then create the virtualenv
+# in "~/.local/virtualenvs/<name>".
 #
 # If used as a bootstrap script in a project, the virtualenv is placed
-# in "./.pyvenv/<name>", with "<name>" being the basename of the project
+# in "./.venv/<name>", with "<name>" being the basename of the project
 # workdir, and any requirement files are passed on to pip in that virtualenv.
 #
 set -e
 #set -x
 basedir=$(command cd >/dev/null $(dirname $(readlink -f "$0" || echo "$0")) && pwd)
 venv_basedir="$HOME/.local/virtualenvs"  # venv default base directory
-virtualenv_version=15.1.0  # virtualenv version to use
+virtualenv_version=15.2.0  # virtualenv version to use
 virtualenv_install_dir="$venv_basedir/.virtualenv"
 pypi_url="${PYPI_URL:-https://pypi.python.org}"
 
