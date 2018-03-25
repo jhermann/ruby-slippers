@@ -13,7 +13,7 @@ alias xo=xdg-open
 alias notes="pe $HOME/Documents/notes.md"
 
 # Default args
-alias eg="command eg --config-file=$HOME/.local/eg/config.ini"
+alias eg="command eg --config-file=$HOME/.config/eg/config.ini"
 
 # Little helpers
 alias rebashrc=". ~/.bashrc"
