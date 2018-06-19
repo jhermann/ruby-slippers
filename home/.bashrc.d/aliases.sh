@@ -22,6 +22,7 @@ alias avg="awk '{sum+=\$1} END { print sum/NR}'"
 alias utf8tolatin1="iconv -f utf-8 -t iso8859-1"
 alias sz-tty='wmctrl -r :ACTIVE: -e 0,-1,-1,1470,990; sleep .3; echo "Terminal size set to $(tput cols)×$(tput lines)"'
 alias uc-em-quad="python3 -c 'print(\"\\u2001\", end=\"\")' | xsel -bi"
+alias uc-0-space="python3 -c 'print(\"\\u200B\", end=\"\")' | xsel -bi"
 
 # SCM
 alias cdiff='colordiff | less -r'
