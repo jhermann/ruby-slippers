@@ -19,6 +19,7 @@ iputils-tracepath
 meld
 mercurial
 ncdu
+neofetch
 pandoc
 pv
 python-pkg-resources
