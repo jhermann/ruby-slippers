@@ -2,10 +2,9 @@
         autocrlf = input
         excludesfile = ~/.gitignore_global
 [user]
-        name = nobody
-        email = nobody@example.com
-[includeIf "gitdir:/home/jhe/src/github/"]
-        path = ~/.config/gitconfig/jhe_src_github.ini
+	useConfigOnly = true
+#[includeIf "gitdir:/home/jhe/src/github/"]
+#        path = ~/.config/gitconfig/jhe_src_github.ini
 [color]
         diff = auto
         status = auto
