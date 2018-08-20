@@ -37,13 +37,17 @@ function usejava8 {
     prependpathvar MANPATH "$JAVA_HOME/man"
     export MANPATH="${MANPATH%:}:"  # ensure it ends with ':'
 }
-function usezulu9 {  # Azul Zulu9 Certified OpenJDK
+
+function _usezuluX {  # Azul Zulu Certified OpenJDK
     _clean_java_env
-    export JAVA_HOME="/usr/lib/jvm/zulu-9-$(dpkg-architecture -q DEB_HOST_ARCH)"
+    export JAVA_HOME="/usr/lib/jvm/zulu-$1-$(dpkg-architecture -q DEB_HOST_ARCH)"
     prependpathvar PATH "$JAVA_HOME/bin"
     prependpathvar MANPATH "$JAVA_HOME/man"
     export MANPATH="${MANPATH%:}:"  # ensure it ends with ':'
 }
+alias usezulu7='_usezuluX 7'
+alias usezulu8='_usezuluX 8'
+alias usezulu9='_usezuluX 9'
 
 if test -z "$JAVA_HOME" -a -d /usr/lib/jvm/java-8-oracle/bin/javac; then
     usejava8
