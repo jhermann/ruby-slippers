@@ -6,7 +6,7 @@
 #
 set -e
 #set -x
-filters="markdown2 markdown_py markdown markdown-calibre"
+filters="markdown_py markdown2 markdown-calibre"
 defaultdocs="README.md ReadMe.md index.md"
 
 
@@ -88,6 +88,18 @@ for defaultdoc in $defaultdocs; do
 done
 test -f "$defaultdoc" || defaultdoc=""
 
+OPTS=( )
+
+case $filter in
+    markdown_py)
+        OPTS+=(
+            -x markdown.extensions.fenced_code
+            -x markdown.extensions.tables
+            -x markdown.extensions.codehilite
+        )
+        ;;
+esac
+
 
 case "$1" in
     -h | --help)
@@ -108,6 +120,6 @@ title=$(head -n1 "$mdfile" | sed -r -e 's/^#+ ?//' -e 's/!?(\[|\().+?(\]|\)) ?//
 htmlfile="/tmp/.mdview_$USER_"$(command cd $(dirname "$mdfile") >/dev/null 2>&1 && pwd | tr / _)_$(basename "$mdfile")
 htmlfile="${htmlfile%.md}.html"
 intro >"$htmlfile" "$title" \
-    && $filter <"$mdfile" >>"$htmlfile" \
+    && $filter "${OPTS[@]}" <"$mdfile" >>"$htmlfile" \
     && outro >>"$htmlfile" \
     && xdg-open "$htmlfile"
