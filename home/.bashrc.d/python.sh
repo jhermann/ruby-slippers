@@ -10,6 +10,9 @@ export VIRTUALENV_NO_DOWNLOAD=1
 alias click-click-click='source $RUBY_SLIPPERS_VENV/bin/activate'
 alias pyzen="python -c 'import this'"
 alias pypi="pip install -i https://pypi.python.org/simple"
+alias pip="python -m pip"
+alias pip2="python2 -m pip"
+alias pip3="python3 -m pip"
 
 # Make pydoc work in virtualenvs, and also alias the system pydoc
 alias pydoc="python -c 'import pydoc; pydoc.cli()'"
