@@ -4,7 +4,7 @@
 #
 set -e
 scriptdir="$(command cd "$(dirname "$0")" && pwd)"
-venvdir="${RUBY_SLIPPERS_VENV:-$HOME/.local/virtualenvs/ruby-slippers}"
+venvdir="${RUBY_SLIPPERS_VENV:-$HOME/.local/venvs/ruby-slippers}"
 venv_base=$(dirname $venvdir)
 tmpbase="/tmp/$(basename "$0")-$USER-$$"
 git_remote_hg_url="https://raw.github.com/felipec/git-remote-hg/master/git-remote-hg"
@@ -16,7 +16,8 @@ pyvenv() {
     local name="${1:-ruby-slippers}"
     local pyvenv_dir="$venv_base/$name"
     if test ! -d "$pyvenv_dir"; then
-        hostpython="/usr/bin/python2"
+        hostpython="/usr/bin/python3"
+        test -x "$hostpython" || hostpython="/usr/bin/python2"
         test -x "$hostpython" || hostpython="/usr/bin/python"
         "$scriptdir"/home/bin/mkvenv "$hostpython" --setuptools --no-site-packages "$pyvenv_dir"
     fi
@@ -76,7 +77,8 @@ main() {
 
     # Install tools into venv
     tools=""
-    pip_install -U "pip>=8" "wheel" "setuptools" || :
+    pip_install -U "pip>=18" || :
+    pip_install -U "wheel<0.32" "setuptools" || :  # <0.32 due to "pex"
     pip_install "yolk3k" || :
     pip_install "pylint>=1.0"; tools="$tools pyreverse epylint pylint pylint-gui symilar"
     pip_install "flake8"; tools="$tools pyflakes pep8 flake8"
@@ -85,9 +87,9 @@ main() {
     tool_install "isort"
     pip_install "pypi-show-urls"; tools="$tools pypi-show-urls"
     pip_install "docutils >= 0.11"; tools="$tools rst2xml.py rst2s5.py rst2odt.py rst2man.py rst2latex.py rst2html.py"
-    pip_install "Sphinx == 1.1.3"; tools="$tools sphinx-quickstart sphinx-build sphinx-autogen sphinx-apidoc"
+    pip_install "Sphinx == 1.8.1"; tools="$tools sphinx-quickstart sphinx-build sphinx-autogen sphinx-apidoc"
     pip_install "https://github.com/jhermann/nodeenv/archive/master.zip#egg=nodeenv"; tools="$tools nodeenv"
-    pip_install "mercurial"; tools="$tools hg"
+    #pip_install "mercurial"; tools="$tools hg"
     #pip_install "devpi-client"; tools="$tools devpi"
     tool_install "pipsi"
     pip_install "pip-tools"; tools="$tools pip-review pip-dump"
@@ -109,11 +111,6 @@ main() {
     pip_install "ansible"; tools="$tools ansible ansible-doc ansible-galaxy ansible-playbook ansible-pull ansible-vault"
     pipsi_install_spec urbandicli "https://github.com/novel/py-urbandict/archive/master.zip#egg=urbandict";
         tools="$tools urbandicli"
-
-    # Nikola
-    command which nikola || pipsi_install "nikola"
-    $venv_base/nikola/bin/python -c "import certifi" 2>/dev/null \
-        || $venv_base/nikola/bin/pip install "nikola[extras]"
 
     # Link selected tools into ~/bin
     mkdir -p ~/bin
