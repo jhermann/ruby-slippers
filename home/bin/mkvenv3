@@ -1,0 +1,29 @@
+#! /bin/bash
+#
+# Make a Python3 virtualenv.
+#
+set -e
+#set -x
+
+venv_basedir="$HOME/.local/py3venv"  # venv default base directory
+venv_name="${1:?You MUST provide a virtualenv name}"
+venv_dir="$venv_basedir/$venv_name"
+
+echo "Creating $venv_dir…"
+deactivate 2>/dev/null || :
+python3 -m venv "$venv_dir"
+
+# Update basic install machinery
+echo "Updating tools…"
+"$venv_dir/bin/python" -m pip -q install -U "pip"
+"$venv_dir/bin/python" -m pip -q install -U "setuptools" "wheel"
+"$venv_dir/bin/python" -m pip -q install -U "bpython" "pipenv" "pip-upgrader" "yolk3k"
+
+# Report activation instructions
+if test "$(which python 2>/dev/null)" != "$venvdir/bin/python" ; then
+    echo
+    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    echo "Please call the following command to activate this virtualenv..."
+    echo "." $(command cd >/dev/null "$venv_dir/bin" && pwd)"/activate"
+    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+fi
