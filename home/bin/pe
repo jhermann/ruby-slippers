@@ -133,12 +133,19 @@ for filename in "${files[@]}"; do
     editor "${args[@]}" "$filename" $line
 done
 
-# Bring window to front
+# Bring window to front and optionally set a fixed position / size
 if which wmctrl >/dev/null; then
     test "$(dirname $filename)" != '.' || filename="$(pwd)/$filename"
-    title_re="^[^ ]+ +[^ ]+ +[^ ]+ +$(basename $filename).*/$(basename $(dirname $filename)). - gedit\$"
-    for i in seq 10; do
+    #title_re="^[^ ]+ +[^ ]+ +[^ ]+ +$(basename $filename).*/$(basename $(dirname $filename)). - gedit\$"
+    title_re=" - gedit\$"
+    for i in {1..40}; do
         wid=$(wmctrl -l | egrep "$title_re" | tail -n1 | cut -f1 -d' ')
-        test -n "$wid" && wmctrl -i -a "$wid" && break || sleep .1
+        if test -n "$wid"; then
+            wmctrl -i -a "$wid"
+            test -z "$GEDIT_WINPOS" || wmctrl -i -r "$wid" -e "$GEDIT_WINPOS"
+            break
+        else
+            sleep .1
+        fi
     done
 fi
