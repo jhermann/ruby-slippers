@@ -18,6 +18,8 @@ Dropbox
 .venv
 .tox
 .vagrant.d
+.local/share/zeitgeist
+chromium/Default/Application Cache/Cache
 cookiecutters
 my-personal-kanban
 python2.6

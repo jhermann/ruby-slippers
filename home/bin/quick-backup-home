@@ -8,6 +8,6 @@
 #
 target="${1:?You MUST provide a target path}"
 command cd
-rsync -auxv --delete-before --delete-excluded \
+ionice nice rsync -xavhP --delete-delay --delete-excluded --stats --times \
     --exclude-from=$HOME/.config/quick-backup-home-exclude.txt \
-    "." "$target/$(hostname)-$(id -un)"
+    $HOME/ "$target/$(hostname)-$(id -un)/"
