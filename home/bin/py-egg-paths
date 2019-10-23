@@ -11,6 +11,6 @@ if test -z "$1"; then
     echo "List EGGs installed for the given distutils spec."
     exit 1
 fi
-python -c "import pkg_resources; print '\\n'.join(repr(i) for i in pkg_resources.require('$1'))" \
+python -c "import pkg_resources; print('\\n'.join(repr(i) for i in pkg_resources.require('$1')))" \
     | sed -re "s:$HOME/:~/:g"
 
