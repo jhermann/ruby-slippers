@@ -10,7 +10,7 @@ alias md=mkdir
 alias ..="cd .."
 alias ...="cd ../.."
 alias xo=xdg-open
-alias tree="tree -I '*~|__pycache__|.git|.venv'"
+alias tree="tree -I '*~|*.py[co]|__pycache__|.git|.venv'"
 alias notes="pe $HOME/Documents/notes.md"
 
 # Define default args
