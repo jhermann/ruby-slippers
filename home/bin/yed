@@ -1,5 +1,8 @@
 #! /bin/bash
-#usejava7
+#
+# Wrapper to start yEd executable JAR with available Java8
+#
+test -d /usr/lib/jvm/java-8-oracle && export JAVA_HOME=$_ || :
 test -d /usr/lib/jvm/java-8-adoptopenjdk && export JAVA_HOME=$_ || :
 yed_jar="$HOME/.local/lib/yed-current/yed.jar"
 test -f "$yed_jar" || yed_jar="$HOME/lib/yed-current/yed.jar"
