@@ -103,6 +103,17 @@ install_dephell() {
     fi
 }
 
+dephell_pip() {
+    local name="${1:?You must provide a jail name}"; shift
+    local venv=$(dephell jail show "$name" 2>/dev/null | awk -F'"' '/path/{print $4}')
+
+    if test "$#" -eq 0; then
+        echo "$venv/bin/pip"
+    else
+        $venv/bin/pip "$@"
+    fi
+}
+
 tool_install() {
     local name="${1:?You must provide a name}"
     name="${name%%[[]*}"
@@ -145,6 +156,12 @@ install_py_tools() {
     #tool_install "https://github.com/jhermann/nodeenv/archive/master.zip#egg=nodeenv"
     #pipsi_install_spec urbandicli "https://github.com/novel/py-urbandict/archive/master.zip#egg=urbandict";
     #    tools="$tools urbandicli"
+
+    # add sphinx-autobuild to Sphinx jail
+    if test ! -x ~/.local/bin/sphinx-autobuild; then
+        dephell_pip sphinx install sphinx-autobuild
+        ln -nfs "$(dephell_pip sphinx | sed -e s:bin/pip:bin/sphinx-autobuild:)" ~/.local/bin
+    fi
 }
 
 main() {
