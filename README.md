@@ -27,8 +27,9 @@ Finally, to install some tools local to your account:
 
 Most notably you'll get code quality (`pylint`, `flake8`) and productivity tools
 (`bpython`, and the incredibly useful `http` from [httpie](http://httpie.org/)).
-The Python tools are installed into a dedicated Python *virtualenv* (`~/.pyvenv/ruby-slippers`),
-and then symlinked into `~/bin`.
+The Python tools are installed into their own dedicated Python venvs using
+[dephell](https://github.com/dephell/dephell),
+and their console entry points symlinked into `~/.local/bin`.
 
 
 ## References
