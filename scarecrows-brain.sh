@@ -151,7 +151,7 @@ install_py_tools() {
     tool_install "pythonpy"
     tool_install "restview"
     tool_install "shiv"
-    #ERR tool_install "sphinx"
+    tool_install "sphinx"
     tool_install "starred"
 
     #tool_install "docutils >= 0.11"
