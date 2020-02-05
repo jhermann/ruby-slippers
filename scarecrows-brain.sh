@@ -135,6 +135,7 @@ install_py_tools() {
     tool_install "check-manifest"
     tool_install "clf"
     tool_install "cookiecutter"
+    tool_install "dependency-check"
     tool_install "diffoscope"
     # ~/.local/share/dephell/venvs/diffoscope/bin/pip install -I libarchive-c==2.7
     tool_install "eg"
