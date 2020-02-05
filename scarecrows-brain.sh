@@ -99,6 +99,7 @@ install_dephell() {
     if test ! -d "$venv_base/dephell"; then
         progress "Installing dephell"
         curl -L dephell.org/install | $snake
+        $venv_base/dephell/bin/pip install -U pip setuptools wheel  # use current tooling
         $venv_base/dephell/bin/pip install "mistune<1"  # fix "m2r"
     fi
 }
