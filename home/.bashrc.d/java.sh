@@ -48,6 +48,7 @@ function _usezuluX {  # Azul Zulu Certified OpenJDK
 alias usezulu7='_usezuluX 7'
 alias usezulu8='_usezuluX 8'
 alias usezulu9='_usezuluX 9'
+alias usezulu11='_usezuluX 11'
 
 if test -z "$JAVA_HOME" -a -d /usr/lib/jvm/java-8-oracle/bin/javac; then
     usejava8
