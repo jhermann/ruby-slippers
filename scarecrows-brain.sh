@@ -130,6 +130,7 @@ tool_install() {
 install_py_tools() {
     #tool_install "ansible"
     tool_install "bumpversion"
+    tool_install "changelogs"
     tool_install "check-manifest"
     tool_install "clf"
     tool_install "cookiecutter"
