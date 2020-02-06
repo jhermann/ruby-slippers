@@ -148,6 +148,7 @@ install_py_tools() {
     tool_install "oh-my-stars"
     tool_install "pawk"
     tool_install "pex"
+    tool_install "pipenv"
     tool_install "pip-tools"
     tool_install "pylint"
     #PY2? tool_install "pypi-show-urls"
