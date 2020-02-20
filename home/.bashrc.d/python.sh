@@ -6,6 +6,7 @@ test -d "$RUBY_SLIPPERS_VENV" \
     || RUBY_SLIPPERS_VENV="$HOME/.pyvenv/ruby-slippers"
 
 export VIRTUALENV_NO_DOWNLOAD=1
+export PEX_ROOT="$HOME/.cache/pex"
 
 alias click-click-click='source $RUBY_SLIPPERS_VENV/bin/activate'
 alias pyzen="python -c 'import this'"
