@@ -140,6 +140,7 @@ install_py_tools() {
     # ~/.local/share/dephell/venvs/diffoscope/bin/pip install -I libarchive-c==2.7
     tool_install "eg"
     tool_install "flake8"
+    tool_install "flit"
     tool_install "howdoi"
     tool_install "httpie"
     tool_install "isort[pipfile,pyproject,requirements,xdg_home]"
