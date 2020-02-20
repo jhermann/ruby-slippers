@@ -96,11 +96,14 @@ progress() {
 }
 
 install_dephell() {
-    if test ! -d "$venv_base/dephell"; then
+    if test ! -x "$HOME/.local/bin/dephell"; then
         progress "Installing dephell"
-        curl -L dephell.org/install | $snake
-        $venv_base/dephell/bin/pip install -U pip setuptools wheel  # use current tooling
-        $venv_base/dephell/bin/pip install "mistune<1"  # fix "m2r"
+        #curl -L dephell.org/install | $snake
+        $python3 -m venv $venv_base/dephell
+        $venv_base/dephell/bin/pip install --no-warn-script-location -U pip setuptools wheel  # use current tooling
+        $venv_base/dephell/bin/pip install --no-warn-script-location 'dephell[full]'
+        $venv_base/dephell/bin/pip install --no-warn-script-location "mistune<1"  # fix "m2r"
+        ln -nfs $venv_base/dephell/bin/dephell ~/.local/bin
     fi
 }
 
@@ -175,6 +178,7 @@ install_py_tools() {
 
 main() {
     mkdir -p ~/bin ~/.local/bin
+    python3=$(command which python3.8 python3.7 python3.6 python3.5 python3 | head -n1)
 
     install_dephell
     install_py_tools
