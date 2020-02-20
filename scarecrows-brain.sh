@@ -160,7 +160,7 @@ install_py_tools() {
     tool_install "pythonpy"
     tool_install "restview"
     tool_install "shiv"
-    tool_install "sphinx"
+    tool_install "sphinx-autobuild"
     tool_install "starred"
     tool_install "tox"
 
@@ -170,9 +170,9 @@ install_py_tools() {
     #    tools="$tools urbandicli"
 
     # add sphinx-autobuild to Sphinx jail
-    if test ! -x ~/.local/bin/sphinx-autobuild; then
-        dephell_pip sphinx install sphinx-autobuild
-        ln -nfs "$(dephell_pip sphinx | sed -e s:bin/pip:bin/sphinx-autobuild:)" ~/.local/bin
+    if test ! -x ~/.local/bin/sphinx-quickstart; then
+        dephell_pip sphinx-autobuild install sphinx
+        ln -nfs "$(dephell_pip sphinx-autobuild | sed -e s:bin/pip:bin/sphinx:)"-* ~/.local/bin
     fi
 }
 
