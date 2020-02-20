@@ -16,3 +16,4 @@ _load_resource_dir() {
 _load_resource_dir ~/.bash_completion.d
 _load_resource_dir ~/.pyvenv/ruby-slippers/bash_completion.d
 _load_resource_dir ~/.local/virtualenvs/ruby-slippers/bash_completion.d
+_load_resource_dir ~/.local/venvs/ruby-slippers/bash_completion.d
