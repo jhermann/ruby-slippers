@@ -11,4 +11,4 @@ fi
 args=( "$@" )
 find "${args[@]:(($# - 1))}" -type f | \
     egrep -v '/(.git|.svn|.venv|.tox|build|dist|package|release|target)/' | egrep -v "(\\.pyc|\\.o|\\.a|~)\$" | \
-    tr \\n \\0 | xargs --null egrep -nH "${args[@]:0:(($# - 1))}"
+    tr \\n \\0 | xargs --null egrep --color=always -nH "${args[@]:0:(($# - 1))}"
