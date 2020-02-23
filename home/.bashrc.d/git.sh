@@ -10,6 +10,7 @@ if test "$(type -t __git_ps1)" = "function" ; then
 fi
 
 export GITHUB_USER=jhermann
+export GG_BROWSER=firefox
 
 github_clone_fork() {
     local upstream="${1:?You need to provide an upstream repo name (user/name) as the 1st arg}"

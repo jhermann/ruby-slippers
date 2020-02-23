@@ -728,7 +728,11 @@ browse() {
     url="${url%.git}"
     url="${url#ssh://}"
     url=$(sed -r -e 's~git@([^:/]+)[:/]~https://\1/~' -e 's~\.com-[^/]+/~.com/~' <<<"$url")
-    python3 -c "import webbrowser; webbrowser.open_new_tab('$url#readme')" >/dev/null 2>&1 &
+    if test -n "$GG_BROWSER"; then
+        $GG_BROWSER "$url#readme" >/dev/null 2>&1 &
+    else
+        python3 -c "import webbrowser; webbrowser.open_new_tab('$url#readme')" >/dev/null 2>&1 &
+    fi
     disown
 }
 
