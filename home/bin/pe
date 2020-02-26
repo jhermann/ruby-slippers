@@ -1,11 +1,13 @@
 #! /bin/bash
 #
-# "gedit" wrapper
+# Wrapper for gedit / pluma
 #
 
 shopt -s extglob
 outer_python=$(command which python)
 max_find_files=25
+
+test -x /usr/bin/pluma && EDITOR=pluma || EDITOR=gedit
 
 
 fail() { # fail with error message on stderr and exit code 1
@@ -16,11 +18,11 @@ fail() { # fail with error message on stderr and exit code 1
 editor() {
     case $(lsb_release -cs) in
         trusty|utopic|vivid|wily|xenial|bionic)
-            gedit "$@" >>/tmp/gedit-$USER.log 2>&1 &
+            $EDITOR "$@" >>/tmp/$EDITOR-$USER.log 2>&1 &
             disown
             ;;
         precise|lucid|*)
-            gedit --background "$@"
+            $EDITOR --background "$@"
             ;;
     esac
 }
@@ -136,10 +138,10 @@ done
 # Bring window to front and optionally set a fixed position / size
 if test -n "$GEDIT_WINPOS" && which wmctrl >/dev/null; then
     test "$(dirname $filename)" != '.' || filename="$(pwd)/$filename"
-    #title_re="^[^ ]+ +[^ ]+ +[^ ]+ +$(basename $filename).*/$(basename $(dirname $filename)). - gedit\$"
-    title_re=" - gedit\$"
+    #title_re="^[^ ]+ +[^ ]+ +[^ ]+ +$(basename $filename).*/$(basename $(dirname $filename)). - $EDITOR\$"
+    title_re=" - $EDITOR\$"
     for i in {1..40}; do
-        wid=$(wmctrl -l | egrep "$title_re" | tail -n1 | cut -f1 -d' ')
+        wid=$(wmctrl -l | egrep -i "$title_re" | tail -n1 | cut -f1 -d' ')
         if test -n "$wid"; then
             wmctrl -i -a "$wid"
             test -z "$GEDIT_WINPOS" || wmctrl -i -r "$wid" -e "$GEDIT_WINPOS"
