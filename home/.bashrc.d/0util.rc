@@ -1,0 +1,20 @@
+extendpathvar() { # append to PATH env vars
+    tmppath=$(eval echo '$'$1)
+    tmppath="$(echo $tmppath | sed -e "s:$2::" -e 's/::/:/')"
+    tmppath="${tmppath:+$tmppath:}$2"
+    test -d $2 && export $1=$tmppath
+    unset tmppath
+}
+
+prependpathvar() { # prepend to PATH env vars
+    tmppath=$(eval echo '$'$1)
+    tmppath="$(echo $tmppath | sed -e "s:$2::" -e 's/::/:/')"
+    tmppath="$2${tmppath:+:$tmppath}"
+    test -d $2 && export $1=$tmppath
+    unset tmppath
+}
+
+fail() { # fail with ERROR msg and return code 1
+    echo >&2 "ERROR:" "$@"
+    exit 1
+}
