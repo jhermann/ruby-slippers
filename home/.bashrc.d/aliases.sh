@@ -33,3 +33,8 @@ alias svnignore="svn propedit svn:ignore"
 
 # Typos
 alias gti=git
+
+
+xmlpretty() {
+    xmllint --format "$@" | pygmentize | less -R
+}
