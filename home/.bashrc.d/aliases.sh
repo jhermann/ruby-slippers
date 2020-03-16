@@ -35,6 +35,10 @@ alias svnignore="svn propedit svn:ignore"
 alias gti=git
 
 
+ssh_key_fp() {
+    local keyfile=${1:?You MUST provide a private key file as the 1st arg}; shift
+    ssh-keygen -l -f "$keyfile" "$@"
+}
 xmlpretty() {
     xmllint --format "$@" | pygmentize | less -R
 }
