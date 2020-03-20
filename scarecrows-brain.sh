@@ -144,6 +144,7 @@ install_py_tools() {
     tool_install "eg"
     tool_install "flake8"
     tool_install "flit"
+    tool_install "git-filter-repo"
     tool_install "howdoi"
     tool_install "httpie"
     tool_install "isort[pipfile,pyproject,requirements,xdg_home]"
