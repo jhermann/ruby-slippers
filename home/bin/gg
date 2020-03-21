@@ -727,7 +727,9 @@ browse() {
     local url="$(git remote show origin | grep -i fetch.url | cut -f2- -d: | tr -d ' \n')"
     url="${url%.git}"
     url="${url#ssh://}"
-    url=$(sed -r -e 's~git@([^:/]+)[:/]~https://\1/~' -e 's~\.com-[^/]+/~.com/~' <<<"$url")
+    url=$(sed -r -e 's~git@([^:/]+)[:/]~https://\1/~' \
+                 -e 's~\.com-[^/]+/~.com/~' <<<"$url" \
+                 -e 's~//oauth2:[^@]+@~//~')
     if test -n "$GG_BROWSER"; then
         $GG_BROWSER "$url#readme" >/dev/null 2>&1 &
     else
