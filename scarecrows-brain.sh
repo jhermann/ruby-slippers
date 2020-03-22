@@ -163,7 +163,7 @@ install_py_tools() {
     tool_install "shiv"
     tool_install "sphinx"
     tool_install "starred"
-    tool_install "tox"
+    tool_install "tox" "tox-venv"
 
     #tool_install "docutils >= 0.11"
     #tool_install "https://github.com/jhermann/nodeenv/archive/master.zip#egg=nodeenv"
