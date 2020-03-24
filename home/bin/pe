@@ -28,7 +28,8 @@ editor() {
             disown
             ;;
         windows)
-            $EDITOR "$@"
+            $EDITOR "$@" &
+            disown
             ;;
         precise|lucid|*)
             $EDITOR --background "$@"
