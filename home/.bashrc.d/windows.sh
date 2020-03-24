@@ -2,6 +2,8 @@ if test -n "$SYSTEMROOT" -a -n "$WINDIR"; then
     # git bash (MingW) environment
     export PS1="${PS1%%\$ *}\$ "
     export LANG=en_US.UTF-8
+    export PYTHONIOENCODING=UTF-8
+    export PYTHONUTF8=1
     export GG_BROWSER=start
     prependpathvar PATH "$HOME/.local/bin"
 
