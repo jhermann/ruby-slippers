@@ -5,9 +5,15 @@
 set -e
 scriptdir="$(command cd "$(dirname "$0")" && pwd)"
 if test -n "$SYSTEMROOT" -a -n "$WINDIR"; then
+    windows=true
     snake="py -3"
+    bindir=Scripts
+    exe=".exe"
 else
+    windows=false
     snake=$(deactivate 2>/dev/null; command which python3.9 python3.8 python3.7 python3.6 python3.5 python3 | head -n1)
+    bindir=bin
+    exe=""
 fi
 #venvdir="${RUBY_SLIPPERS_VENV:-$HOME/.local/venvs/ruby-slippers}"
 venv_base="$HOME/.local/share/dephell/venvs"
@@ -104,10 +110,11 @@ install_dephell() {
         progress "Installing dephell"
         #curl -L dephell.org/install | $snake
         $snake -m venv $venv_base/dephell
-        $venv_base/dephell/bin/pip install --no-warn-script-location -U pip setuptools wheel  # use current tooling
-        $venv_base/dephell/bin/pip install --no-warn-script-location 'dephell[full]'
-        $venv_base/dephell/bin/pip install --no-warn-script-location "mistune<1"  # fix "m2r"
-        ln -nfs $venv_base/dephell/bin/dephell ~/.local/bin
+        $venv_base/dephell/$bindir/python -m pip install --no-warn-script-location -U pip  # use current tooling
+        $venv_base/dephell/$bindir/python -m pip install --no-warn-script-location -U setuptools wheel
+        $venv_base/dephell/$bindir/python -m pip install --no-warn-script-location 'dephell[full]'
+        $venv_base/dephell/$bindir/python -m pip install --no-warn-script-location "mistune<1"  # fix "m2r"
+        ln -nfs $venv_base/dephell/$bindir/dephell$exe ~/.local/bin
     fi
 }
 
