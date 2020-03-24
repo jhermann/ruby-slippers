@@ -4,7 +4,11 @@
 #
 set -e
 scriptdir="$(command cd "$(dirname "$0")" && pwd)"
-snake="$(command which python3.6 | head -n1)"
+if test -n "$SYSTEMROOT" -a -n "$WINDIR"; then
+    snake="py -3"
+else
+    snake=$(deactivate 2>/dev/null; command which python3.9 python3.8 python3.7 python3.6 python3.5 python3 | head -n1)
+fi
 #venvdir="${RUBY_SLIPPERS_VENV:-$HOME/.local/venvs/ruby-slippers}"
 venv_base="$HOME/.local/share/dephell/venvs"
 tmpbase="/tmp/$(basename "$0")-$USER-$$"
@@ -99,7 +103,7 @@ install_dephell() {
     if test ! -x "$HOME/.local/bin/dephell"; then
         progress "Installing dephell"
         #curl -L dephell.org/install | $snake
-        $python3 -m venv $venv_base/dephell
+        $snake -m venv $venv_base/dephell
         $venv_base/dephell/bin/pip install --no-warn-script-location -U pip setuptools wheel  # use current tooling
         $venv_base/dephell/bin/pip install --no-warn-script-location 'dephell[full]'
         $venv_base/dephell/bin/pip install --no-warn-script-location "mistune<1"  # fix "m2r"
@@ -179,7 +183,6 @@ install_py_tools() {
 
 main() {
     mkdir -p ~/bin ~/.local/bin
-    python3=$(command which python3.8 python3.7 python3.6 python3.5 python3 | head -n1)
 
     install_dephell
     install_py_tools
