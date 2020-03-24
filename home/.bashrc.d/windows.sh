@@ -3,6 +3,8 @@ if test -n "$SYSTEMROOT" -a -n "$WINDIR"; then
     export PS1="${PS1%%\$ *}\$ "
 
     alias xdg-open=start
+    alias python3="winpty py -3"
+    alias python=python3
 
     test -n "$SSH_AGENT_PID" || eval $(ssh-agent)
     ##ssh-add ~/.ssh/github
