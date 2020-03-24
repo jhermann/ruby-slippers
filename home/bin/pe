@@ -7,7 +7,13 @@ shopt -s extglob
 outer_python=$(command which python)
 max_find_files=25
 
-test -x /usr/bin/pluma && EDITOR=pluma || EDITOR=gedit
+if test -n "$SYSTEMROOT" -a -n "$WINDIR"; then
+    EDITOR=notepad
+    codename=windows
+else
+    test -x /usr/bin/pluma && EDITOR=pluma || EDITOR=gedit
+    codename=$(lsb_release -cs)
+fi
 
 
 fail() { # fail with error message on stderr and exit code 1
@@ -16,10 +22,13 @@ fail() { # fail with error message on stderr and exit code 1
 }
 
 editor() {
-    case $(lsb_release -cs) in
+    case $codename in
         trusty|utopic|vivid|wily|xenial|bionic)
             $EDITOR "$@" >>/tmp/$EDITOR-$USER.log 2>&1 &
             disown
+            ;;
+        windows)
+            $EDITOR "$@"
             ;;
         precise|lucid|*)
             $EDITOR --background "$@"
