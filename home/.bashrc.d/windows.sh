@@ -4,6 +4,7 @@ if test -n "$SYSTEMROOT" -a -n "$WINDIR"; then
     export LANG=en_US.UTF-8
     export PYTHONIOENCODING=UTF-8
     export PYTHONUTF8=1
+    export PYTHONPYCACHEPREFIX="$HOME/.local/cache/pycache"
     export GG_BROWSER=start
     prependpathvar PATH "$HOME/.local/bin"
 
@@ -11,6 +12,7 @@ if test -n "$SYSTEMROOT" -a -n "$WINDIR"; then
     alias python3="winpty py -3"
     alias python=python3
 
+    test -d "$PYTHONPYCACHEPREFIX" || unset PYTHONPYCACHEPREFIX
     chcp.com 65001 >/dev/null  # use UTF-8 codepage
     test -n "$SSH_AGENT_PID" || eval $(ssh-agent)
     ##ssh-add ~/.ssh/github
