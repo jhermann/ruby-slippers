@@ -3,7 +3,7 @@ default_context:
     email: "jh@web.de"
     github_username: "jhermann"
     pypi_username: "jh"
-    year: "2019"
+    year: "2020"
     license: "Apache 2.0"
     open_source_license: "Apache Software License 2.0"
 cookiecutters_dir: "~/.local/cookiecutters/"
