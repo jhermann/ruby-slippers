@@ -1,6 +1,6 @@
 if test -n "$SYSTEMROOT" -a -n "$WINDIR"; then
     # git bash (MingW) environment
-    export PATH=$(tr : \\n <<<"$PATH" | grep -v Oracle/Java | tr \\n :)
+    export PATH=$(tr : \\n <<<"$PATH" | grep -v Oracle/Java | grep -v Local/Microsoft/WindowsApps | tr \\n :)
     export PATH="${PATH%:}"
     ##echo "$PATH" | tr \;\: \\n\\n
 
