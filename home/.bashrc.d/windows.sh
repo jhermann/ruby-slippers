@@ -5,6 +5,8 @@ if test -n "$SYSTEMROOT" -a -n "$WINDIR"; then
     ##echo "$PATH" | tr \;\: \\n\\n
 
     export PS1="${PS1%%\$ *}\$ "
+    export BROWSER="/c/ProgramData Files (x86)/Mozilla Firefox/firefox.exe"
+    export BROWSER="$BROWSER;$HOME/AppData/Local/Google/Chrome/Application/chrome.exe"
     export LANG=en_US.UTF-8
     export PYTHONIOENCODING=UTF-8
     export PYTHONUTF8=1
@@ -14,6 +16,9 @@ if test -n "$SYSTEMROOT" -a -n "$WINDIR"; then
 
     alias xdg-open=start
     alias python3="winpty py -3"
+    alias python3.6="winpty py -3.6"
+    alias python3.7="winpty py -3.7"
+    alias python3.8="winpty py -3.8
     alias python=python3
 
     test -d "$PYTHONPYCACHEPREFIX" || unset PYTHONPYCACHEPREFIX
