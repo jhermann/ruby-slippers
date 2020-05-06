@@ -20,6 +20,10 @@ if test -n "$SYSTEMROOT" -a -n "$WINDIR"; then
     alias python3.7="winpty py -3.7"
     alias python3.8="winpty py -3.8"
     alias python=python3
+    alias identify="magick identify"
+    alias convert="magick convert"
+    alias mogrify="magick mogrify"
+    alias montage="magick montage"
 
     test -d "$PYTHONPYCACHEPREFIX" || unset PYTHONPYCACHEPREFIX
     chcp.com 65001 >/dev/null  # use UTF-8 codepage
