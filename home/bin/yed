@@ -4,7 +4,21 @@
 #
 test -d /usr/lib/jvm/java-8-oracle && export JAVA_HOME=$_ || :
 test -d /usr/lib/jvm/java-8-adoptopenjdk && export JAVA_HOME=$_ || :
+java="${JAVA_HOME:?JAVA_HOME must be set!}/bin/java"
+
 yed_jar="$HOME/.local/lib/yed-current/yed.jar"
 test -f "$yed_jar" || yed_jar="$HOME/lib/yed-current/yed.jar"
-$JAVA_HOME/bin/java -jar "$yed_jar" "$@" >/dev/null 2>&1 &
+test -f "$yed_jar" || yed_jar="$HOME/share/java/yed-current/yed.jar"
+
+if test -n "$SYSTEMROOT" -a -n "$WINDIR"; then
+    java=$(cygpath "$java")
+    yed_jar=$(cygpath -m "$yed_jar")
+fi
+yed_exe="$HOME/AppData/Local/Programs/yWorks/yEd/yEd.exe"
+if test -x "$yed_exe"; then
+    file="${1:?You MUST provide a graphml file}"; shift
+    "$yed_exe" $(cygpath -w "$file") "$@" >/dev/null 2>&1 &
+else
+    "$java" -jar "$yed_jar" "$@" >/dev/null 2>&1 &
+fi
 disown
