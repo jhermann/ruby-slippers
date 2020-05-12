@@ -8,7 +8,11 @@ outer_python=$(command which python)
 max_find_files=25
 
 if test -n "$SYSTEMROOT" -a -n "$WINDIR"; then
-    EDITOR=notepad
+    if [ -x "$(command -v code)" ]; then
+        EDITOR=code
+    else
+        EDITOR=notepad
+    fi
     codename=windows
 else
     test -x /usr/bin/pluma && EDITOR=pluma || EDITOR=gedit
