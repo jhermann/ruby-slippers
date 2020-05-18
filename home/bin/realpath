@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/env python3
 """ Portable (Python) version of "realpath".
 """
 import os
@@ -28,7 +28,7 @@ def main():
             sys.stdout.write(mapper(filename))
             sys.stdout.write('\0' if args.zero else '\n')
         sys.stdout.flush()
-    except OSError, exc:
+    except OSError as exc:
         parser.error(str(exc))
 
 

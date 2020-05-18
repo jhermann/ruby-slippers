@@ -1,0 +1,6 @@
+#! /usr/bin/env bash
+if test -n "$SYSTEMROOT" -a -n "$WINDIR"; then
+    py -3 "$@"
+else
+    exec python3 "$@"
+fi
