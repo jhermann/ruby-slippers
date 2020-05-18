@@ -150,7 +150,7 @@ for filename in "${files[@]}"; do
 done
 
 # Bring window to front and optionally set a fixed position / size
-if test -n "$GEDIT_WINPOS" && which wmctrl >/dev/null; then
+if test -n "$GEDIT_WINPOS" && which wmctrl >/dev/null 2>&1; then
     test "$(dirname $filename)" != '.' || filename="$(pwd)/$filename"
     #title_re="^[^ ]+ +[^ ]+ +[^ ]+ +$(basename $filename).*/$(basename $(dirname $filename)). - $EDITOR\$"
     title_re=" - $EDITOR\$"
