@@ -4,6 +4,12 @@ md2rst() {
     test \! -d .git || git add "${file/.md/.rst}"
 }
 
+rst2md() {
+    local file="${1:-README.rst}"
+    pandoc --from rst --to markdown --toc --reference-links -o "${file/.rst/.md}" "${file}"
+    #test \! -d .git || git add "${file/.rst/.md}"
+}
+
 # http://boredzo.org/blog/archives/2016-08-15/colorized-man-pages-understood-and-customized
 man() {
     LESS_TERMCAP_mb=$'\e'"[1;31m" \
