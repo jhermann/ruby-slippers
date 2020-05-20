@@ -15,6 +15,11 @@ if test -n "$SYSTEMROOT" -a -n "$WINDIR"; then
     export GG_BROWSER=start
     export PATH="$HOME/.local/bin:$PATH"
 
+    cdw() {
+        local dir=$(cygpath -u "$1")
+        cd "$dir"
+    }
+
     alias xdg-open=start
     alias python3="winpty py -3"
     alias python3.6="winpty py -3.6"
