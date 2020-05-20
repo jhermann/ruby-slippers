@@ -6,7 +6,8 @@ if test -n "$SYSTEMROOT" -a -n "$WINDIR"; then
 
     export PS1="${PS1%%\$ *}\$ "
     export BROWSER="/c/ProgramData Files (x86)/Mozilla Firefox/firefox.exe"
-    export BROWSER="$BROWSER;$HOME/AppData/Local/Google/Chrome/Application/chrome.exe"
+    #export BROWSER=$(cygpath -w "$BROWSER")
+    #export BROWSER="$BROWSER;$HOME/AppData/Local/Google/Chrome/Application/chrome.exe"
     export LANG=en_US.UTF-8
     export PYTHONIOENCODING=UTF-8
     export PYTHONUTF8=1
