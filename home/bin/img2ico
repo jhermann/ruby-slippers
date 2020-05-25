@@ -1,0 +1,20 @@
+#! /usr/bin/env bash
+img="${1:?You MUST provide an image file path}"
+tmpdir="$(mktemp -d)"
+magick=""
+cygpath=echo
+
+if test -n "$SYSTEMROOT" -a -n "$WINDIR"; then
+    magick="magick "
+    cygpath="cygpath -w"
+fi
+
+imgfile=$($cygpath $(realpath "$img"))
+cd "$tmpdir"
+for size in 16 32 64 128; do
+    ${magick}convert -geometry ${size}x${size} "$imgfile" "${size}.png"
+done
+
+${magick}convert *.png "${imgfile/.*/.ico}"
+${magick}identify "${imgfile/.*/.ico}"
+rm -rf "$tmpdir"
