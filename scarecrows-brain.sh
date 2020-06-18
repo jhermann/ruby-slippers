@@ -161,7 +161,7 @@ install_py_tools() {
     tool_install "isort[pipfile,pyproject,requirements,xdg_home]"
     tool_install "markdown2"
     tool_install "nose"
-    tool_install "oh-my-stars"
+    tool_install "oh-my-stars" ujson==3.0.0  # use ujson version with existing wheels
     tool_install "pawk"
     tool_install "pex"
     tool_install "pipenv"
