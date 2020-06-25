@@ -36,3 +36,11 @@ if test -n "$SYSTEMROOT" -a -n "$WINDIR"; then
     test -n "$SSH_AGENT_PID" || eval $(ssh-agent)
     ##ssh-add ~/.ssh/github
 fi
+
+if grep Microsoft /proc/version >/dev/null 2>&1; then
+    # Running on WSL (v1)
+    alias dpkg-buildpackage="command dpkg-buildpackage -r'fakeroot --faked faked-tcp'"
+
+    test -n "$SSH_AGENT_PID" || eval $(ssh-agent)
+    ##ssh-add ~/.ssh/github
+fi
