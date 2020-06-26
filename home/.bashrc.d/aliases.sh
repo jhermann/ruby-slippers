@@ -21,6 +21,7 @@ alias rebashrc=". ~/.bashrc"
 alias total="awk '{tot=tot+\$1} END {print tot}'"
 alias avg="awk '{sum+=\$1} END { print sum/NR}'"
 alias utf8tolatin1="iconv -f utf-8 -t iso8859-1"
+alias apt-update-debug='apt update -o Debug::Acquire::http=true'
 alias sz-tty='wmctrl -r :ACTIVE: -e 0,-1,-1,1470,990; sleep .3; echo "Terminal size set to $(tput cols)×$(tput lines)"'
 alias uc-nbsp="python3 -c 'print(\"\\xA0\", end=\"\")' | xsel -bi"
 alias uc-em-quad="python3 -c 'print(\"\\u2001\", end=\"\")' | xsel -bi"
