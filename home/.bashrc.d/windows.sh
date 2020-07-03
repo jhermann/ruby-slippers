@@ -3,6 +3,8 @@ if grep Microsoft /proc/version >/dev/null 2>&1; then
     alias dpkg-buildpackage="command dpkg-buildpackage -r'fakeroot --faked faked-tcp'"
 
     export DISPLAY=:0
+    export BROWSER="$HOME/.local/bin/firefox"
+
     test -n "$SSH_AGENT_PID" || eval $(ssh-agent)
     ##ssh-add ~/.ssh/github
 elif test -n "$SYSTEMROOT" -a -n "$WINDIR"; then
