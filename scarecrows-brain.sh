@@ -158,6 +158,7 @@ install_py_tools() {
     tool_install "git-filter-repo"
     tool_install "howdoi"
     tool_install "httpie"
+    tool_install "invoke" rituals requests
     tool_install "isort[pipfile,pyproject,requirements,xdg_home]"
     tool_install "markdown2"
     tool_install "nose"
@@ -172,7 +173,7 @@ install_py_tools() {
     tool_install "pythonpy"
     tool_install "restview"
     tool_install "shiv"
-    tool_install "sphinx"
+    tool_install "sphinx" sphinx-autobuild sphinx-rtd-theme sphinxcontrib-plantuml
     tool_install "starred"
     tool_install "tox" "tox-venv"
 
