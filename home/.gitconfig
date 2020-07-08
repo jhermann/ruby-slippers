@@ -22,6 +22,7 @@
         cfl = config -l --local
         grok = log --all --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue) <%an>%Creset' --abbrev-commit
         daily = !git grok --since='24 hours ago'
+        weekly = !git grok --since='7 days ago'
         unstage = reset HEAD
         uncommit = reset --soft HEAD^
         unchange = checkout HEAD
