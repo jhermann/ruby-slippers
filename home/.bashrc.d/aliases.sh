@@ -25,6 +25,8 @@ alias apt-update-debug='apt update -o Debug::Acquire::http=true'
 alias sz-tty='wmctrl -r :ACTIVE: -e 0,-1,-1,1470,990; sleep .3; echo "Terminal size set to $(tput cols)×$(tput lines)"'
 alias uc-nbsp="python3 -c 'print(\"\\xA0\", end=\"\")' | xsel -bi"
 alias uc-em-quad="python3 -c 'print(\"\\u2001\", end=\"\")' | xsel -bi"
+alias uc-em-dash="python3 -c 'print(\"\\u2014\", end=\"\")' | xsel -bi"
+alias uc-en-dash="python3 -c 'print(\"\\u2013\", end=\"\")' | xsel -bi"
 alias uc-0-space="python3 -c 'print(\"\\u200B\", end=\"\")' | xsel -bi"
 
 # SCM
