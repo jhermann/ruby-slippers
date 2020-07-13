@@ -6,10 +6,11 @@ set -e
 
 dirs=( "$@" )
 test $# -gt 0 || dirs=( "." )
+ignore="! ( -path '*/.tox/*' -o -path '*/.git/*' -o -path '*/.venv/*' -o -path '*/build/*' -o -path '*/target/*' )"
 
-num=$(find "${dirs[@]}" -name '*~' | wc -l)
+num=$(find "${dirs[@]}" -name '*~' $ignore | wc -l)
 echo "Purging $num backup files..."
 
 if test $num -gt 0; then
-    find "${dirs[@]}" -name '*~' -print0 | xargs -0 rm
+    find "${dirs[@]}" -name '*~' $ignore -print0 | xargs -0 rm
 fi
