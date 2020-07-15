@@ -1,6 +1,7 @@
 if grep Microsoft /proc/version >/dev/null 2>&1; then
     # Running on WSL (v1)
     alias dpkg-buildpackage="command dpkg-buildpackage -r'fakeroot --faked faked-tcp'"
+    alias code="/mnt/c/Users/$USER/AppData/Local/Programs/Microsoft_VS_Code/bin/code"
 
     export DISPLAY=:0
     export BROWSER="$HOME/.local/bin/firefox"
