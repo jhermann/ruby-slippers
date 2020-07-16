@@ -2,9 +2,10 @@ if grep Microsoft /proc/version >/dev/null 2>&1; then
     # Running on WSL (v1)
     alias dpkg-buildpackage="command dpkg-buildpackage -r'fakeroot --faked faked-tcp'"
     alias code="/mnt/c/Users/$USER/AppData/Local/Programs/Microsoft_VS_Code/bin/code"
+    alias xdg-open=wslview
 
     export DISPLAY=:0
-    export BROWSER="$HOME/.local/bin/firefox"
+    export BROWSER=wslview  # "$HOME/.local/bin/firefox"
 
     test -n "$SSH_AGENT_PID" || eval $(ssh-agent)
     ##ssh-add ~/.ssh/github
