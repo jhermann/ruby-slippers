@@ -7,7 +7,7 @@ set -e
 dirs=( "$@" )
 test $# -gt 0 || dirs=( "." )
 ignore="! ( -path '*/.tox/*' -o -path '*/.git/*' -o -path '*/.venv/*' -o -path '*/build/*' \
-    -o -path '*/target/*' -o -path '*/__pycache__/*' )"
+    -o -path '*/target/*' -o -path '*/__pycache__/*' -o -path '*/_build/*' )"
 
 num=$(find "${dirs[@]}" -name '*~' $ignore | wc -l)
 echo "Purging $num backup files..."
