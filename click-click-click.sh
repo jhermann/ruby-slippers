@@ -42,7 +42,7 @@ linkbase="$root/home"
     elif test -f ~/"$target"; then
         # conflict
         diff -b -U1 ~/"$target" "$linkbase/$file" || \
-            { echo; echo rm ~/"$target" "# to get this file out of the way"; echo; }
+            { echo; echo "rm -f" ~/"$target" "# to get this file out of the way"; echo; }
     else
         # missing
         echo ~/"$target" "+->" "$linkbase/$file"
