@@ -5,6 +5,7 @@ if grep Microsoft /proc/version >/dev/null 2>&1; then
     alias xdg-open=wslview
 
     export DISPLAY=:0
+    export LIBGL_ALWAYS_INDIRECT=1
     export BROWSER=wslview  # "$HOME/.local/bin/firefox"
 
     test -n "$SSH_AGENT_PID" || eval $(ssh-agent)
