@@ -724,12 +724,20 @@ info() {
 }
 
 browse() {
+    local relpath="${PWD##$(git rev-parse --show-toplevel)}"
     local url="$(git remote show origin | grep -i fetch.url | cut -f2- -d: | tr -d ' \n')"
+
     url="${url%.git}"
     url="${url#ssh://}"
     url=$(sed -r -e 's~git@([^:/]+)[:/]~https://\1/~' \
                  -e 's~\.com-[^/]+/~.com/~' <<<"$url" \
                  -e 's~//oauth2:[^@]+@~//~')
+
+    if test -n "$relpath"; then
+        url="${url}/tree/master${relpath}"
+    fi
+
+    #echo "$url"; exit 1
     if test -n "$GG_BROWSER"; then
         $GG_BROWSER "$url#readme" >/dev/null 2>&1 &
     else
