@@ -69,3 +69,6 @@ alias mvn-tests-skip=mvn-no-tests
 for goal in dependency:tree eclipse:eclipse "clean package" help:effective-pom versions:update-parent; do
     alias mvn-$(sed -re "s/[^a-z]+/-/" <<<$goal)="mvn $goal"
 done
+
+# Applications
+alias plantuml="java -jar ${HOME}/.local/share/java/plantuml.jar"
