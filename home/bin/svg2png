@@ -1,0 +1,88 @@
+#! /bin/bash
+# Create bitmaps (PNGs) from SVG files
+set -e
+
+use_xvfb=true
+inkscape=/usr/bin/inkscape
+log=/tmp/$(basename "$0")"-xvfb.log"
+
+if $use_xvfb; then
+    command which xvfb-run >/dev/null || { echo 'Please execute "sudo apt install xvfb"!'; exit 1; }
+fi
+
+mtime() {
+    test -e "$1" && stat --format "%Y" "$1" || echo "0"
+}
+
+svg2png() {
+    local svg_file="$1"; shift
+    local inkscape_opts=( )
+    local name_traits=""
+
+    while test "${1:0:1}" = '-'; do
+        case "$1" in
+            --layer)
+                name_traits="${name_traits}_$3"
+                inkscape_opts+=( --verb=LayerShowAll )
+                for i in $(seq 1 3); do
+                    inkscape_opts+=( --verb=LayerPrev )
+                    test $i = $2 || inkscape_opts+=( --verb=LayerDelete )
+                done
+                inkscape_opts+=( --verb=FileSave --verb=FileQuit )
+                shift; shift
+                ;;
+            *)
+                echo "Usage: $0 [-n] [--layer # name] <widths>"
+                echo "ERROR: Unknown option '$1'"
+                exit 1
+                ;;
+        esac
+        shift
+    done
+
+    svg_tmp="${svg_file}"
+    test -z "$name_traits" || svg_tmp="/tmp/$USER-$(basename "${svg_file/%.svg/}")${name_traits}.svg"
+
+    for width in $@; do
+        png_file="${svg_file/%.svg/}${name_traits}_$width.png"
+        if test $(mtime "$png_file") -lt $(mtime "$svg_file"); then
+            if test ! -f "$svg_tmp"; then
+                if $use_xvfb && test -z "$BUILD_URL"; then
+                    xhost +localhost >/dev/null
+                    xhost +$(hostname -f) >/dev/null
+                fi
+                cp "$svg_file" "$svg_tmp"
+                if $use_xvfb; then
+                    $DRY_RUN xvfb-run -a -n 42 -s " -extension RANDR " -e "$log" \
+                        $inkscape -g -f "$svg_tmp" "${inkscape_opts[@]}"
+                else
+                    $DRY_RUN >>"$log" \
+                        $inkscape -g -f "$svg_tmp" "${inkscape_opts[@]}"
+                fi
+            fi
+            $inkscape -z -w $width -e "$png_file" "$svg_tmp"
+        fi
+    done
+
+    test "$svg_tmp" = "$svg_file" || rm -- "$svg_tmp" || :
+}
+
+if test "$1" = "funcdef"; then
+    return 0
+fi
+
+if test -z "$1"; then
+    echo "Usage: $0 [-n] <widths>"
+    exit 1
+fi
+
+DRY_RUN=""
+if test "$1" = "-n"; then
+    DRY_RUN=": "
+    shift
+fi
+
+set -x
+
+svg_file="${1:?You MUST provide an SVG file name}"; shift
+svg2png "$svg_file" "$@"
