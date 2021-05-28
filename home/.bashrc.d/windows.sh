@@ -3,6 +3,7 @@ if grep Microsoft /proc/version >/dev/null 2>&1; then
     alias dpkg-buildpackage="command dpkg-buildpackage -r'fakeroot --faked faked-tcp'"
     alias code="/mnt/c/Users/$USER/AppData/Local/Programs/Microsoft_VS_Code/bin/code"
     alias xdg-open=wslview
+    alias notes="code $HOME/Documents/notes.md"
 
     export DISPLAY=:0
     export LIBGL_ALWAYS_INDIRECT=1
