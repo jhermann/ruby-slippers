@@ -28,6 +28,7 @@ alias uc-em-quad="python3 -c 'print(\"\\u2001\", end=\"\")' | xsel -bi"
 alias uc-em-dash="python3 -c 'print(\"\\u2014\", end=\"\")' | xsel -bi"
 alias uc-en-dash="python3 -c 'print(\"\\u2013\", end=\"\")' | xsel -bi"
 alias uc-0-space="python3 -c 'print(\"\\u200B\", end=\"\")' | xsel -bi"
+alias cx="xsel -bi"
 
 # SCM
 alias cdiff='colordiff | less -r'
