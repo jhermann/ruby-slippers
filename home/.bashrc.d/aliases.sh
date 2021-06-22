@@ -11,7 +11,10 @@ alias ..="cd .."
 alias ...="cd ../.."
 alias xo=xdg-open
 alias tree="tree -I '*~|*.py[co]|__pycache__|.git|.venv'"
-alias notes="pe $HOME/Documents/notes.md"
+notes() {
+    local flavor="${1}"
+    pe $HOME/Documents/notes${flavor:+-}${flavor}.md
+}
 
 # Define default args
 alias eg="command eg --config-file=$HOME/.config/eg/config.ini"
