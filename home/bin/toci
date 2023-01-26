@@ -78,7 +78,8 @@ class HighlightRenderer(mistune.Renderer):
         """
         #link = mistune.escape_link(link).replace(' ', '-')
         link = link.replace(' ', '-')
-        link = ''.join([c for c in link if c.isalpha() or c.isalnum() or c == '-'])
+        link = link.replace('&amp;', '&')
+        #link = ''.join([c for c in link if c.isalpha() or c.isalnum() or c == '-'])
         #link = link.lower()
         return '[%s](#%s)' % (text, link)
 
