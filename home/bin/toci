@@ -1,7 +1,33 @@
+#! /usr/bin/env python3
+# Needs exactly Python 3.7 due to old dependencies
+"""
+Toci is a markdown tool to generate an outline from a given Jupyter
+notebook. It traverses the markdown cells of a given ipynb file to
+form a ToC for you.
+
+Based on https://github.com/ozlerhakan/toci @ 45934d2 on Jul 30, 2022
+
+This is in part changed to fit my preferences, and also to work in
+this runtime environment:
+
+IPython          : 7.34.0
+nbconvert        : 7.2.8
+nbformat         : 5.7.3
+notebook         : 6.5.2
+
+Especially the escaping of anchor names does NOT fit there.
+
+Changes:
+ * No escaping or lowercase to be compatiblle to JupyterLab
+ * No heading for the ToC itself (bold text instead)
+ * Make notebook a normal positional parameter, like usual, and allow serveral
+ * Remove a singular H1 (document title)
+"""
+import sys
 import argparse
+
 import nbformat
 import mistune
-import sys
 
 from traitlets.config import Config
 from nbconvert import NotebookExporter
@@ -31,10 +57,15 @@ class HighlightRenderer(mistune.Renderer):
 
         :return: generated toc from headers.
         """
-        content = '# Table of Content'
+        # Remove a singular H1 (document title)
+        if sum(level == 1 for text, level, count in self.headers) == 1:
+            self.headers = [(text, level - 1, count)
+                            for text, level, count in self.headers
+                            if level > 1]
+
+        content = '**Table of Contents**'
         content += '\n'
-        for toc in self.headers:
-            text, level, count = toc
+        for text, level, count in self.headers:
             content += ('' if level == 1 else '  ' * (level - 1)) + '- ' + self._link(text, text)
             content += '\n'
         return content
@@ -45,9 +76,10 @@ class HighlightRenderer(mistune.Renderer):
         :param link: href link for ``(#)`` tag.
         :param text: text content for description.
         """
-        link = mistune.escape_link(link).replace(' ', '-')
+        #link = mistune.escape_link(link).replace(' ', '-')
+        link = link.replace(' ', '-')
         link = ''.join([c for c in link if c.isalpha() or c.isalnum() or c == '-'])
-        link = link.lower()
+        #link = link.lower()
         return '[%s](#%s)' % (text, link)
 
 
@@ -79,13 +111,13 @@ class Toci:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--version', action='version', version='toci 0.0.1')
-    parser.add_argument('--notebook', '-n', required=True, help="an ipynb notebook file")
+    parser.add_argument('notebook', nargs='+', help="an ipynb notebook file")
     args = parser.parse_args(sys.argv[1:])
 
-    toci = Toci()
-    print(toci.execute(args.notebook))
+    for notebook in args.notebook:
+        toci = Toci()
+        print(toci.execute(notebook))
 
 
 if __name__ == '__main__':
     main()
-
