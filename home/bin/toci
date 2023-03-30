@@ -20,7 +20,7 @@ Especially the escaping of anchor names does NOT fit there.
 Changes:
  * No escaping or lowercase to be compatiblle to JupyterLab
  * No heading for the ToC itself (bold text instead)
- * Make notebook a normal positional parameter, like usual, and allow serveral
+ * Make notebook a normal positional parameter, like usual, and allow several of them
  * Remove a singular H1 (document title)
 """
 import sys
