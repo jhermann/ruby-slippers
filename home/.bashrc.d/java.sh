@@ -37,6 +37,13 @@ function usejava8 {
     prependpathvar MANPATH "$JAVA_HOME/man"
     export MANPATH="${MANPATH%:}:"  # ensure it ends with ':'
 }
+function usejava17 {
+    _clean_java_env
+    export JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
+    prependpathvar PATH $JAVA_HOME/bin
+    prependpathvar MANPATH "$JAVA_HOME/man"
+    export MANPATH="${MANPATH%:}:"  # ensure it ends with ':'
+}
 
 function _usezuluX {  # Azul Zulu Certified OpenJDK
     _clean_java_env
