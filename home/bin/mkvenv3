@@ -1,13 +1,13 @@
 #! /bin/bash
 #
-# Make a Python3 virtualenv.
+# Make a Python3 virtualenv, and optionally install stuff into it.
 #
 set -e
 #set -x
 
-base_python="$(which python3.9 python3.11 python3.8 python3.6 python3 | head -n1)"
+base_python="$(which python3.9 python3.11 python3.10 python3.8 python3.6 python3 | head -n1)"
 venv_basedir="$HOME/.local/py3venv"  # venv default base directory
-venv_name="${1:?You MUST provide a virtualenv name}"
+venv_name="${1:?You MUST provide a virtualenv name}"; shift
 venv_dir="$venv_basedir/$venv_name"
 venv_prompt="$venv_name"
 
@@ -17,14 +17,31 @@ if [ "$venv_name" = '.' ]; then
    venv_prompt=$(basename "$(pwd)")
 fi
 
-echo "Creating $venv_dir…"
 deactivate 2>/dev/null || :
-"$base_python" -m venv --prompt "$venv_prompt" "$venv_dir"
+if test -d "$venv_dir"; then
+    echo "Keeping $venv_dir…"
+else
+    echo "Creating $venv_dir…"
+    "$base_python" -m venv --prompt "$venv_prompt" "$venv_dir"
+fi
 
 # Update / install basic tools
 echo "Updating tools…"
 echo pip setuptools wheel bpython pip-upgrader yolk3k \
     | xargs -n1 "$venv_dir/bin/python" -m pip -q install -U
+
+# Install packages
+if test "$#" -gt 0; then
+    mkdir -p "$HOME/.local/bin"
+    echo; echo "Installing packages:" "$@"
+    for pkg in "$@"; do
+        "$venv_dir/bin/python" -m pip -q install -U "$pkg"
+        cmdname=$(sed -re 's#(.+)(\[|=|>|~).+$#\1#' <<<"$pkg")
+        if test -x "$venv_dir/bin/$cmdname"; then
+            ln -nfs "$venv_dir/bin/$cmdname" "$HOME/.local/bin"
+        fi
+    done
+fi
 
 # Report activation instructions
 if test "$(which python 2>/dev/null)" != "$venvdir/bin/python" ; then
