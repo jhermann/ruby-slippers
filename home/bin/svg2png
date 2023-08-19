@@ -82,7 +82,7 @@ if test "$1" = "-n"; then
     shift
 fi
 
-set -x
+set +x
 
 svg_file="${1:?You MUST provide an SVG file name}"; shift
 svg2png "$svg_file" "$@"
