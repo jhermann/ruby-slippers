@@ -9,6 +9,7 @@ test -d "$RUBY_SLIPPERS_VENV" \
 
 export VIRTUALENV_NO_DOWNLOAD=1
 export PEX_ROOT="$HOME/.cache/pex"
+export NLTK_DATA="$HOME/.cache/nltk_data"
 
 alias click-click-click='source $RUBY_SLIPPERS_VENV/bin/activate'
 alias pyzen="python -c 'import this'"
