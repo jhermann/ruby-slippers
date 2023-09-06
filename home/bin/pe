@@ -7,7 +7,7 @@ shopt -s extglob
 outer_python=$(command which python)
 max_find_files=25
 
-if test -n "$SYSTEMROOT" -a -n "$WINDIR"; then
+if test -n "$SYSTEMROOT" -a -n "$WINDIR" -o -n "$WSLENV"; then
     if [ -x "$(command -v code)" ]; then
         EDITOR=code
     else

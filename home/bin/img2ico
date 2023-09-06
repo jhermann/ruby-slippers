@@ -5,6 +5,7 @@ magick=""
 cygpath=echo
 
 if test -n "$SYSTEMROOT" -a -n "$WINDIR"; then
+    # git bash / WingW
     magick="magick "
     cygpath="cygpath -w"
 fi
