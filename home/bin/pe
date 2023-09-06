@@ -100,7 +100,7 @@ for arg in "$@"; do
             ;;
         ?*~*)
             # open file at first regex match (file~pattern)
-            match=$(grep -nim1 -E -e "${arg#*~}" "${arg%%~*}")
+            match=$(grep -Rnim1 -E -e "${arg#*~}" "${arg%%~*}")
             test -n "$match" && files+=("${arg%%~*}:${match%%:*}") || files+=("${arg%%~*}")
             ;;
         *)
