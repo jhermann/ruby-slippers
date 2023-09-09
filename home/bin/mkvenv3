@@ -10,6 +10,7 @@ venv_basedir="$HOME/.local/py3venv"  # venv default base directory
 venv_name="${1:?You MUST provide a virtualenv name}"; shift
 venv_dir="$venv_basedir/$venv_name"
 venv_prompt="$venv_name"
+venv_opts="--system-site-packages"
 
 if [ "$venv_name" = '.' ]; then
    venv_name=".venv"
@@ -22,7 +23,7 @@ if test -d "$venv_dir"; then
     echo "Keeping $venv_dir…"
 else
     echo "Creating $venv_dir…"
-    "$base_python" -m venv --prompt "$venv_prompt" "$venv_dir"
+    "$base_python" -m venv --prompt "$venv_prompt" $venv_opts "$venv_dir"
 fi
 
 # Update / install basic tools
