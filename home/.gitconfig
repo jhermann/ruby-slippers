@@ -2,7 +2,7 @@
         autocrlf = input
         excludesfile = ~/.gitignore_global
 [user]
-	useConfigOnly = true
+        useConfigOnly = true
 #[includeIf "gitdir:/home/jhe/src/github/"]
 #        path = ~/.config/gitconfig/jhe_src_github.ini
 [color]
@@ -32,8 +32,13 @@
         undo = "!f() { \\\n    git reset --hard $(git rev-parse --abbrev-ref HEAD)@{${1-1}}; \\\n}; f"
         # http://durdn.com/blog/2012/11/22/must-have-git-aliases-advanced-examples/
         ll = log --pretty=format:"%C(red)%h%C(yellow)%d\\ %C(reset)%s%C(green)\\ [%cn]" --decorate --numstat
+        ls = show --pretty="" --name-only
         clean-untracked = clean -f -x -d
         brv = !git branch | cut -c3- | xargs git commit-info --color=always | sort -r
         commit-info = show --no-patch --date=short --pretty=format:'%C(green)%ad%C(reset) %C(magenta)%C(italic)%<(20,trunc)%S%C(reset) %C(auto)%h %C(blue)%<(20,trunc)%an %C(auto)%<(70,trunc)%s%D%C(reset)'
 [push]
         default = simple
+[init]
+        defaultBranch = main
+[url "https://github.com/"]
+        insteadOf = git@github.com:
