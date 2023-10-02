@@ -15,6 +15,10 @@ Increase contrast, reduce brightness
 
     mogrify -brightness-contrast -20x40 *.png
 
+Reduce size of a text scan (75% threshold in case of very light elements)
+
+    mogrify -auto-level -geometry 1200x9999 -white-threshold 60% -unsharp 2x2 *.png
+
 Convert PDF to PNG (use "...pdf[n]" to select pages)
 
     convert -background white -alpha off doc.pdf doc-%d.png  # bad quality
