@@ -37,19 +37,25 @@ echo "Updating tools…"
 echo pip setuptools wheel bpython pip-upgrader yolk3k \
     | xargs -n1 "$venv_dir/bin/python" -m pip $OPT_Q install -U
 
+# Remember existing command names (for linking extra tools)
+std_bin_re="($(ls -1 $venv_dir/bin | sed -re '2,$s/^/)|(/' | tr -d \\n))"
+
 # Install packages
 if test "$#" -gt 0; then
     mkdir -p "$HOME/.local/bin"
     echo; echo "Installing packages:" "$@"
     for pkg in "$@"; do
         "$venv_dir/bin/python" -m pip $OPT_Q install -U "$pkg"
-        cmdname=$(sed -re 's#(.+)(\[|=|>|~).+$#\1#' <<<"$pkg")
-        if test -x "$venv_dir/bin/$cmdname"; then
-            printf "\n*** Linking $cmdname into ~/.local/bin\n\n"
-            ln -nfs "$venv_dir/bin/$cmdname" "$HOME/.local/bin"
-        fi
     done
 fi
+
+# Link any installed tool stubs
+for cmdname in $(ls -1 "$venv_dir/bin"); do
+    if test -x "$venv_dir/bin/$cmdname" && ! [[ "$cmdname" =~ $std_bin_re ]]; then
+        printf ">>> Linking $cmdname into ~/.local/bin\n"
+        ln -nfs "$venv_dir/bin/$cmdname" "$HOME/.local/bin"
+    fi
+done
 
 # Report activation instructions
 if test "$(which python 2>/dev/null)" != "$venvdir/bin/python" ; then
