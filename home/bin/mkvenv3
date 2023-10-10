@@ -39,6 +39,7 @@ echo pip setuptools wheel bpython pip-upgrader yolk3k \
 
 # Remember existing command names (for linking extra tools)
 std_bin_re="($(ls -1 $venv_dir/bin | sed -re '2,$s/^/)|(/' | tr -d \\n))"
+std_bin_re="$std_bin_re|pasteurize|futurize"
 
 # Install packages
 if test "$#" -gt 0; then
