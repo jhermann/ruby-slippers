@@ -27,7 +27,7 @@ fail() { # fail with error message on stderr and exit code 1
 
 editor() {
     case $codename in
-        trusty|utopic|vivid|wily|xenial|bionic|focal|jammy)
+        trusty|utopic|vivid|wily|xenial|bionic|focal|jammy|victoria)
             $EDITOR "$@" >>/tmp/$EDITOR-$USER.log 2>&1 &
             disown
             ;;
