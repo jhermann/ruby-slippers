@@ -828,6 +828,7 @@ else
 			hw) git show -w ;;
 			b|branch) branch $2; exit ;;
 			ch|checkout) checkout $2; exit ;;
+			u|up|update) ${GG_GIT_BIN} pull --ff-only; exit ;;
 			v|view|in|info) info $2; exit ;;
 			w|www|web|browse) browse; exit ;;
 			-V|--version) version ;;
