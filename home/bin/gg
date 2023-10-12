@@ -3,6 +3,12 @@
 # Setup.
 VERSION="2.0.0"
 
+# Used for git calls touching the network, due to WSL2 shenanigans
+GG_GIT_BIN=git
+if [[ "$(uname -a 2>&1)" =~ WSL2 ]]; then
+	GG_GIT_BIN=git.exe
+fi
+
 # Colors, formatting, etc.
 normal() {
 	printf "$1"
@@ -106,7 +112,7 @@ all_commits_to_push_pretty() {
 }
 
 all_commits_to_pull() {
-	git fetch --quiet
+	${GG_GIT_BIN} fetch --quiet
 	git log --left-right --graph --cherry-pick --oneline $(current_branch)...$(current_remote)/$(current_branch)
 }
 
@@ -235,7 +241,7 @@ clone() {
 		notice_bold " $PROTOCOL"
 		notice "...\n"
 
-		OUTPUT=$((git clone "$URL_FIXED" --quiet) 2>&1)
+		OUTPUT=$((${GG_GIT_BIN} clone "$URL_FIXED" --quiet) 2>&1)
 		if [ $? -eq 0 ]; then
 			success "\n[✔] Cloned into"
 
@@ -394,7 +400,7 @@ amend_no_add() {
 }
 
 push() {
-	if [ -z "$(git remote show)" ]; then
+	if [ -z "$(${GG_GIT_BIN} remote show)" ]; then
 		whoops "[✖] No remote to push to.\n"
 	else
 		notice "[~] Pushing"
@@ -406,7 +412,7 @@ push() {
 
 		commits=$(git cherry --abbrev -v)
 
-		OUTPUT=$((git push) 2>&1)
+		OUTPUT=$((${GG_GIT_BIN} push) 2>&1)
 		if [ $? -eq 0 ]; then
 			if [ "$OUTPUT" == "Everything up-to-date" ]; then
 				success "[✔] All commits already pushed.\n"
@@ -434,7 +440,7 @@ push() {
 
 pull() {
 	local mode="$1"
-	if [ -z "$(git remote show)" ]; then
+	if [ -z "$(${GG_GIT_BIN} remote show)" ]; then
 		whoops "[✖] No remote to pull from.\n"
 	else
 		notice "[~] Pulling"
@@ -444,10 +450,10 @@ pull() {
 		notice_bold " $(current_remote)"
 		notice " ($(current_remote_url))...\n\n"
 
-		OUTPUT=$((git fetch --quiet) 2>&1)
+		OUTPUT=$((${GG_GIT_BIN} fetch --quiet) 2>&1)
 		commits=$(git log --left-right --graph --cherry-pick --oneline $(current_branch)...$(current_remote)/$(current_branch))
 
-		OUTPUT=$((git pull $mode) 2>&1)
+		OUTPUT=$((${GG_GIT_BIN} pull $mode) 2>&1)
 		if [ $? -eq 0 ]; then
 			if [ "$OUTPUT" == "Already up-to-date." ]; then
 				success "[✔] Everything is already up-to-date.\n"
@@ -473,7 +479,7 @@ pull() {
 }
 
 fetch() {
-	if [ -z "$(git remote show)" ]; then
+	if [ -z "$(${GG_GIT_BIN} remote show)" ]; then
 		whoops "[✖] No remote to fetch from.\n"
 	else
 		notice "[~] Fetching"
@@ -483,7 +489,7 @@ fetch() {
 		notice_bold " $(current_remote)"
 		notice " ($(current_remote_url))...\n\n"
 
-		OUTPUT=$((git fetch) 2>&1)
+		OUTPUT=$((${GG_GIT_BIN} fetch) 2>&1)
 		commits=$(git log --left-right --graph --cherry-pick --oneline $(current_branch)...$(current_remote)/$(current_branch))
 		if [ $? -eq 0 ]; then
 			if [ -z "$OUTPUT" ]; then
@@ -515,7 +521,7 @@ status() {
 	echo
 
 	# http://stackoverflow.com/a/3278427
-	git fetch --quiet
+	${GG_GIT_BIN} fetch --quiet
 
 	LOCAL=$(git rev-parse @{0} 2>/dev/null)
 	REMOTE=$(git rev-parse @{u} 2>/dev/null)
@@ -625,7 +631,7 @@ checkout() {
 	else
 		branch="$1"
 
-		OUTPUT=$((git checkout "$branch") 2>&1)
+		OUTPUT=$((${GG_GIT_BIN} checkout "$branch") 2>&1)
 		if [ $? -eq 0 ]; then
 			OUTPUT=($OUTPUT)
 			if [ "${OUTPUT[0]}" == "Switched" ]; then
