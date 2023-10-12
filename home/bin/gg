@@ -7,7 +7,12 @@ VERSION="2.0.0"
 GG_GIT_BIN=git
 if [[ "$(uname -a 2>&1)" =~ WSL2 ]]; then
 	GG_GIT_BIN=git.exe
+	GG_BROWSER=wslview
 fi
+
+wslview() {
+	cmd.exe /c "start $*"
+}
 
 # Colors, formatting, etc.
 normal() {
@@ -743,7 +748,7 @@ browse() {
         url="${url}/tree/master${relpath}"
     fi
 
-    #echo "$url"; exit 1
+    ##echo "${GG_BROWSER:-webbrowser.open_new_tab} $url"; exit 1
     if test -n "$GG_BROWSER"; then
         $GG_BROWSER "$url#readme" >/dev/null 2>&1 &
     else
