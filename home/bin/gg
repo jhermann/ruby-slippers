@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+#set -x
+
 # Setup.
 VERSION="2.0.0"
 
@@ -736,7 +738,7 @@ info() {
 
 browse() {
     local relpath="${PWD##$(git rev-parse --show-toplevel)}"
-    local url="$(git remote show origin | grep -i fetch.url | cut -f2- -d: | tr -d ' \n')"
+    local url="$(${GG_GIT_BIN} remote show origin | grep -i fetch.url | cut -f2- -d: | tr -d ' \n')"
 
     url="${url%.git}"
     url="${url#ssh://}"
