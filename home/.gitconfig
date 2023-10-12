@@ -40,5 +40,7 @@
         default = simple
 [init]
         defaultBranch = main
+[safe]
+	directory = *
 [url "https://github.com/"]
         insteadOf = git@github.com:
