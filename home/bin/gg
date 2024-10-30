@@ -13,7 +13,9 @@ if [[ "$(uname -a 2>&1)" =~ WSL2 ]]; then
 fi
 
 wslview() {
-	cmd.exe /c "start $*"
+	local url="$*"
+	url=${url// /%20}
+	cmd.exe /c "start $url"
 }
 
 # Colors, formatting, etc.
