@@ -745,12 +745,14 @@ browse() {
     url="${url%.git}"
     url="${url#ssh://}"
     url=$(sed -r -e 's~git@([^:/]+)[:/]~https://\1/~' \
-                 -e 's~\.com-[^/]+/~.com/~' <<<"$url" \
-                 -e 's~//oauth2:[^@]+@~//~')
+                 -e 's~\.com-[^/]+/~.com/~' \
+                 -e 's~//oauth2:[^@]+@~//~' \
+                 <<<"$url")
 
     if test -n "$relpath"; then
         url="${url}/tree/master${relpath}"
     fi
+    url="${url//&/%26}"
 
     ##echo "${GG_BROWSER:-webbrowser.open_new_tab} $url"; exit 1
     if test -n "$GG_BROWSER"; then
