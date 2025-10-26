@@ -15,6 +15,13 @@ Increase contrast, reduce brightness
 
     mogrify -brightness-contrast -20x40 *.png
 
+Change transparency of an image (make opaque)
+
+    convert sample.png \
+      -alpha set -background none -channel A \
+      -evaluate multiply 0.75 +channel \
+      sample-75pc.png
+
 Reduce size of a text scan (75% threshold in case of very light elements)
 
     mogrify -auto-level -geometry 1200x9999 -white-threshold 60% -unsharp 2x2 *.png
