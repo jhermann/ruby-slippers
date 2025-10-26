@@ -37,6 +37,7 @@ elif test -n "$SYSTEMROOT" -a -n "$WINDIR"; then
     }
 
     alias xdg-open=start
+    alias explorer=/mnt/c/Windows/explorer.exe
     alias docker="winpty docker.exe"
     alias python3="winpty py -3"
     alias python3.6="winpty py -3.6"
