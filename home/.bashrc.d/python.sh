@@ -1,6 +1,14 @@
 #
 # Python related stuff
 #
+
+# Set environment for pip + requests to find combined root CA certs
+export SSL_CERT_FILE="/etc/ssl/certs/ca-certificates.crt"
+export PIP_CERT="$SSL_CERT_FILE"
+export REQUESTS_CA_BUNDLE="$SSL_CERT_FILE"
+export UV_NATIVE_TLS="true"
+
+
 RUBY_SLIPPERS_VENV="$HOME/.local/virtualenvs/ruby-slippers"
 test -d "$RUBY_SLIPPERS_VENV" \
     || RUBY_SLIPPERS_VENV="$HOME/.local/venvs/ruby-slippers"
