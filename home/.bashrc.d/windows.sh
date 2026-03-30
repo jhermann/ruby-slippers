@@ -1,7 +1,8 @@
 if grep Microsoft /proc/version >/dev/null 2>&1; then
     # Running on WSL (v1)
     alias dpkg-buildpackage="command dpkg-buildpackage -r'fakeroot --faked faked-tcp'"
-    alias code="/mnt/c/Users/$USER/AppData/Local/Programs/Microsoft_VS_Code/bin/code"
+    alias code="~/C/AppData/Local/Programs/Microsoft' 'VS' 'Code/bin/code"
+    alias antigravity="~/C/AppData/Local/Programs/Antigravity/bin/antigravity"
     alias xdg-open=wslview
     function notes() {
         local flavor="${1}"
