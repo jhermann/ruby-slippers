@@ -120,7 +120,10 @@ done
 # Inspired by http://blog.amjith.com/git-open-a-small-git-hack
 binary_files_re='\.(png|jpg|ico)$'
 if test ${#files[@]} -eq 0 ; then
-    if git rev-parse --show-toplevel >/dev/null 2>&1 ; then
+    readarray -t files < <(ls -1d *.code-workspace)
+    if test ${#files[@]} -eq 1 ; then
+        :
+    elif git rev-parse --show-toplevel >/dev/null 2>&1 ; then
         readarray -t files < <(git status --porcelain -uno | cut -b4- \
                                | egrep -v "$binary_files_re" \
                                | sed -re "s~^~$(git rev-parse --show-toplevel)/~")
