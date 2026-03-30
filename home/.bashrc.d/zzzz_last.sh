@@ -4,3 +4,5 @@ if test -d ~/bin; then
     PATH="${PATH%:}"
     export PATH
 fi
+
+export GUI_EDITOR=code
