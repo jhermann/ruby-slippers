@@ -55,12 +55,14 @@ if test "$#" -gt 0; then
 fi
 
 # Link any installed tool stubs
-for cmdname in $(ls -1 "$venv_dir/bin"); do
-    if test -x "$venv_dir/bin/$cmdname" && ! [[ "$cmdname" =~ $std_bin_re ]]; then
-        printf ">>> Linking $cmdname into ~/.local/bin\n"
-        ln -nfs "$venv_dir/bin/$cmdname" "$HOME/.local/bin"
-    fi
-done
+if test "$venv_name" != ".venv"; then
+    for cmdname in $(ls -1 "$venv_dir/bin"); do
+        if test -x "$venv_dir/bin/$cmdname" && ! [[ "$cmdname" =~ $std_bin_re ]]; then
+            printf ">>> Linking $cmdname into ~/.local/bin\n"
+            ln -nfs "$venv_dir/bin/$cmdname" "$HOME/.local/bin"
+        fi
+    done
+fi
 
 # Report activation instructions
 if test "$(which python 2>/dev/null)" != "$venvdir/bin/python" ; then
