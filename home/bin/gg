@@ -750,7 +750,7 @@ browse() {
                  <<<"$url")
 
     if test -n "$relpath"; then
-        url="${url}/tree/master${relpath}"
+        url="${url}/tree/$(git branch --show-current)${relpath}"
     fi
     url="${url//&/%26}"
 
