@@ -42,5 +42,7 @@
         defaultBranch = main
 [safe]
 	directory = *
+	directory = %(prefix)///wsl.localhost/Ubuntu-22.04/home/jhe/src/github
+	directory = %(prefix)///wsl.localhost/Ubuntu-24.04/home/jhe/src/github
 [url "https://github.com/"]
         insteadOf = git@github.com:
