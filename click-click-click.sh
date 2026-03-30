@@ -50,6 +50,21 @@ linkbase="$root/home"
     fi
 done
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# GitHub Copilot
+COPILOT_DIR="$HOME/.local/share/copilot"
+COPILOT_SKILLS_DIR="$COPILOT_DIR/skills"
+
+mkdir -p "$COPILOT_SKILLS_DIR"
+#echo "Linking GitHub Copilot configuration"
+#ln -nfs "$PWD/copilot" "$COPILOT_DIR"
+
+ls -1dF ai/skills/???* | egrep '/$' | sort | while read skill; do
+    echo "Linking AI agent skill $(basename "$skill")"
+    ln -nfs "$PWD/$skill" "$COPILOT_SKILLS_DIR/."
+done
+
+# Remove stale symlinks that point to non-existent files.
 for stale in .bashrc.d/pip.sh; do
     stale="$HOME/$stale"
     if test -h "$stale" -a \! -e "$stale"; then
