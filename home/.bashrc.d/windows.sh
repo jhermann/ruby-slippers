@@ -21,7 +21,7 @@ elif test -n "$SYSTEMROOT" -a -n "$WINDIR"; then
     export PATH="${PATH%:}"
     ##echo "$PATH" | tr \;\: \\n\\n
 
-    export PS1="${PS1%%\$ *}\$ "
+    export PS1="${PS1%%\$ *}"$'\n'"\$ "
     export BROWSER="/c/ProgramData Files (x86)/Mozilla Firefox/firefox.exe"
     #export BROWSER=$(cygpath -w "$BROWSER")
     #export BROWSER="$BROWSER;$HOME/AppData/Local/Google/Chrome/Application/chrome.exe"
