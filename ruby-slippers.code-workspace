@@ -1,0 +1,10 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+            "window.title": "${dirty}${activeEditorShort}${separator}🏠 ruby-slippers • There's no place like home…"	
+	}
+}
