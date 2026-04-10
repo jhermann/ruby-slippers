@@ -15,6 +15,7 @@ notes() {
     local flavor="${1}"
     pe $HOME/Documents/notes${flavor:+-}${flavor}.md
 }
+alias go-doc='cd "$(doc-index -rf | fzf --layout=reverse --with-nth=2 --delimiter='"'\\t'"' | cut -f1)"'
 
 # Define default args
 alias eg="command eg --config-file=$HOME/.config/eg/config.ini"

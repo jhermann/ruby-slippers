@@ -1,9 +1,17 @@
-if grep Microsoft /proc/version >/dev/null 2>&1; then
-    # Running on WSL (v1)
+alias xdoc='xdg-open "$(doc-index -rf | fzf --layout=reverse --with-nth=2 --delimiter='"'\\t'"' | cut -f1)"'
+
+if grep icrosoft /proc/version >/dev/null 2>&1; then
+    # Running on WSL (v1 + v2)
     alias dpkg-buildpackage="command dpkg-buildpackage -r'fakeroot --faked faked-tcp'"
     alias code="~/C/AppData/Local/Programs/Microsoft' 'VS' 'Code/bin/code"
     alias antigravity="~/C/AppData/Local/Programs/Antigravity/bin/antigravity"
     alias xdg-open=wslview
+
+    unalias xdoc
+    function xdoc() {
+        local folder="$(doc-index -rf | fzf --layout=reverse --with-nth=2 --delimiter=$'\t' | cut -f1)"
+        explorer.exe "$(wslpath -w "$folder")"
+    }
     function notes() {
         local flavor="${1}"
         code $HOME/Documents/notes${flavor:+-}${flavor}.md
