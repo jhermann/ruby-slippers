@@ -5,6 +5,7 @@
 
 # Standard shell options
 set -eo pipefail
+#set -o xtrace
 
 # Error trap to emit abort warning
 trap 'echo "❌ ABORT: An error occurred. Exiting." >&2' ERR
@@ -35,9 +36,12 @@ fail() { # fail with error message on stderr and exit code 1
 }
 
 editor() {
+    local file="$1"
+    local line="$2"
+
     case $codename in
         trusty|utopic|vivid|wily|xenial|bionic|focal|jammy|victoria)
-            $EDITOR "$@" >>/tmp/$EDITOR-$USER.log 2>&1 &
+            $EDITOR "$file" >>/tmp/$EDITOR-$USER.log 2>&1 &
             disown
             ;;
         windows)
@@ -53,18 +57,18 @@ editor() {
                     fi
                 fi
                 if test -f "$ws_file"; then
-                    $EDITOR "$ws_file" "$@" &>/dev/null &
+                    $EDITOR ${line:+"--goto"} "$ws_file" "$file"${line:+:}${line#+} &>/dev/null &
                 else
-                    $EDITOR "$@" &>/dev/null &
+                    $EDITOR ${line:+"--goto"} "$file"${line:+:}${line#+} &>/dev/null &
                 fi
                 disown
             else
-                $EDITOR "$@" &
+                $EDITOR "$file" &
                 disown
             fi
             ;;
         precise|lucid|*)
-            $EDITOR --background "$@"
+            $EDITOR --background "$file"
             ;;
     esac
 }
