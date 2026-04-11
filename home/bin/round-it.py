@@ -89,11 +89,18 @@ def _scaled_dimensions(width: int, height: int) -> tuple[int, int]:
     if width <= 0 or height <= 0:
         raise ValueError("Image dimensions must be positive")
 
+    # For nearly square images
     if _is_nearly_square(width, height):
+        if width < SQUARE_SIZE or height < SQUARE_SIZE:
+            return width, height
         return SQUARE_SIZE, SQUARE_SIZE
 
-    target_height = max(1, round(height * (NON_SQUARE_WIDTH / width)))
-    return NON_SQUARE_WIDTH, target_height
+    # For non-square images
+    target_width = NON_SQUARE_WIDTH
+    target_height = max(1, round(height * (target_width / width)))
+    if width < target_width or height < target_height:
+        return width, height
+    return target_width, target_height
 
 
 def _scaled_marker(target_width: int, target_height: int) -> str:
