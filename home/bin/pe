@@ -149,7 +149,7 @@ for filename in "${files[@]}"; do
         test -d "${filename:0:1}" || filename="${filename:2}"
     fi
 
-    editor "${args[@]}" "$filename" $line
+    editor "${args[@]}" "$(realpath "$filename")" $line
 done
 
 # Bring window to front and optionally set a fixed position / size
