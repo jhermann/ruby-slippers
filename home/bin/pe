@@ -1,13 +1,22 @@
 #! /bin/bash
 #
-# Wrapper for gedit / pluma
+# Wrapper for gedit / pluma / code.exe
 #
 
-shopt -s extglob
-outer_python=$(command which python)
-max_find_files=25
+# Standard shell options
+set -eo pipefail
 
-if test -n "$SYSTEMROOT" -a -n "$WINDIR" -o -n "$WSLENV"; then
+# Error trap to emit abort warning
+trap 'echo "❌ ABORT: An error occurred. Exiting." >&2' ERR
+
+# Global variables
+GIT_ROOT="$(git rev-parse --show-toplevel)"
+
+shopt -s extglob
+OUTER_PYTHON=$(command which python)
+MAX_FIND_FILES=25
+
+if test -n "${SYSTEMROOT}" -a -n "$WINDIR" -o -n "$WSLENV"; then
     if [ -x "$(command -v code)" ]; then
         EDITOR=code
     else
@@ -32,8 +41,27 @@ editor() {
             disown
             ;;
         windows)
-            $EDITOR "$@" &
-            disown
+            if [ "${EDITOR:0:4}" = "code" ]; then
+                ws_file=""
+                if test -n "$GIT_ROOT"; then
+                    ws_file="$GIT_ROOT/$(basename "$GIT_ROOT").code-workspace"
+                    if ! test -f "$ws_file"; then
+                        ws_file="$GIT_ROOT/.vscode/$(basename "$GIT_ROOT").code-workspace"
+                        if ! test -f "$ws_file"; then
+                            ws_file=""
+                        fi
+                    fi
+                fi
+                if test -f "$ws_file"; then
+                    $EDITOR "$ws_file" "$@" &>/dev/null &
+                else
+                    $EDITOR "$@" &>/dev/null &
+                fi
+                disown
+            else
+                $EDITOR "$@" &
+                disown
+            fi
             ;;
         precise|lucid|*)
             $EDITOR --background "$@"
@@ -49,13 +77,13 @@ py_file() {
         *'.**') file=${file%???}; maxdepth=99 ;;
         *'.*')  file=${file%??};  maxdepth=1  ;;
     esac
-    file="$($outer_python -c "import ${file}; print(${file}.__file__)")"
+    file="$($OUTER_PYTHON -c "import ${file}; print(${file}.__file__)")"
     file="${file/.pyc/.py}"
     file="${file/.pyo/.py}"
     test -n "$file" || fail "Cannot locate python module for '${spec}'!"
     if test "$maxdepth" -gt 0; then
         IFS=$'\n'
-        files+=( $(find "$(dirname "$file")" -maxdepth $maxdepth -type f -name '*.py' | sort | head -n $max_find_files) )
+        files+=( $(find "$(dirname "$file")" -maxdepth $maxdepth -type f -name '*.py' | sort | head -n $MAX_FIND_FILES) )
         unset IFS
     else
         files+=("$file")
@@ -95,7 +123,7 @@ for arg in "$@"; do
             IFS=$'\n'
             files+=( $(findall ./[^_]* -regextype posix-egrep -iregex ".+/.*${arg:1:-1}.*" -type f \
                 | egrep -v '(build|dist|target)' \
-                | sort | head -n $max_find_files) )
+                | sort | head -n $MAX_FIND_FILES) )
             unset IFS
             ;;
         ?*~*)
@@ -107,7 +135,7 @@ for arg in "$@"; do
             # open some file or directory
             if test -d "$arg"; then
                 IFS=$'\n'
-                files+=( $(findall "$arg" -type f | sort | head -n $max_find_files) )
+                files+=( $(findall "$arg" -type f | sort | head -n $MAX_FIND_FILES) )
                 unset IFS
             else
                 files+=("$arg")
