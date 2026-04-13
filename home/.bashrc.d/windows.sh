@@ -1,11 +1,7 @@
-alias xdoc='xdg-open "$(doc-index -rf | fzf --layout=reverse --with-nth=2 --delimiter='"'\\t'"' | cut -f1)"'
-
-if grep icrosoft /proc/version >/dev/null 2>&1; then
-    # Running on WSL (v1 + v2)
-    alias dpkg-buildpackage="command dpkg-buildpackage -r'fakeroot --faked faked-tcp'"
-    alias code="~/C/AppData/Local/Programs/Microsoft' 'VS' 'Code/bin/code"
-    alias antigravity="~/C/AppData/Local/Programs/Antigravity/bin/antigravity"
-    alias xdg-open=wslview
+function wsl_setup {
+    # Shared WSL v1 / v2 setup
+    alias vlc='"/mnt/c/Program Files/VideoLAN/VLC/vlc.exe"'
+    alias firefox='"/mnt/c/Program Files/Mozilla Firefox/firefox.exe"'
 
     unalias xdoc
     function xdoc() {
@@ -16,6 +12,23 @@ if grep icrosoft /proc/version >/dev/null 2>&1; then
         local flavor="${1}"
         code $HOME/Documents/notes${flavor:+-}${flavor}.md
     }
+
+    export PS1="${PS1%%\$ *}"$'\n'"\$ "
+}
+
+alias xdoc='xdg-open "$(doc-index -rf | fzf --layout=reverse --with-nth=2 --delimiter='"'\\t'"' | cut -f1)"'
+
+if grep WSL2 /proc/version >/dev/null 2>&1; then
+    # Running on WSL (v2)
+    wsl_setup
+elif grep Microsoft /proc/version >/dev/null 2>&1; then
+    # Running on WSL (v1)
+    wsl_setup
+
+    alias dpkg-buildpackage="command dpkg-buildpackage -r'fakeroot --faked faked-tcp'"
+    alias code="~/C/AppData/Local/Programs/Microsoft' 'VS' 'Code/bin/code"
+    alias antigravity="~/C/AppData/Local/Programs/Antigravity/bin/antigravity"
+    alias xdg-open=wslview
 
     export DISPLAY=:0
     export LIBGL_ALWAYS_INDIRECT=1
