@@ -9,8 +9,13 @@ alias la="ls -la"
 alias md=mkdir
 alias ..="cd .."
 alias ...="cd ../.."
-alias xo=xdg-open
 alias tree="tree -I '*~|*.py[co]|__pycache__|.git|.venv'"
+
+alias xo=xdg-open
+if test -x ~/bin/xo || test -x ~/.local/bin/xo; then
+    unalias xo
+fi
+
 notes() {
     local flavor="${1}"
     pe $HOME/Documents/notes${flavor:+-}${flavor}.md
