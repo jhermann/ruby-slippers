@@ -23,6 +23,8 @@ REPO_ROOT = None
 ASSETS_IMAGES_DIR = None
 IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".webp", ".gif", ".bmp", ".tiff"}
 
+_corner_radius = None  # Set by main() from args.radius
+
 
 def _find_repo_root() -> Path:
     current_dir = Path('.').resolve()
@@ -71,6 +73,20 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         action="store_true",
         help="Interactively pick images from assets/images that do not have a _WxH sibling yet.",
     )
+    parser.add_argument(
+        "-s",
+        "--size",
+        type=str,
+        default=None,
+        help="Override default size: N (square size), WxH (explicit), or W (non-square width).",
+    )
+    parser.add_argument(
+        "-r",
+        "--radius",
+        type=int,
+        default=None,
+        help="Corner radius for rounded corners (default: auto, max 50 or half the shortest side)",
+    )
     return parser.parse_args(argv)
 
 
@@ -85,9 +101,31 @@ def _is_nearly_square(width: int, height: int) -> bool:
     return (1 - SQUARE_TOLERANCE) <= ratio <= (1 + SQUARE_TOLERANCE)
 
 
-def _scaled_dimensions(width: int, height: int) -> tuple[int, int]:
+def _scaled_dimensions(width: int, height: int, size_override: str | None = None) -> tuple[int, int]:
     if width <= 0 or height <= 0:
         raise ValueError("Image dimensions must be positive")
+
+    if size_override:
+        # Accepts: '800', '800x600', '800X600'
+        if 'x' in size_override.lower():
+            w_str, h_str = re.split(r"[xX]", size_override)
+            try:
+                ow, oh = int(w_str), int(h_str)
+                return ow, oh
+            except Exception:
+                raise ValueError(f"Invalid --size value: {size_override}")
+        else:
+            try:
+                o = int(size_override)
+            except Exception:
+                raise ValueError(f"Invalid --size value: {size_override}")
+            # If image is nearly square, use o x o, else o as width
+            if _is_nearly_square(width, height):
+                return o, o
+            else:
+                target_width = o
+                target_height = max(1, round(height * (target_width / width)))
+                return target_width, target_height
 
     # For nearly square images
     if _is_nearly_square(width, height):
@@ -192,7 +230,7 @@ def _marker_output_path(image_path: Path, target_width: int, target_height: int)
     return image_path.with_name(f"{image_path.name}{marker}")
 
 
-def process_image(image_path: Path, dry_run: bool, in_place: bool) -> int:
+def process_image(image_path: Path, dry_run: bool, in_place: bool, size_override: str | None = None) -> int:
     if not image_path.exists():
         print(f"[ERROR] Not found: {image_path}")
         return 1
@@ -209,7 +247,7 @@ def process_image(image_path: Path, dry_run: bool, in_place: bool) -> int:
     try:
         with Image.open(image_path) as img:
             width, height = img.size
-            target_width, target_height = _scaled_dimensions(width, height)
+            target_width, target_height = _scaled_dimensions(width, height, size_override)
 
             output_path = (
                 image_path
@@ -217,10 +255,17 @@ def process_image(image_path: Path, dry_run: bool, in_place: bool) -> int:
                 else _marker_output_path(image_path, target_width, target_height)
             )
 
+            # Use global _corner_radius if set, else default logic
+            corner_radius = _corner_radius
+            if corner_radius is None:
+                corner_radius = min(CORNER_RADIUS, target_width // 2, target_height // 2)
+            else:
+                corner_radius = max(1, min(corner_radius, target_width // 2, target_height // 2))
+
             if dry_run:
                 print(
                     f"[DRY-RUN] Would process {image_path} "
-                    f"({width}x{height} -> {target_width}x{target_height}, radius={CORNER_RADIUS}) "
+                    f"({width}x{height} -> {target_width}x{target_height}, radius={corner_radius}) "
                     f"-> {output_path}"
                 )
                 return 0
@@ -232,7 +277,6 @@ def process_image(image_path: Path, dry_run: bool, in_place: bool) -> int:
 
             mask = Image.new("L", (target_width, target_height), 0)
             draw = ImageDraw.Draw(mask)
-            corner_radius = min(CORNER_RADIUS, target_width // 2, target_height // 2)
             draw.rounded_rectangle(
                 xy=(0, 0, target_width - 1, target_height - 1),
                 radius=corner_radius,
@@ -250,7 +294,9 @@ def process_image(image_path: Path, dry_run: bool, in_place: bool) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
+    global _corner_radius
     args = parse_args(argv)
+    _corner_radius = args.radius
     image_paths = _collect_image_paths(args)
     if not image_paths:
         print("[ERROR] No images selected. Pass image paths or use --pick.")
@@ -262,11 +308,11 @@ def main(argv: list[str] | None = None) -> int:
             image_path,
             dry_run=args.dry_run,
             in_place=args.in_place,
+            size_override=args.size,
         )
         if result != 0:
             exit_code = 1
     return exit_code
-
 
 if __name__ == "__main__":
     REPO_ROOT = _find_repo_root()
