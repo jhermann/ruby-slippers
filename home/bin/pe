@@ -11,7 +11,7 @@ set -eo pipefail
 trap 'echo "❌ ABORT: An error occurred. Exiting." >&2' ERR
 
 # Global variables
-GIT_ROOT="$(git rev-parse --show-toplevel)"
+GIT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || :)"
 
 shopt -s extglob
 OUTER_PYTHON=$(command which python)
