@@ -752,7 +752,11 @@ browse() {
 		<<<"$url")
 
 	if test -n "$relpath"; then
-		url="${url}/tree/$(git branch --show-current)${relpath}"
+		if [[ "$url" == *".fritz.box"* ]]; then
+			url="${url}/src/branch/$(git branch --show-current)${relpath}"
+		else
+			url="${url}/tree/$(git branch --show-current)${relpath}"
+		fi
 	fi
 	url="${url//&/%26}"
 
