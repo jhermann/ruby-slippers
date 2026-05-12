@@ -25,6 +25,7 @@ alias pypi="pip install -i https://pypi.python.org/simple"
 alias pip="python3 -m pip"
 alias pip2="python2 -m pip"
 alias pip3="python3 -m pip"
+alias pyproject='uvx --from toml-cli toml get --toml-path pyproject.toml | yq'
 
 # Make pydoc work in virtualenvs, and also alias the system pydoc
 alias pydoc="python3 -m pydoc"
