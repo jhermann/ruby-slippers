@@ -6,8 +6,8 @@
 export SSL_CERT_FILE="/etc/ssl/certs/ca-certificates.crt"
 export PIP_CERT="$SSL_CERT_FILE"
 export REQUESTS_CA_BUNDLE="$SSL_CERT_FILE"
-export UV_NATIVE_TLS="true"
-
+#export UV_NATIVE_TLS="true"
+export UV_SYSTEM_CERTS="true"
 
 RUBY_SLIPPERS_VENV="$HOME/.local/virtualenvs/ruby-slippers"
 test -d "$RUBY_SLIPPERS_VENV" \
