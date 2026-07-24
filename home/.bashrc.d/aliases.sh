@@ -16,6 +16,10 @@ if test -x ~/bin/xo || test -x ~/.local/bin/xo; then
     unalias xo
 fi
 
+if test -x /usr/bin/podman; then
+    alias docker=podman
+fi
+
 notes() {
     local flavor="${1}"
     pe $HOME/Documents/notes${flavor:+-}${flavor}.md
