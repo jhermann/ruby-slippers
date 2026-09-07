@@ -46,3 +46,7 @@
 	directory = %(prefix)///wsl.localhost/Ubuntu-24.04/home/jhe/src/github
 [url "https://github.com/"]
         insteadOf = git@github.com:
+[credential "https://github.com"]
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = !/usr/bin/gh auth git-credential
