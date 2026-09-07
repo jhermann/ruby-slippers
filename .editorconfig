@@ -1,0 +1,17 @@
+# This is the top-most .editorconfig file
+root = true
+
+[*]
+# Use 4 spaces for indentation
+indent_style = space
+indent_size = 4
+
+# Use Unix-style line endings (LF)
+end_of_line = lf
+
+# Standard encoding
+charset = utf-8
+
+# Clean up whitespace on save
+trim_trailing_whitespace = true
+insert_final_newline = true

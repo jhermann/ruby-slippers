@@ -1,0 +1,26 @@
+# Normalize line endings to LF on commit (auto-detect text files)
+* text=auto eol=lf
+
+# Explicitly text
+*.cfg   text eol=lf
+*.ini   text eol=lf
+*.json  text eol=lf
+*.md    text eol=lf
+*.prom  text eol=lf
+*.py    text eol=lf
+*.sh    text eol=lf
+*.svg   text eol=lf
+*.toml  text eol=lf
+*.txt   text eol=lf
+*.yaml  text eol=lf
+*.yml   text eol=lf
+Makefile text eol=lf
+
+# Binary — never touch line endings
+*.gif   binary
+*.ico   binary
+*.jpg   binary
+*.jpeg  binary
+*.png   binary
+*.whl   binary
+*.zip   binary
