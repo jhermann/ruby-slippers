@@ -8,7 +8,7 @@ VERSION="2.0.0"
 # Used for git calls touching the network, due to WSL2 shenanigans
 GG_GIT_BIN=git
 if [[ "$(uname -a 2>&1)" =~ WSL2 ]]; then
-	GG_GIT_BIN=git.exe
+	#GG_GIT_BIN=git.exe
 	GG_BROWSER=wslview
 fi
 
@@ -753,6 +753,8 @@ browse() {
 
 	if test -n "$relpath"; then
 		if [[ "$url" == *".fritz.box"* ]]; then
+			url="${url}/src/branch/$(git branch --show-current)${relpath}"
+		elif [[ "$url" == *"192.168."* ]]; then
 			url="${url}/src/branch/$(git branch --show-current)${relpath}"
 		else
 			url="${url}/tree/$(git branch --show-current)${relpath}"
