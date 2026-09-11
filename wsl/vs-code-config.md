@@ -1,4 +1,12 @@
-# VS Code Customization
+# VS Code Customization <!-- omit from toc -->
+
+**Contents**
+
+- [Key Bindings](#key-bindings)
+- [Snippets](#snippets)
+- [List of Recommended Extensions](#list-of-recommended-extensions)
+  - [Windows Side](#windows-side)
+  - [WSL-Activated Extensions](#wsl-activated-extensions)
 
 ## Key Bindings
 `AppData > Roaming > Code > User > keybindings.json`
@@ -29,14 +37,14 @@
 code --list-extensions --show-versions
 ```
 
-## Windows Side
+### Windows Side
 
 - [`ms-vscode-remote.remote-wsl`][marketplace-ms-vscode-remote-remote-wsl] 0.104.3
 - [`carve3d.carve`][marketplace-carve3d-carve] 0.1.5
 - [`editorconfig.editorconfig`][marketplace-editorconfig-editorconfig] 0.18.2
 - [`yzhang.markdown-all-in-one`][marketplace-yzhang-markdown-all-in-one] 3.6.3
 
-## WSL-Activated Extensions
+### WSL-Activated Extensions
 
 | Extension | Extension ID | Version | Marketplace |
 | --- | --- | --- | --- |
