@@ -14,6 +14,7 @@ function wsl_setup {
     }
 
     export PS1="${PS1%%\$ *}"$'\n'"\$ "
+    export QT_QPA_PLATFORM=xcb
 }
 
 alias xdoc='xdg-open "$(doc-index -rf | fzf --layout=reverse --with-nth=2 --delimiter='"'\\t'"' | cut -f1)"'
