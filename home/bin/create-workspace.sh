@@ -5,7 +5,7 @@
 #
 set -euo pipefail
 
-git_root=$(git rev-parse --show-toplevel)
+git_root=$(git rev-parse --show-toplevel || pwd)
 name=$(basename "$git_root")
 outfile="${git_root}/${name}.code-workspace"
 
