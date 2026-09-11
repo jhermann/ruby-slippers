@@ -1,0 +1,44 @@
+{
+	// Place your snippets for python here. Each snippet is defined under a snippet name and has a prefix, body and
+	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the
+	// same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	//
+	// You can also restrict snippets to specific files using include/exclude patterns:
+	// "Test snippet": {
+	// 	"prefix": "test",
+	// 	"body": "test('$1', () => {\n\t$0\n});",
+	// 	"include": ["**/*.test.ts", "*.spec.ts"],
+	// 	"exclude": ["**/temp/*.ts"],
+	// 	"description": "Insert test block"
+	// }
+	"shebang-py": {
+			"prefix": "#!py",
+			"body": "#! /usr/bin/env python3",
+			"description": "Insert shebang for Python 3"
+	},
+	"shebang-uv": {
+			"prefix": "#!uv",
+			"body": [
+				"#! /usr/bin/env -S uv run",
+				"# /// script",
+				"# requires-python = \">=3.12\"",
+				"# dependencies = [",
+				"#     \"sh\",",
+				"# ]",
+				"# ///",
+				"\"\"\" SCRIPT.",
+				"\"\"\""
+			],
+			"description": "Insert shebang for stand-alone uv scripts"
+	}
+}

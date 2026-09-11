@@ -1,7 +1,27 @@
 # VS Code Customization
 
+## Key Bindings
+`AppData > Roaming > Code > User > keybindings.json`
+
+```json
+// Place your key bindings in this file to override the defaultsauto[]
+[
+    {
+        "key": "ctrl+shift+q",
+        "command": "workbench.action.quickOpenView"
+    },
+    {
+        "key": "ctrl+q",
+        "command": "workbench.action.closeWindow"
+    }
+]
+```
+
 ## Snippets
-TODO
+`AppData > Roaming > Code > User > snippets`
+
+- [markdown.json](./vs-code-snippets/markdown.json)
+- [python.json](./vs-code-snippets/python.json)
 
 ## List of Recommended Extensions
 
